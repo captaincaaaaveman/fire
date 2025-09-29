@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Responsive Multi-Screen App</title>
+  <title>Retirement Calculator</title>
   <link rel="stylesheet" href="style.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -12,7 +12,7 @@
     <!-- Header / Navigation -->
     <header>
       <nav>
-        <div id="menuBtn">&#9776;</div> <!-- hamburger for mobile -->
+        <div id="menuBtn">&#9776;</div>
         <ul id="tabs">
           <li data-target="mainScreen" class="active">Input</li>
           <li data-target="resultsScreen">Results</li>
@@ -24,35 +24,33 @@
     <main>
       <!-- Input Screen -->
       <section id="mainScreen" class="screen active">
-        <h1>Input Screen</h1>
-        <div class="card">
+        <h1>Retirement Calculator</h1>
+        <form class="form">
           <label>
-            Age:
+            Age
             <input type="number" id="input_age" />
           </label>
           <label>
-            Retirement Age:
+            Retirement Age
             <input type="number" id="input_retirementAge"/>
           </label>
           <label>
-            Amount:
+            Amount
             <input type="number" id="input_amount"/>
           </label>
           <label>
-            Percentage:
+            Growth %
             <input type="number" id="input_percentage"/>
           </label>
-          <button id="calculateBtn">Calculate</button>
-        </div>
+          <button id="calculateBtn" type="button">Calculate</button>
+        </form>
       </section>
 
       <!-- Results Screen -->
       <section id="resultsScreen" class="screen">
         <h1>Results</h1>
-        <div class="card">
-          <div id="chartContainer">
-            <canvas id="myChart"></canvas>
-          </div>
+        <div id="chartContainer">
+          <canvas id="myChart"></canvas>
         </div>
       </section>
     </main>
