@@ -1,30 +1,30 @@
-import { baseData, calculateResults } from './calculations.js';
+import { baseData, getChartDatasets } from './calculations.js';
 
 // --- Restore saved user input ---
 const inputEl = document.getElementById("userInput");
 const savedValue = localStorage.getItem("multiplier") || 1;
 inputEl.value = savedValue;
 
-// --- Initialize chart ---
 const ctx = document.getElementById("myChart");
 let chart = new Chart(ctx, {
-  type: "bar",
+  type: "line",
   data: {
     labels: baseData.map(x => "Item " + x),
-    datasets: [{
-      label: "Calculated Results",
-      data: calculateResults(savedValue),
-      backgroundColor: "rgba(54, 162, 235, 0.6)"
-    }]
+    datasets: getChartDatasets(savedValue, 3) // dynamically generate 3 series
   },
-  options: { responsive: true }
+  options: {
+    responsive: true,
+    scales: {
+      y: { beginAtZero: true }
+    }
+  }
 });
 
-// --- Save input and update chart ---
+// --- Update chart dynamically ---
 document.getElementById("saveBtn").addEventListener("click", () => {
   const multiplier = parseFloat(inputEl.value) || 1;
   localStorage.setItem("multiplier", multiplier);
 
-  chart.data.datasets[0].data = calculateResults(multiplier);
+  chart.data.datasets = getChartDatasets(multiplier, 3); // same number of series
   chart.update();
 });
