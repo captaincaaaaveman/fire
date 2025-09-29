@@ -1,0 +1,16 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 2em;
+}
+
+label,
+input,
+button {
+  display: block;
+  margin: 0.5em 0;
+}
+
+#chartContainer {
+  width: 600px;
+  height: 400px;
+}
