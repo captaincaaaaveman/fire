@@ -2,24 +2,58 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Hello World App</title>
+  <title>Responsive Multi-Screen App</title>
   <link rel="stylesheet" href="style.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <h1>Hello World Calculation App</h1>
+  <div id="app">
 
-  <label>
-    Enter a multiplier:
-    <input type="number" id="userInput" />
-  </label>
-  <button id="saveBtn">Save Input & Recalculate</button>
+    <!-- Header / Navigation -->
+    <header>
+      <nav>
+        <div id="menuBtn">&#9776;</div> <!-- hamburger for mobile -->
+        <ul id="tabs">
+          <li data-target="mainScreen" class="active">Input</li>
+          <li data-target="resultsScreen">Results</li>
+        </ul>
+      </nav>
+    </header>
 
-  <div id="chartContainer">
-    <canvas id="myChart"></canvas>
+    <!-- Main Content -->
+    <main>
+      <!-- Input Screen -->
+      <section id="mainScreen" class="screen active">
+        <h1>Input Screen</h1>
+        <label>
+          Age:
+          <input type="number" id="input_age" />
+        </label>
+        <label>
+          Retirement Age:
+          <input type="number" id="input_retirementAge"/>
+        </label>
+        <label>
+          Amount:
+          <input type="number" id="input_amount"/>
+        </label>
+        <label>
+          Percentage:
+          <input type="number" id="input_percentage"/>
+        </label>
+        <button id="calculateBtn">Calculate</button>
+      </section>
+
+      <!-- Results Screen -->
+      <section id="resultsScreen" class="screen">
+        <h1>Results</h1>
+        <div id="chartContainer">
+          <canvas id="myChart"></canvas>
+        </div>
+      </section>
+    </main>
   </div>
 
-  <!-- Use type="module" for ES6 imports -->
   <script type="module" src="js/main.js"></script>
 </body>
 </html>

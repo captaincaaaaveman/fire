@@ -1,16 +1,92 @@
 body {
   font-family: Arial, sans-serif;
-  margin: 2em;
+  margin: 0;
+  padding: 0;
 }
 
-label,
-input,
-button {
+/* Header and tabs */
+header {
+  background: #333;
+  color: white;
+  padding: 0.5em 1em;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#tabs {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+#tabs li {
+  padding: 0.5em 1em;
+  cursor: pointer;
+}
+
+#tabs li.active {
+  background: #555;
+}
+
+/* Hamburger for mobile */
+#menuBtn {
+  display: none;
+  font-size: 1.5em;
+  cursor: pointer;
+}
+
+/* Screens */
+.screen {
+  display: none;
+  padding: 1em;
+}
+
+.screen.active {
+  display: block;
+}
+
+/* Chart container */
+#chartContainer {
+  width: 100%;
+  max-width: 700px;
+  height: 400px;
+  margin-top: 1em;
+}
+
+/* Inputs */
+input {
   display: block;
   margin: 0.5em 0;
+  padding: 0.4em;
+  width: 100%;
+  max-width: 300px;
+  box-sizing: border-box;
 }
 
-#chartContainer {
-  width: 600px;
-  height: 400px;
+button {
+  margin: 0.5em 0;
+  padding: 0.5em 1em;
+  cursor: pointer;
+}
+
+/* Responsive layout */
+@media (max-width: 600px) {
+  #tabs {
+    display: none; /* hide tabs on mobile */
+    flex-direction: column;
+    background: #333;
+  }
+
+  #tabs li {
+    border-top: 1px solid #444;
+  }
+
+  #menuBtn {
+    display: block;
+  }
 }
