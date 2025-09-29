@@ -57,37 +57,40 @@ nav {
   display: block;
 }
 
-/* Form (mobile-first, full width) */
+/* Form - Mobile first */
 .form {
   display: flex;
-  flex-direction: column;
-  gap: 1.2em;
+  flex-direction: column; /* stack vertically */
+  gap: 1.5em;
   width: 100%;
+  max-width: 100%;
+  padding: 1em;
 }
 
 .form label {
-  font-size: 1.2rem;
-  font-weight: bold;
   display: flex;
-  flex-direction: column;
+  flex-direction: column; /* text above input */
   gap: 0.5em;
+  font-size: 1.3rem;
+  font-weight: bold;
 }
 
 .form input {
-  font-size: 1.2rem;
-  padding: 1em;
-  border: 2px solid #ccc;
-  border-radius: 6px;
   width: 100%;
+  padding: 1em;
+  font-size: 1.3rem;
+  border-radius: 6px;
+  border: 2px solid #ccc;
 }
 
 .form button {
-  font-size: 1.3rem;
+  width: 100%;
   padding: 1em;
-  border: none;
+  font-size: 1.3rem;
   border-radius: 6px;
   background: #333;
   color: white;
+  border: none;
   cursor: pointer;
 }
 
@@ -104,17 +107,17 @@ nav {
 
 #myChart {
   width: 100% !important;
-  height: auto !important;
+  height: 300px !important;
 }
 
-/* Mobile-first / larger phones (Pixel 8a) */
+/* Mobile-first / large phones like Pixel 8a */
 @media (max-width: 1080px) {
   body {
-    font-size: 18px; /* larger text */
+    font-size: 18px;
   }
 
   #tabs {
-    display: none; /* hide tabs */
+    display: none;
     flex-direction: column;
     width: 100%;
     background: #333;
@@ -127,7 +130,7 @@ nav {
   }
 
   #menuBtn {
-    display: block; /* show hamburger */
+    display: block;
   }
 
   h1 {
@@ -137,8 +140,8 @@ nav {
 
   .form input,
   .form button {
-    font-size: 1.3rem;
-    padding: 1em; /* bigger tap targets */
+    font-size: 1.4rem;
+    padding: 1.1em;
   }
 
   #chartContainer {
@@ -149,11 +152,11 @@ nav {
 
   #myChart {
     width: 100% !important;
-    height: 300px !important;
+    height: 320px !important;
   }
 }
 
-/* Desktop refinements (true desktops) */
+/* Desktop refinements */
 @media (min-width: 1081px) {
   .form {
     max-width: 500px;
