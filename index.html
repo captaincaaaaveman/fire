@@ -25,30 +25,34 @@
       <!-- Input Screen -->
       <section id="mainScreen" class="screen active">
         <h1>Input Screen</h1>
-        <label>
-          Age:
-          <input type="number" id="input_age" />
-        </label>
-        <label>
-          Retirement Age:
-          <input type="number" id="input_retirementAge"/>
-        </label>
-        <label>
-          Amount:
-          <input type="number" id="input_amount"/>
-        </label>
-        <label>
-          Percentage:
-          <input type="number" id="input_percentage"/>
-        </label>
-        <button id="calculateBtn">Calculate</button>
+        <div class="card">
+          <label>
+            Age:
+            <input type="number" id="input_age" />
+          </label>
+          <label>
+            Retirement Age:
+            <input type="number" id="input_retirementAge"/>
+          </label>
+          <label>
+            Amount:
+            <input type="number" id="input_amount"/>
+          </label>
+          <label>
+            Percentage:
+            <input type="number" id="input_percentage"/>
+          </label>
+          <button id="calculateBtn">Calculate</button>
+        </div>
       </section>
 
       <!-- Results Screen -->
       <section id="resultsScreen" class="screen">
         <h1>Results</h1>
-        <div id="chartContainer">
-          <canvas id="myChart"></canvas>
+        <div class="card">
+          <div id="chartContainer">
+            <canvas id="myChart"></canvas>
+          </div>
         </div>
       </section>
     </main>
