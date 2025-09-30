@@ -1,70 +1,116 @@
 // --- Show screen function ---
-import { baseData, getChartDatasets } from './calculations.js';
+import { getChartDatasets } from './calculations.js';
+import { saveModel, loadModel } from "./storage.js";
+import { model } from "./model.js";
+import { debounce } from "./utils.js";
 
-// DOM Elements
-const input_age = document.getElementById("input_age");
-const input_retirementAge = document.getElementById("input_retirementAge");
-const input_percentage = document.getElementById("input_percentage");
-const input_amount = document.getElementById("input_amount");
-
+// Input fields
 const screens = document.querySelectorAll(".screen");
 const tabs = document.querySelectorAll("#tabs li");
 const menuBtn = document.getElementById("menuBtn");
 const tabsList = document.getElementById("tabs");
 
-// Restore saved input
-input_age.value = localStorage.getItem("age") || 51;
-input_retirementAge.value = localStorage.getItem("retirementAge") || 57;
-input_amount.value = localStorage.getItem("amount") || 675000;
-input_percentage.value = localStorage.getItem("percentage") || 4;
+
+// DOM Elements
+const ageInput = document.getElementById("ageInput");
+const retirementAgeInput = document.getElementById("retirementAgeInput");
+const percentageInput = document.getElementById("percentageInput");
+const amountInput = document.getElementById("amountInput");
+const investmentInput = document.getElementById("investmentInput");
+const investmentYearsInput = document.getElementById("investmentYearsInput");
+
+
+// Prefill inputs from storage on load
+function initFromStorage() {
+  const stored = loadModel();
+  if (stored) {
+    Object.assign(model, stored);
+
+    ageInput.value = model.age || "51";
+    retirementAgeInput.value = model.retirementAge || "58";
+    amountInput.value = model.amount || "657000";
+    percentageInput.value = model.percentage || "4";
+    investmentInput.value = model.investment || "4000";
+    investmentYearsInput.value = model.investmentYears || "1";
+
+  }
+}
+
+initFromStorage();
+
+// Sync model whenever inputs change
+function updateModel() {
+  model.age = parseInt(ageInput.value, 10) || 0;
+  model.retirementAge = parseInt(retirementAgeInput.value, 10) || 0;
+  model.amount = parseFloat(amountInput.value) || 0;
+  model.percentage = parseFloat(percentageInput.value) || 0;
+  model.investment = parseFloat(investmentInput.value) || 0;
+  model.investmentYears = parseFloat(investmentYearsInput.value) || 0;
+
+  saveModel(model); // persist after every update
+
+}
 
 // Initialize chart
 const ctx = document.getElementById("myChart");
 let chart = new Chart(ctx, {
   type: "line",
   data: {
-    labels: baseData.map(x => "Item " + x),
+    labels: [],
     datasets: []
   },
   options: {
     responsive: true,
-    scales: { y: { beginAtZero: true } }
+    plugins: {
+      legend: { display: false } // no legend
+    },
+    scales: {
+      y: { beginAtZero: true }
+    },
+    elements: {
+      line: {
+        borderWidth: 1 // thin lines
+      },
+      point: {
+        radius: 0 // hide points
+      }
+    }
   }
 });
 
+
 // --- Update chart ---
 function updateChart() {
-  const age = parseFloat(input_age.value);
-  const amount = parseFloat(input_amount.value);
-  const percentage = parseFloat(input_percentage.value);
-  const retirementAge = parseFloat(input_retirementAge.value);
 
-  localStorage.setItem("age", age);
-  localStorage.setItem("amount", amount);
-  localStorage.setItem("percentage", percentage);
-  localStorage.setItem("retirementAge", retirementAge);
-
-  chart.data
-
-  const { datasets, labels } =  getChartDatasets(age, retirementAge, amount, percentage);
+  const { datasets, labels } =  getChartDatasets(model);
 
   console.log("Results from getDatasets:", datasets);
-  console.log("Chart datasets before update:", chart.data.datasets);
+  // console.log("Chart datasets before update:", chart.data.datasets);
 
   chart.data.datasets = datasets;
   chart.data.labels = labels;
-
 
   console.log("Chart datasets after update:", chart.data.datasets);
 
   chart.update();
 }
 
+function recalcAndUpdate() {
+  updateModel();
+  const { datasets, labels } = getChartDatasets(model);
+  updateChart(datasets, labels);
+}
+
+const debouncedRecalc = debounce(recalcAndUpdate, 1000);
+
+// Attach event listeners for auto-update
+[ageInput, retirementAgeInput, amountInput, percentageInput].forEach(input => {
+  input.addEventListener("input", debouncedRecalc);
+});
+
 // --- Calculate button ---
 calculateBtn.addEventListener("click", () => {
-  updateChart();
-  // Switch to results screen
-  showScreen("resultsScreen");
+  recalcAndUpdate();
 });
 
 // --- Tabs click ---

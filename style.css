@@ -168,3 +168,21 @@ nav {
     margin: auto;
   }
 }
+
+/* On larger screens show both sections stacked */
+@media (min-width: 1025px) {
+  #tabs {
+    display: none; /* hide tab navigation on desktop */
+  }
+
+  .screen {
+    display: block !important; /* always show both screens */
+  }
+
+  main {
+    display: flex;
+    flex-direction: column; /* stack Input then Results */
+    gap: 2rem; /* space between sections */
+    padding: 1rem;
+  }
+}

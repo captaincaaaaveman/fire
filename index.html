@@ -29,19 +29,27 @@
         <form class="form">
           <label>
             Age
-            <input type="number" id="input_age" />
+            <input type="number" id="ageInput" />
           </label>
           <label>
             Retirement Age
-            <input type="number" id="input_retirementAge"/>
+            <input type="number" id="retirementAgeInput"/>
           </label>
           <label>
             Amount
-            <input type="number" id="input_amount"/>
+            <input type="number" id="amountInput"/>
           </label>
           <label>
-            Growth %
-            <input type="number" id="input_percentage"/>
+            Growth % (leave blank for monte carlo)
+            <input type="number" id="percentageInput"/>
+          </label>
+          <label>
+            Investment
+            <input type="number" id="investmentInput"/>
+          </label>
+          <label>
+            For years
+            <input type="number" id="investmentYearsInput"/>
           </label>
           <button id="calculateBtn" type="button">Calculate</button>
         </form>
