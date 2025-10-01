@@ -43,7 +43,8 @@ function updateModel() {
   model.age = parseInt(ageInput.value, 10) || 0;
   model.retirementAge = parseInt(retirementAgeInput.value, 10) || 0;
   model.amount = parseFloat(amountInput.value) || 0;
-  model.percentage = parseFloat(percentageInput.value) || 0;
+  const val = parseFloat(percentageInput.value);
+  model.percentage = isNaN(val) ? undefined : val;
   model.investment = parseFloat(investmentInput.value) || 0;
   model.investmentYears = parseFloat(investmentYearsInput.value) || 0;
 
