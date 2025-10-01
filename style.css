@@ -1,4 +1,6 @@
-/* Reset */
+/* ------------------------
+   Reset & Base
+------------------------- */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -10,9 +12,12 @@ body {
   background: #f9f9f9;
   color: #222;
   line-height: 1.5;
+  font-size: 16px;
 }
 
-/* Header */
+/* ------------------------
+   Header / Navigation
+------------------------- */
 header {
   background: #333;
   color: white;
@@ -34,11 +39,11 @@ nav {
 #tabs li {
   cursor: pointer;
   padding: 0.5em 1em;
+  border-radius: 4px;
 }
 
 #tabs li.active {
   background: #555;
-  border-radius: 4px;
 }
 
 #menuBtn {
@@ -47,7 +52,9 @@ nav {
   cursor: pointer;
 }
 
-/* Screens */
+/* ------------------------
+   Screens
+------------------------- */
 .screen {
   display: none;
   padding: 1em;
@@ -57,51 +64,51 @@ nav {
   display: block;
 }
 
-/* Form - Mobile first */
+/* ------------------------
+   Forms
+------------------------- */
 .form {
   display: flex;
-  flex-direction: column; /* stack vertically */
+  flex-direction: column;
   gap: 1.5em;
   width: 100%;
-  max-width: 100%;
   padding: 1em;
 }
 
 .form label {
   display: flex;
-  flex-direction: column; /* text above input */
+  flex-direction: column;
   gap: 0.5em;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   font-weight: bold;
 }
 
-.form input {
+.form input,
+.form button {
   width: 100%;
   padding: 1em;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   border-radius: 6px;
   border: 2px solid #ccc;
 }
 
 .form button {
-  width: 100%;
-  padding: 1em;
-  font-size: 1.3rem;
-  border-radius: 6px;
   background: #333;
   color: white;
   border: none;
   cursor: pointer;
+  transition: background 0.2s ease;
 }
 
 .form button:hover {
   background: #555;
 }
 
-/* Chart */
+/* ------------------------
+   Chart
+------------------------- */
 #chartContainer {
   width: 100%;
-  max-width: 100%;
   margin-top: 1em;
 }
 
@@ -110,7 +117,10 @@ nav {
   height: 300px !important;
 }
 
-/* Mobile-first / large phones like Pixel 8a */
+/* ------------------------
+   Responsive - Mobile first
+   Pixel 8a etc.
+------------------------- */
 @media (max-width: 1080px) {
   body {
     font-size: 18px;
@@ -140,23 +150,23 @@ nav {
 
   .form input,
   .form button {
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     padding: 1.1em;
   }
 
   #chartContainer {
-    width: 100%;
     margin: 0;
     padding: 0;
   }
 
   #myChart {
-    width: 100% !important;
     height: 320px !important;
   }
 }
 
-/* Desktop refinements */
+/* ------------------------
+   Responsive - Desktop
+------------------------- */
 @media (min-width: 1081px) {
   .form {
     max-width: 500px;
@@ -169,20 +179,23 @@ nav {
   }
 }
 
-/* On larger screens show both sections stacked */
-@media (min-width: 1025px) {
+/* ------------------------
+   Responsive - Large Desktop
+   Show both screens stacked
+------------------------- */
+@media (min-width: 1200px) {
   #tabs {
-    display: none; /* hide tab navigation on desktop */
+    display: none;
   }
 
   .screen {
-    display: block !important; /* always show both screens */
+    display: block !important;
   }
 
   main {
     display: flex;
-    flex-direction: column; /* stack Input then Results */
-    gap: 2rem; /* space between sections */
+    flex-direction: column;
+    gap: 2rem;
     padding: 1rem;
   }
 }
