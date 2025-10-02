@@ -1,5 +1,5 @@
 // --- Show screen function ---
-import { getChartDatasets } from './calculations.js';
+import { getChartDatasets, getSuccessPercentage } from './calculations.js';
 import { saveModel, loadModel } from "./storage.js";
 import { model } from "./model.js";
 import { debounce } from "./utils.js";
@@ -18,7 +18,9 @@ const percentageInput = document.getElementById("percentageInput");
 const amountInput = document.getElementById("amountInput");
 const investmentInput = document.getElementById("investmentInput");
 const investmentYearsInput = document.getElementById("investmentYearsInput");
-
+const annualDrawdownUnder75Input = document.getElementById("annualDrawdownUnder75Input");
+const annualDrawdown75orOverInput = document.getElementById("annualDrawdown75orOverInput");
+const statePensionInput = document.getElementById("statePensionInput");
 
 // Prefill inputs from storage on load
 function initFromStorage() {
@@ -32,7 +34,9 @@ function initFromStorage() {
     percentageInput.value = model.percentage || "4";
     investmentInput.value = model.investment || "4000";
     investmentYearsInput.value = model.investmentYears || "1";
-
+    annualDrawdownUnder75Input.value =  model.annualDrawdownUnder75 || "40000";
+    annualDrawdown75orOverInput.value =  model.annualDrawdown75orOver || "30000";
+    statePensionInput.value = model.statePension || 23946;
   }
 }
 
@@ -47,6 +51,9 @@ function updateModel() {
   model.percentage = isNaN(val) ? undefined : val;
   model.investment = parseFloat(investmentInput.value) || 0;
   model.investmentYears = parseFloat(investmentYearsInput.value) || 0;
+  model.annualDrawdownUnder75 = parseFloat(annualDrawdownUnder75Input.value) || 0;
+  model.annualDrawdown75orOver = parseFloat(annualDrawdown75orOverInput.value) || 0;
+  model.statePension = parseFloat(statePensionInput.value) || 0;
 
   saveModel(model); // persist after every update
 
@@ -85,13 +92,8 @@ function updateChart() {
 
   const { datasets, labels } =  getChartDatasets(model);
 
-  console.log("Results from getDatasets:", datasets);
-  // console.log("Chart datasets before update:", chart.data.datasets);
-
   chart.data.datasets = datasets;
   chart.data.labels = labels;
-
-  console.log("Chart datasets after update:", chart.data.datasets);
 
   chart.update();
 }
@@ -100,12 +102,27 @@ function recalcAndUpdate() {
   updateModel();
   const { datasets, labels } = getChartDatasets(model);
   updateChart(datasets, labels);
+  updatePercentageHeading()  
 }
+
+function updatePercentageHeading() {
+  const heading = document.getElementById("percentageSuccess");
+  if (!heading) return;
+
+  const success = getSuccessPercentage();
+
+  if (success !== undefined && !isNaN(success)) {
+    heading.textContent = `${success.toFixed(2)}% Success rate`;
+  } else {
+    heading.textContent = "—";
+  }
+}
+
 
 const debouncedRecalc = debounce(recalcAndUpdate, 1000);
 
 // Attach event listeners for auto-update
-[ageInput, retirementAgeInput, amountInput, percentageInput].forEach(input => {
+[ageInput, retirementAgeInput, amountInput, percentageInput,investmentInput, investmentYearsInput,annualDrawdown75orOverInput,annualDrawdownUnder75Input,statePensionInput].forEach(input => {
   input.addEventListener("input", debouncedRecalc);
 });
 

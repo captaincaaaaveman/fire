@@ -44,12 +44,24 @@
             <input type="number" id="percentageInput"/>
           </label>
           <label>
-            Investment
+            Savings before retirement
             <input type="number" id="investmentInput"/>
           </label>
           <label>
             For years
             <input type="number" id="investmentYearsInput"/>
+          </label>
+          <label>
+            Annual Drawdown (Under 75)
+            <input type="number" id="annualDrawdownUnder75Input"/>
+          </label>
+          <label>
+            Annual Drawdown (75 or over)
+            <input type="number" id="annualDrawdown75orOverInput"/>
+          </label>
+          <label>
+            State Pension
+            <input type="number" id="statePensionInput"/>
           </label>
           <button id="calculateBtn" type="button">Calculate</button>
         </form>
@@ -61,6 +73,7 @@
         <div id="chartContainer">
           <canvas id="myChart"></canvas>
         </div>
+        <h1 id="percentageSuccess"></h1>
       </section>
     </main>
   </div>

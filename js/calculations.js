@@ -96,6 +96,9 @@ export const historicGrowthRates = [49.05,
 -25.68,
 ];
 
+const successCases = []
+const failureCases = []
+
 /**
  * Generates a 2D array of calculated datasets
  * Each series is an array corresponding to baseData
@@ -103,25 +106,34 @@ export const historicGrowthRates = [49.05,
  */
 export function getDatasets(model) { 
 
-  const { age, retirementAge, amount, percentage, investment, investmentYears } = model;
+  const { age, retirementAge, amount, percentage, investment, investmentYears,
+    annualDrawdownUnder75,
+    annualDrawdown75orOver,
+    statePension } = model;
 
   const results = [];
   const labels = [];
 
+  let years = 95-age;
 
-  let years = retirementAge-age;
+  if (percentage>= 0) {
+    years = historicGrowthRates.length-1
+  }
 
   for (let historicYear = 0; historicYear < historicGrowthRates.length-years; historicYear++ ) {
 
     let total = amount;
     const series = [];
 
-    for (let i = age; i <= retirementAge; i++) {
+    for (let i = age; i <= 95; i++) {
 
       let year = i - age
 
       // Store in series
       series[i - age] = total;
+
+      if ( total < 0 )
+        break
 
       // Apply interest / growth
       let p = historicGrowthRates[historicYear+year]
@@ -137,6 +149,22 @@ export function getDatasets(model) {
         total = total + investment
       }
 
+      let drawdown = 0;
+
+      if ( i >= retirementAge ) {
+        if ( i < 75 ) {
+          drawdown = model.annualDrawdownUnder75
+        } else {
+          drawdown = model.annualDrawdown75orOver
+        }
+      }
+
+      if ( i >= 67 ) {
+        drawdown = drawdown - model.statePension
+      }
+
+      total = total - drawdown
+      
       // Set the label to the right age
       labels[i - age] = i;
     }
@@ -147,34 +175,15 @@ export function getDatasets(model) {
   return { datasets: results, labels };
 }
 
-
-/**
- * Optional helper: returns dataset objects formatted for Chart.js
- */
-// export function getChartDatasets(age, retirementAge, amount, percentage) {
-//   const colors = [
-//     "#111111ff",
-//     "#999999ff",
-//     "#ddddddff",
-//   ];
-
-//   const { datasets, labels } = getDatasets(age, retirementAge, amount, percentage);
-
-//   const chartDatasets = datasets.map((data, index) => ({
-//     label: `Series ${index + 1}`,
-//     data,
-//     borderColor: getColor(data, datasets),
-//     backgroundColor: colors[index % colors.length].replace("1)", "0.2)"),
-//     fill: false
-//   }));
-
-//   // Return both datasets and labels
-//   return { datasets: chartDatasets, labels };
-// }
-
+export function getSuccessPercentage() {
+  return 100 * successCases.length / (successCases.length+failureCases.length) 
+}
 
 export function getChartDatasets(age, retirementAge, amount, percentage) {
-  const { datasets, labels } = getDatasets(age, retirementAge, amount, percentage);
+  const { datasets, labels, colours } = getDatasets(age, retirementAge, amount, percentage);
+
+  failureCases.length = 0
+  successCases.length = 0
 
   // Compute final values of each dataset
   const finalValues = datasets.map(d => d[d.length - 1]);
@@ -210,6 +219,14 @@ export function getChartDatasets(age, retirementAge, amount, percentage) {
       borderWidth = 2
     }
 
+   borderColor = finalValue < 0 ? "#ff0000aa" : borderColor;
+
+   if ( finalValue < 0 ) {
+    failureCases.push(data)
+   } else {
+    successCases.push(data)
+   }
+
     return {
       label: `Series ${index + 1}`,
       data,
@@ -225,3 +242,4 @@ export function getChartDatasets(age, retirementAge, amount, percentage) {
 
   return { datasets: chartDatasets, labels };
 }
+

@@ -194,7 +194,7 @@ nav {
 
   main {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     gap: 2rem;
     padding: 1rem;
   }
