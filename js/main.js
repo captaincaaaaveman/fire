@@ -40,7 +40,6 @@ function initFromStorage() {
   }
 }
 
-initFromStorage();
 
 // Sync model whenever inputs change
 function updateModel() {
@@ -131,40 +130,9 @@ calculateBtn.addEventListener("click", () => {
   recalcAndUpdate();
 });
 
-// --- Tabs click ---
-tabs.forEach(tab => {
-  tab.addEventListener("click", () => {
-    const target = tab.dataset.target;
-    showScreen(target);
-    tabs.forEach(t => t.classList.remove("active"));
-    tab.classList.add("active");
-  });
-});
+initFromStorage();
+recalcAndUpdate();
 
-// --- Menu button toggle for mobile ---
-menuBtn.addEventListener("click", () => {
-  tabsList.style.display = tabsList.style.display === "flex" ? "none" : "flex";
-});
 
-// --- Show screen function ---
-function showScreen(screenId) {
-  // Activate the screen
-  screens.forEach(s => s.classList.remove("active"));
-  document.getElementById(screenId).classList.add("active");
-
-  // Highlight the corresponding tab
-  tabs.forEach(t => {
-    if (t.dataset.target === screenId) {
-      t.classList.add("active");
-    } else {
-      t.classList.remove("active");
-    }
-  });
-
-  // Optional: close mobile menu after selection
-  if (window.innerWidth <= 600) {
-    tabsList.style.display = "none";
-  }
-}
 
 

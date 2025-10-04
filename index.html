@@ -2,82 +2,112 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Retirement Calculator</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="style.css" />
+  <title>Retirement Projection</title>
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="style.css" />
 </head>
-<body>
-  <div id="app">
+<body class="bg-gray-50 text-gray-800 font-sans">
 
-    <!-- Header / Navigation -->
-    <header>
-      <nav>
-        <div id="menuBtn">&#9776;</div> <!-- hamburger -->
-        <ul id="tabs">
-          <li data-target="mainScreen" class="active">Input</li>
-          <li data-target="resultsScreen">Results</li>
-        </ul>
-      </nav>
+  <div class="max-w-6xl mx-auto p-4">
+
+    <!-- Header -->
+    <header class="text-center mb-6">
+      <h1 class="text-3xl font-bold text-indigo-700">Retirement Projection</h1>
+      <p class="text-gray-600">A work in progress</p>
     </header>
 
-    <!-- Main Content -->
-    <main>
-      <!-- Input Screen -->
-      <section id="mainScreen" class="screen active">
-        <h1>Retirement Calculator</h1>
-        <form class="form">
-          <label>
-            Age
-            <input type="number" id="ageInput" />
-          </label>
-          <label>
-            Retirement Age
-            <input type="number" id="retirementAgeInput"/>
-          </label>
-          <label>
-            Amount
-            <input type="number" id="amountInput"/>
-          </label>
-          <label>
-            Growth % (leave blank for monte carlo)
-            <input type="number" id="percentageInput"/>
-          </label>
-          <label>
-            Savings before retirement
-            <input type="number" id="investmentInput"/>
-          </label>
-          <label>
-            For years
-            <input type="number" id="investmentYearsInput"/>
-          </label>
-          <label>
-            Annual Drawdown (Under 75)
-            <input type="number" id="annualDrawdownUnder75Input"/>
-          </label>
-          <label>
-            Annual Drawdown (75 or over)
-            <input type="number" id="annualDrawdown75orOverInput"/>
-          </label>
-          <label>
-            State Pension
-            <input type="number" id="statePensionInput"/>
-          </label>
-          <button id="calculateBtn" type="button">Calculate</button>
-        </form>
-      </section>
+    <!-- Main container: 2 columns on desktop, stacked on mobile -->
+    <div class="flex flex-col md:flex-row gap-6">
 
-      <!-- Results Screen -->
-      <section id="resultsScreen" class="screen">
+<div class="md:w-1/3">
+  <div class="space-y-4">
+
+    <!-- Personal Info Group -->
+    <details class="bg-white rounded-xl shadow p-4">
+      <summary class="cursor-pointer font-semibold text-indigo-600">Personal Info</summary>
+      <div class="mt-2 space-y-2">
+        <div>
+          <label class="block text-sm font-medium" for="ageInput">Age</label>
+          <input type="number" id="ageInput" class="mt-1 w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium" for="retirementAgeInput">Retirement Age</label>
+          <input type="number" id="retirementAgeInput" class="mt-1 w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+        </div>
+      </div>
+    </details>
+
+    <!-- Investments Group -->
+    <details class="bg-white rounded-xl shadow p-4">
+      <summary class="cursor-pointer font-semibold text-indigo-600">Investments</summary>
+      <div class="mt-2 space-y-2">
+        <div>
+          <label class="block text-sm font-medium" for="amountInput">Amount</label>
+          <input type="number" id="amountInput" class="mt-1 w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium" for="percentageInput">Growth % (or leave blank for historical scenarios)</label>
+          <input type="number" id="percentageInput" class="mt-1 w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium" for="investmentInput">Annual Savings</label>
+          <input type="number" id="investmentInput" class="mt-1 w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium" for="investmentYearsInput">Saving for how many years</label>
+          <input type="number" id="investmentYearsInput" class="mt-1 w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+        </div>
+      </div>
+    </details>
+
+    <!-- Retirement / Drawdown Group -->
+    <details class="bg-white rounded-xl shadow p-4">
+      <summary class="cursor-pointer font-semibold text-indigo-600">Retirement Drawdown</summary>
+      <div class="mt-2 space-y-2">
+        <div>
+          <label class="block text-sm font-medium" for="annualDrawdownUnder75Input">Annual Drawdown (Under 75)</label>
+          <input type="number" id="annualDrawdownUnder75Input" class="mt-1 w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium" for="annualDrawdown75orOverInput">Annual Drawdown (75 or over)</label>
+          <input type="number" id="annualDrawdown75orOverInput" class="mt-1 w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium" for="statePensionInput">State Pension</label>
+          <input type="number" id="statePensionInput" class="mt-1 w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+        </div>
+      </div>
+    </details>
+
+    <!-- Calculate Button -->
+    <div class="mt-2">
+      <button id="calculateBtn" type="button" class="w-full bg-indigo-600 text-white rounded-lg py-2 hover:bg-indigo-700 transition">
+        Calculate
+      </button>
+    </div>
+
+  </div>
+</div>
+
+
+      <!-- Right column: Chart / Results -->
+      <div class="md:w-2/3 bg-white rounded-xl shadow p-4">
+        <div id="chartContainer">
         <h1>Results</h1>
         <div id="chartContainer">
           <canvas id="myChart"></canvas>
         </div>
         <h1 id="percentageSuccess"></h1>
-      </section>
-    </main>
+</div>
+      </div>
+
+    </div>
   </div>
 
+  <!-- Existing JS -->
   <script type="module" src="js/main.js"></script>
 </body>
 </html>
