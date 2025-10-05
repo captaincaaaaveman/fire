@@ -1,6 +1,7 @@
 
 export const model = {
   age: 0,
+  projectToAge: 0,
   retirementAge: 0,
   investmentAmount: 0,
   savingsAmount: 0,
@@ -13,5 +14,6 @@ export const model = {
   annualDrawdownUnder75: 0,
   annualDrawdown75orOver: 0,
   statePensionInput: 0,
-  modelDrawdown: false
+  modelDrawdown: false,
+  historicSimulation: false
 };

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,6 +10,7 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="stylesheet" href="style.css?v=2" />
 </head>
+
 <body class="bg-gray-50 text-gray-800 font-sans">
 
   <div class="max-w-6xl mx-auto p-4">
@@ -22,104 +24,132 @@
     <!-- Main container: 2 columns on desktop, stacked on mobile -->
     <div class="flex flex-col md:flex-row gap-6">
 
-<div class="w-full md:w-1/3 space-y-4">
+      <div class="w-full md:w-1/3 space-y-4">
 
-  <!-- Personal Info Group -->
-  <details class="bg-white rounded-xl shadow p-4 w-full">
-    <summary class="cursor-pointer font-semibold text-indigo-600 text-lg">Personal Info</summary>
-    <div class="mt-2 space-y-4">
-      <div>
-        <label class="block text-lg font-medium" for="ageInput">Age</label>
-        <input type="number" id="ageInput" class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
-      </div>
-      <div>
-        <label class="block text-lg font-medium" for="retirementAgeInput">Projection (or Retirement) Age</label>
-        <input type="number" id="retirementAgeInput" class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
-      </div>
-    </div>
-  </details>
+        <!-- Personal Info Group -->
+        <details class="bg-white rounded-xl shadow p-4 w-full">
+          <summary class="cursor-pointer font-semibold text-indigo-600 text-lg">Personal Info</summary>
+          <div class="mt-2 space-y-4">
+            <div>
+              <label class="block text-lg font-medium" for="ageInput">Age</label>
+              <input type="number" id="ageInput"
+                class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+            </div>
+            <div>
+              <label class="block text-lg font-medium" for="projectToAgeInput">Project to age</label>
+              <input type="number" id="projectToAgeInput"
+                class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+            </div>
+          </div>
+        </details>
 
-  <!-- Saving and Investments Group -->
-  <details class="bg-white rounded-xl shadow p-4 w-full">
-    <summary class="cursor-pointer font-semibold text-indigo-600 text-lg">Saving and Investments</summary>
-    <div class="mt-2 space-y-4">
-      <div>
-        <label class="block text-lg font-medium" for="investmentAmountInput">Current Investments</label>
-        <input type="number" id="investmentAmountInput" class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
-      </div>
-      <div>
-        <label class="block text-lg font-medium" for="savingsAmountInput">Current Savings</label>
-        <input type="number" id="savingsAmountInput" class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
-      </div>
-      <div>
-        <label class="block text-lg font-medium" for="annualInvestmentInput">Annual Investments</label>
-        <input type="number" id="annualInvestmentInput" class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
-      </div>
-      <div>
-        <label class="block text-lg font-medium" for="investmentYearsInput">Investing for how many years</label>
-        <input type="number" id="investmentYearsInput" class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
-      </div>
-      <div>
-        <label class="block text-lg font-medium" for="annualSavingsInput">Annual Savingss</label>
-        <input type="number" id="annualSavingsInput" class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
-      </div>
-      <div>
-        <label class="block text-lg font-medium" for="savingsYearsInput">Saving for how many years</label>
-        <input type="number" id="savingsYearsInput" class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
-      </div>
-    </div>
-  </details>
+        <!-- Saving and Investments Group -->
+        <details class="bg-white rounded-xl shadow p-4 w-full">
+          <summary class="cursor-pointer font-semibold text-indigo-600 text-lg">Saving and Investments</summary>
+          <div class="mt-2 space-y-4">
+            <div>
+              <label class="block text-lg font-medium" for="investmentAmountInput">Current Investments</label>
+              <input type="number" id="investmentAmountInput"
+                class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+            </div>
+            <div>
+              <label class="block text-lg font-medium" for="savingsAmountInput">Current Savings</label>
+              <input type="number" id="savingsAmountInput"
+                class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+            </div>
+            <div>
+              <label class="block text-lg font-medium" for="annualInvestmentInput">Annual Investments</label>
+              <input type="number" id="annualInvestmentInput"
+                class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+            </div>
+            <div>
+              <label class="block text-lg font-medium" for="investmentYearsInput">Investing for how many years</label>
+              <input type="number" id="investmentYearsInput"
+                class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+            </div>
+            <div>
+              <label class="block text-lg font-medium" for="annualSavingsInput">Annual Savingss</label>
+              <input type="number" id="annualSavingsInput"
+                class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+            </div>
+            <div>
+              <label class="block text-lg font-medium" for="savingsYearsInput">Saving for how many years</label>
+              <input type="number" id="savingsYearsInput"
+                class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+            </div>
+          </div>
+        </details>
 
-  <!-- Assumed Growth Group -->
-  <details class="bg-white rounded-xl shadow p-4 w-full">
-    <summary class="cursor-pointer font-semibold text-indigo-600 text-lg">Growth Rates</summary>
-    <div class="mt-2 space-y-4">
-      <div>
-        <label class="block text-lg font-medium" for="investmentPercentageInput">Investment Growth % (or leave blank for historical scenarios)</label>
-        <input type="number" id="investmentPercentageInput" class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
-      </div>
-      <div>
-        <label class="block text-lg font-medium" for="savingsPercentageInput">Cash Savings Growth %</label>
-        <input type="number" id="savingsPercentageInput" class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
-      </div>
-    </div>
-  </details>
+        <!-- Assumed Growth Group -->
+        <details class="bg-white rounded-xl shadow p-4 w-full">
+          <summary class="cursor-pointer font-semibold text-indigo-600 text-lg">Growth Rates</summary>
+          <div class="mt-2 space-y-4">
+            <div>
+              <label class="block text-lg font-medium" for="investmentPercentageInput">Investment Growth %</label>
+              <input type="number" id="investmentPercentageInput"
+                class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+            </div>
+            <div>
+              <label class="inline-flex items-center space-x-2">
+                <input type="checkbox" id="historicSimulationCheckbox"
+                  class="h-5 w-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                <span class="text-lg font-medium">Historic Simulation</span>
+              </label>
+            </div>
+            <div>
+              <label class="block text-lg font-medium" for="savingsPercentageInput">Cash Savings Growth %</label>
+              <input type="number" id="savingsPercentageInput"
+                class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+            </div>
+          </div>
+        </details>
 
-<div>
-  <label class="inline-flex items-center space-x-2">
-    <input type="checkbox" id="modelDrawdownCheckbox"
-           class="h-5 w-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
-    <span class="text-lg font-medium">Model drawdown?</span>
-  </label>
-</div>
+        <div>
+          <label class="inline-flex items-center space-x-2">
+            <input type="checkbox" id="modelDrawdownCheckbox"
+              class="h-5 w-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+            <span class="text-lg font-medium">Model retirement drawdown?</span>
+          </label>
+        </div>
 
-  <!-- Retirement / Drawdown Group -->
-  <details id="drawdownGroup" class="bg-white rounded-xl shadow p-4 w-full">
-    <summary class="cursor-pointer font-semibold text-indigo-600 text-lg">Retirement Drawdown</summary>
-    <div class="mt-2 space-y-4">
-      <div>
-        <label class="block text-lg font-medium" for="annualDrawdownUnder75Input">Annual Drawdown (Under 75)</label>
-        <input type="number" id="annualDrawdownUnder75Input" class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
-      </div>
-      <div>
-        <label class="block text-lg font-medium" for="annualDrawdown75orOverInput">Annual Drawdown (75 or over)</label>
-        <input type="number" id="annualDrawdown75orOverInput" class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
-      </div>
-      <div>
-        <label class="block text-lg font-medium" for="statePensionInput">State Pension</label>
-        <input type="number" id="statePensionInput" class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
-      </div>
-    </div>
-  </details>
+        <!-- Retirement / Drawdown Group -->
+        <details id="drawdownGroup" class="bg-white rounded-xl shadow p-4 w-full">
+          <summary class="cursor-pointer font-semibold text-indigo-600 text-lg">Retirement Drawdown</summary>
+          <div class="mt-2 space-y-4">
+            <div>
+              <label class="block text-lg font-medium" for="retirementAgeInput">Projection (or Retirement) Age</label>
+              <input type="number" id="retirementAgeInput"
+                class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+            </div>
+            <div>
+              <label class="block text-lg font-medium" for="annualDrawdownUnder75Input">Annual Drawdown (Under
+                75)</label>
+              <input type="number" id="annualDrawdownUnder75Input"
+                class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+            </div>
+            <div>
+              <label class="block text-lg font-medium" for="annualDrawdown75orOverInput">Annual Drawdown (75 or
+                over)</label>
+              <input type="number" id="annualDrawdown75orOverInput"
+                class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+            </div>
+            <div>
+              <label class="block text-lg font-medium" for="statePensionInput">State Pension</label>
+              <input type="number" id="statePensionInput"
+                class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+            </div>
+          </div>
+        </details>
 
-  <!-- Calculate Button -->
-  <div class="mt-4">
-    <button id="calculateBtn" type="button" class="w-full bg-indigo-600 text-white rounded-lg py-3 text-lg hover:bg-indigo-700 transition">
-      Calculate
-    </button>
-  </div>
+        <!-- Calculate Button -->
+        <div class="mt-4">
+          <button id="calculateBtn" type="button"
+            class="w-full bg-indigo-600 text-white rounded-lg py-3 text-lg hover:bg-indigo-700 transition">
+            Calculate
+          </button>
+        </div>
 
-</div>
+      </div>
 
 
       <!-- Right column: Chart / Results -->
@@ -128,8 +158,21 @@
           <canvas id="myChart"></canvas>
         </div>
         <h1 id="percentageSuccess"></h1>
-        <h1 id="finalValue"></h1>
+        <div id="finalValue"></div>
+
+
+        <div id="fvContainer" class="w-full p-4 bg-white rounded-xl shadow">
+          <div id="fvheading" class="text-center"></div>
+          <div id="fvbar" class="relative w-full h-2 bg-gray-200 rounded-full mt-3">
+            <div id="fvrange" class="absolute h-2 bg-indigo-400 rounded-full"></div>
+            <div id="fvmedian" class="absolute h-3 w-3 bg-indigo-800 rounded-full -top-0.5"></div>
+          </div>
+        </div>
+
+        <div id="statsContainer" class="mt-6"></div>
+
       </div>
+
 
     </div>
   </div>
@@ -137,4 +180,5 @@
   <!-- Existing JS -->
   <script type="module" src="js/main.js"></script>
 </body>
+
 </html>
