@@ -98,6 +98,7 @@ export const historicGrowthRates = [49.05,
 
 const successCases = []
 const failureCases = []
+let medianFinalValue = 0;
 
 /**
  * Generates a 2D array of calculated datasets
@@ -202,6 +203,10 @@ export function getSuccessPercentage() {
   return 100 * successCases.length / (successCases.length+failureCases.length) 
 }
 
+export function getFinalValue() {
+  return medianFinalValue
+}
+
 export function getChartDatasets(age, retirementAge, amount, percentage) {
   const { datasets, labels, colours } = getDatasets(age, retirementAge, amount, percentage);
 
@@ -240,6 +245,7 @@ export function getChartDatasets(age, retirementAge, amount, percentage) {
     } else {
       borderColor = "#000000FF"; // 50
       borderWidth = 2
+      medianFinalValue = finalValue
     }
 
    borderColor = finalValue < 0 ? "#ff0000aa" : borderColor;

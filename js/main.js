@@ -1,5 +1,5 @@
 // --- Show screen function ---
-import { getChartDatasets, getSuccessPercentage } from './calculations.js';
+import { getChartDatasets, getSuccessPercentage, getFinalValue } from './calculations.js';
 import { saveModel, loadModel } from "./storage.js";
 import { model } from "./model.js";
 import { debounce } from "./utils.js";
@@ -132,6 +132,18 @@ function updatePercentageHeading() {
   } else {
     heading.textContent = "—";
   }
+
+  const fvheading = document.getElementById("finalValue");
+  if (!fvheading) return;
+
+  const finalValue = getFinalValue();
+
+  if (finalValue !== undefined && !isNaN(success)) {
+    fvheading.textContent = `£${finalValue.toFixed(2)}`;
+  } else {
+    fvheading.textContent = "—";
+  }
+
 }
 
 
