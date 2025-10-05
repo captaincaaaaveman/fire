@@ -149,6 +149,31 @@
           </button>
         </div>
 
+        <div class="flex space-x-4 items-center">
+          <label class="flex items-center space-x-2 cursor-pointer">
+            <input type="radio" name="scenario" value="A" checked
+                  class="w-5 h-5 text-blue-600 border-gray-300 focus:ring-blue-500">
+            <span class="text-gray-700 font-medium">Scenario A</span>
+          </label>
+
+          <label class="flex items-center space-x-2 cursor-pointer">
+            <input type="radio" name="scenario" value="B"
+                  class="w-5 h-5 text-blue-600 border-gray-300 focus:ring-blue-500">
+            <span class="text-gray-700 font-medium">Scenario B</span>
+          </label>
+        </div>
+
+        <p class="mt-2 text-gray-800">Current scenario: <span id="currentScenario">A</span></p>
+
+        <div class="mt-4">
+          <button id="duplicateAtoBBtn" type="button"
+            class="w-full bg-indigo-600 text-white rounded-lg py-3 text-lg hover:bg-indigo-700 transition">
+            Duplicate A to B
+          </button>
+        </div>
+
+
+
       </div>
 
 

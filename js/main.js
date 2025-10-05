@@ -10,6 +10,7 @@ const tabs = document.querySelectorAll("#tabs li");
 const menuBtn = document.getElementById("menuBtn");
 const tabsList = document.getElementById("tabs");
 
+let currentScenario = "A"; 
 
 // DOM Elements
 const ageInput = document.getElementById("ageInput");
@@ -35,7 +36,7 @@ const historicSimulationCheckbox = document.getElementById("historicSimulationCh
 
 // Prefill inputs from storage on load
 function initFromStorage() {
-  const stored = loadModel();
+  const stored = loadModel(currentScenario);
   if (stored) {
     Object.assign(model, stored);
   }
@@ -77,7 +78,7 @@ function updateModel() {
   model.modelDrawdown = modelDrawdownCheckbox.checked;
   model.historicSimulation = historicSimulationCheckbox.checked;
 
-  saveModel(model); // persist after every update
+  saveModel(model, currentScenario) ; // persist after every update
 
 }
 
@@ -293,5 +294,52 @@ toggleDrawdownGroup();
 modelDrawdownCheckbox.addEventListener("change", toggleDrawdownGroup);
 
 
+// Get all radio buttons
+const radios = document.querySelectorAll('input[name="scenario"]');
+const display = document.getElementById('currentScenario');
 
+duplicateAtoBBtn.addEventListener("click", () => {
+  currentScenario = "A"
+  initFromStorage()
+  currentScenario = "B"
+  saveModel(model, "B")
+  currentScenario = "A"
+});
+
+
+radios.forEach(radio => {
+  radio.addEventListener('change', (event) => {
+    const newScenario = event.target.value;
+
+    // Save current model before switching (optional)
+    saveModel(model, currentScenario);
+
+    // Update scenario
+    currentScenario = newScenario;
+    display.textContent = currentScenario;
+
+    // Load new model for selected scenario
+    const newModel = loadModel(currentScenario);
+    if (newModel) {
+      Object.assign(model, newModel); // <-- mutate properties
+    } else {
+      // reset model if no saved data
+      Object.keys(model).forEach(key => {
+        if (typeof model[key] === 'boolean') model[key] = false;
+        else model[key] = 0;
+      });
+    }
+    console.log("Switched to scenario:", currentScenario);
+    console.log("Loaded model:", model);
+
+    chart.options.animation = { duration: 0 };
+
+    initFromStorage()
+    recalcAndUpdate()
+
+    setTimeout(() => {
+      chart.options.animation = undefined;
+    });
+  });
+});
 
