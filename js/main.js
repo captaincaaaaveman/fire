@@ -329,9 +329,6 @@ radios.forEach(radio => {
         else model[key] = 0;
       });
     }
-    console.log("Switched to scenario:", currentScenario);
-    console.log("Loaded model:", model);
-
     chart.options.animation = { duration: 0 };
 
     initFromStorage()
