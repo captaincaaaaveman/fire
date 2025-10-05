@@ -39,31 +39,62 @@
     </div>
   </details>
 
-  <!-- Investments Group -->
+  <!-- Saving and Investments Group -->
   <details class="bg-white rounded-xl shadow p-4 w-full">
-    <summary class="cursor-pointer font-semibold text-indigo-600 text-lg">Investments</summary>
+    <summary class="cursor-pointer font-semibold text-indigo-600 text-lg">Saving and Investments</summary>
     <div class="mt-2 space-y-4">
       <div>
-        <label class="block text-lg font-medium" for="amountInput">Amount</label>
-        <input type="number" id="amountInput" class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+        <label class="block text-lg font-medium" for="investmentAmountInput">Current Investments</label>
+        <input type="number" id="investmentAmountInput" class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
       </div>
       <div>
-        <label class="block text-lg font-medium" for="percentageInput">Growth % (or leave blank for historical scenarios)</label>
-        <input type="number" id="percentageInput" class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+        <label class="block text-lg font-medium" for="savingsAmountInput">Current Savings</label>
+        <input type="number" id="savingsAmountInput" class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
       </div>
       <div>
-        <label class="block text-lg font-medium" for="investmentInput">Annual Savings</label>
-        <input type="number" id="investmentInput" class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+        <label class="block text-lg font-medium" for="annualInvestmentInput">Annual Investments</label>
+        <input type="number" id="annualInvestmentInput" class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
       </div>
       <div>
-        <label class="block text-lg font-medium" for="investmentYearsInput">Saving for how many years</label>
+        <label class="block text-lg font-medium" for="investmentYearsInput">Investing for how many years</label>
         <input type="number" id="investmentYearsInput" class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+      </div>
+      <div>
+        <label class="block text-lg font-medium" for="annualSavingsInput">Annual Savingss</label>
+        <input type="number" id="annualSavingsInput" class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+      </div>
+      <div>
+        <label class="block text-lg font-medium" for="savingsYearsInput">Saving for how many years</label>
+        <input type="number" id="savingsYearsInput" class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
       </div>
     </div>
   </details>
 
-  <!-- Retirement / Drawdown Group -->
+  <!-- Assumed Growth Group -->
   <details class="bg-white rounded-xl shadow p-4 w-full">
+    <summary class="cursor-pointer font-semibold text-indigo-600 text-lg">Growth Rates</summary>
+    <div class="mt-2 space-y-4">
+      <div>
+        <label class="block text-lg font-medium" for="investmentPercentageInput">Investment Growth % (or leave blank for historical scenarios)</label>
+        <input type="number" id="investmentPercentageInput" class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+      </div>
+      <div>
+        <label class="block text-lg font-medium" for="savingsPercentageInput">Cash Savings Growth %</label>
+        <input type="number" id="savingsPercentageInput" class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+      </div>
+    </div>
+  </details>
+
+<div>
+  <label class="inline-flex items-center space-x-2">
+    <input type="checkbox" id="modelDrawdownCheckbox"
+           class="h-5 w-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+    <span class="text-lg font-medium">Model drawdown?</span>
+  </label>
+</div>
+
+  <!-- Retirement / Drawdown Group -->
+  <details id="drawdownGroup" class="bg-white rounded-xl shadow p-4 w-full">
     <summary class="cursor-pointer font-semibold text-indigo-600 text-lg">Retirement Drawdown</summary>
     <div class="mt-2 space-y-4">
       <div>

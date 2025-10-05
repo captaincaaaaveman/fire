@@ -106,49 +106,72 @@ const failureCases = []
  */
 export function getDatasets(model) { 
 
-  const { age, retirementAge, amount, percentage, investment, investmentYears,
-    annualDrawdownUnder75,
-    annualDrawdown75orOver,
-    statePension } = model;
+  const {   age,
+  retirementAge,
+  investmentAmount,
+  savingsAmount,
+  investmentPercentage,
+  savingsPercentage,
+  investment,
+  investmentYears,
+  savings,
+  savingsYears,
+  annualDrawdownUnder75,
+  annualDrawdown75orOver,
+  statePensionInput,
+  modelDrawdown } = model;
 
   const results = [];
   const labels = [];
 
   let years = 95-age;
 
-  if (percentage>= 0) {
+  if (investmentPercentage>= 0) {
     years = historicGrowthRates.length-1
   }
 
   for (let historicYear = 0; historicYear < historicGrowthRates.length-years; historicYear++ ) {
 
-    let total = amount;
+    let totalInvestments = investmentAmount;
+    let totalSavings = savingsAmount;
     const series = [];
 
-    for (let i = age; i <= 95; i++) {
+    let toAge = retirementAge
+
+    if ( modelDrawdown ) {
+      toAge = 95
+    }
+
+    for (let i = age; i <= toAge; i++) {
 
       let year = i - age
 
       // Store in series
-      series[i - age] = total;
+      series[i - age] = totalInvestments+totalSavings;
 
-      if ( total < 0 )
+      if ( series[i - age] < 0 )
         break
 
       // Apply interest / growth
       let p = historicGrowthRates[historicYear+year]
 
-      if ( percentage >= 0 ) {
-        p = percentage;
+      if ( investmentPercentage >= 0 ) {
+        p = investmentPercentage;
       }
 
-      total = total * (1 + (p / 100));
-
+      totalInvestments = totalInvestments * (1 + (p / 100));
+      totalSavings = totalSavings * (1 + (savingsPercentage / 100));
+      
       // Add investment
       if ( year < investmentYears ) {
-        total = total + investment
+        totalInvestments = totalInvestments + investment
+      }
+      // Add savings
+      if ( year < savingsYears ) {
+        totalSavings = totalSavings + savings
       }
 
+      
       let drawdown = 0;
 
       if ( i >= retirementAge ) {
@@ -163,7 +186,7 @@ export function getDatasets(model) {
         drawdown = drawdown - model.statePension
       }
 
-      total = total - drawdown
+      totalInvestments = totalInvestments - drawdown
       
       // Set the label to the right age
       labels[i - age] = i;
