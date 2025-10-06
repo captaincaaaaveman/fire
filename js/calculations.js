@@ -195,7 +195,13 @@ export function getDatasets(model) {
           drawdown = drawdown - model.statePension
         }
 
-        totalInvestments = totalInvestments - drawdown
+        if ( totalInvestments > drawdown ) {
+          totalInvestments = totalInvestments - drawdown
+        } else {
+          let remainder = drawdown - totalInvestments;
+          totalSavings = totalSavings - remainder
+          totalInvestments = 0; 
+        }
       }
 
       // Set the label to the right age

@@ -269,9 +269,9 @@ const debouncedRecalc = debounce(recalcAndUpdate, 250);
 });
 
 // --- Calculate button ---
-calculateBtn.addEventListener("click", () => {
-  recalcAndUpdate();
-});
+// calculateBtn.addEventListener("click", () => {
+//   recalcAndUpdate();
+// });
 
 initFromStorage();
 recalcAndUpdate();

@@ -13,7 +13,7 @@
 
 <body class="bg-gray-50 text-gray-800 font-sans">
 
-  <div class="max-w-6xl mx-auto p-4">
+  <div class="max-w-6xl mx-auto p-4" style="margin-bottom: 80px;">
 
     <!-- Header -->
     <header class="text-center mb-6">
@@ -48,13 +48,13 @@
           <summary class="cursor-pointer font-semibold text-indigo-600 text-lg">Current Investments and Savings</summary>
           <div class="mt-2 space-y-4">
             <div>
-              <label class="block text-lg font-medium" for="investmentAmountInput">Current Investments</label>
+              <label class="block text-lg font-medium" for="investmentAmountInput">Current S&S Investments</label>
               <input type="number" id="investmentAmountInput"
                 class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
               <p class="block text-sm">Include Pension/ISA/GIA</p>
             </div>
             <div>
-              <label class="block text-lg font-medium" for="savingsAmountInput">Current Savings</label>
+              <label class="block text-lg font-medium" for="savingsAmountInput">Current Cash Savings</label>
               <input type="number" id="savingsAmountInput"
                 class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
               <p class="block text-sm">Include cash savings/premium bonds... </p>
@@ -123,6 +123,7 @@
             <input type="checkbox" id="modelDrawdownCheckbox"
               class="h-5 w-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
             <span class="text-lg font-medium">Model retirement drawdown?</span>
+            <p class="block text-sm">Models flexible drawdown from investments after your chosen retirement age</p>
           </label>
         </div>
 
@@ -131,7 +132,7 @@
           <summary class="cursor-pointer font-semibold text-indigo-600 text-lg">Retirement Drawdown</summary>
           <div class="mt-2 space-y-4">
             <div>
-              <label class="block text-lg font-medium" for="retirementAgeInput">Projection (or Retirement) Age</label>
+              <label class="block text-lg font-medium" for="retirementAgeInput">Retirement Age</label>
               <input type="number" id="retirementAgeInput"
                 class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
             </div>
@@ -140,28 +141,33 @@
                 75)</label>
               <input type="number" id="annualDrawdownUnder75Input"
                 class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+              <p class="block text-sm">When you might want to spend a bit more</p>
             </div>
             <div>
               <label class="block text-lg font-medium" for="annualDrawdown75orOverInput">Annual Drawdown (75 or
                 over)</label>
               <input type="number" id="annualDrawdown75orOverInput"
                 class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+              <p class="block text-sm">When you might want to spend a bit less</p>
             </div>
             <div>
               <label class="block text-lg font-medium" for="statePensionInput">State Pension</label>
               <input type="number" id="statePensionInput"
                 class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+              <p class="block text-sm">Assume to start to pay at age 67</p>
             </div>
           </div>
         </details>
 
-        <!-- Calculate Button -->
+        <!-- Calculate Button 
         <div class="mt-4">
           <button id="calculateBtn" type="button"
             class="w-full bg-indigo-600 text-white rounded-lg py-3 text-lg hover:bg-indigo-700 transition">
             Calculate
           </button>
+          <p class="block text-sm">The graphs should update on their own but this will also update them</p>
         </div>
+        -->
 
         <div class="flex space-x-4 items-center">
           <label class="flex items-center space-x-2 cursor-pointer">
@@ -184,7 +190,9 @@
             class="w-full bg-indigo-600 text-white rounded-lg py-3 text-lg hover:bg-indigo-700 transition">
             Duplicate A to B
           </button>
+          <p class="block text-sm">Copies all setting from your scenario A to scenario B.  You can then make changes to scenario B and use the radio button above to switch between them to see the impact.</p>
         </div>
+
 
 
 
@@ -215,6 +223,7 @@
 
     </div>
   </div>
+
 
 <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
 <script>
