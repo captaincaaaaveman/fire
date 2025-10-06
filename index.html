@@ -45,7 +45,7 @@
 
         <!-- Saving and Investments Group -->
         <details class="bg-white rounded-xl shadow p-4 w-full">
-          <summary class="cursor-pointer font-semibold text-indigo-600 text-lg">Saving and Investments</summary>
+          <summary class="cursor-pointer font-semibold text-indigo-600 text-lg">Current Investments and Savings</summary>
           <div class="mt-2 space-y-4">
             <div>
               <label class="block text-lg font-medium" for="investmentAmountInput">Current Investments</label>
@@ -59,8 +59,13 @@
                 class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
               <p class="block text-sm">Include cash savings/premium bonds... </p>
             </div>
+        </details>
+
+       <details class="bg-white rounded-xl shadow p-4 w-full">
+          <summary class="cursor-pointer font-semibold text-indigo-600 text-lg">Regular Investing/Saving</summary>
+          <div class="mt-2 space-y-4">
             <div>
-              <label class="block text-lg font-medium" for="annualInvestmentInput">Annual Investments</label>
+              <label class="block text-lg font-medium" for="annualInvestmentInput">Annual Investments into ISA/GIA/Pension</label>
               <input type="number" id="annualInvestmentInput"
                 class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
               <p class="block text-sm">How much are you saving into pension/ISA/GIA each year </p>
@@ -72,7 +77,7 @@
               <p class="block text-sm">How may years are you intending to keep investing for </p>
             </div>
             <div>
-              <label class="block text-lg font-medium" for="annualSavingsInput">Annual Savingss</label>
+              <label class="block text-lg font-medium" for="annualSavingsInput">Annual Cash Savings</label>
               <input type="number" id="annualSavingsInput"
                 class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
               <p class="block text-sm">How much are you saving into cash/premium bonds etc each year </p>
@@ -85,6 +90,7 @@
             </div>
           </div>
         </details>
+
 
         <!-- Assumed Growth Group -->
         <details class="bg-white rounded-xl shadow p-4 w-full">
