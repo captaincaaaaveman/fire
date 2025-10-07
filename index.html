@@ -45,7 +45,8 @@
 
         <!-- Saving and Investments Group -->
         <details class="bg-white rounded-xl shadow p-4 w-full">
-          <summary class="cursor-pointer font-semibold text-indigo-600 text-lg">Current Investments and Savings</summary>
+          <summary class="cursor-pointer font-semibold text-indigo-600 text-lg">Current Investments and Savings
+          </summary>
           <div class="mt-2 space-y-4">
             <div>
               <label class="block text-lg font-medium" for="investmentAmountInput">Current S&S Investments</label>
@@ -61,11 +62,12 @@
             </div>
         </details>
 
-       <details class="bg-white rounded-xl shadow p-4 w-full">
+        <details class="bg-white rounded-xl shadow p-4 w-full">
           <summary class="cursor-pointer font-semibold text-indigo-600 text-lg">Regular Investing/Saving</summary>
           <div class="mt-2 space-y-4">
             <div>
-              <label class="block text-lg font-medium" for="annualInvestmentInput">Annual Investments into ISA/GIA/Pension</label>
+              <label class="block text-lg font-medium" for="annualInvestmentInput">Annual Investments into
+                ISA/GIA/Pension</label>
               <input type="number" id="annualInvestmentInput"
                 class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
               <p class="block text-sm">How much are you saving into pension/ISA/GIA each year </p>
@@ -100,8 +102,9 @@
               <label class="block text-lg font-medium" for="investmentPercentageInput">Investment Growth %</label>
               <input type="number" id="investmentPercentageInput"
                 class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
-              <p class="block text-sm"> This is the expected growth rate <em>after inflation</em> for your investments (pension/ISA/GIA...)</p>
-              </div>
+              <p class="block text-sm"> This is the expected growth rate <em>after inflation</em> for your investments
+                (pension/ISA/GIA...)</p>
+            </div>
             <div>
               <label class="inline-flex items-center space-x-2">
                 <input type="checkbox" id="historicSimulationCheckbox"
@@ -113,7 +116,8 @@
               <label class="block text-lg font-medium" for="savingsPercentageInput">Cash Savings Growth %</label>
               <input type="number" id="savingsPercentageInput"
                 class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
-              <p class="block text-sm"> This is the expected growth rate <em>after inflation</em> for your cash savings</p>
+              <p class="block text-sm"> This is the expected growth rate <em>after inflation</em> for your cash savings
+              </p>
             </div>
           </div>
         </details>
@@ -172,13 +176,13 @@
         <div class="flex space-x-4 items-center">
           <label class="flex items-center space-x-2 cursor-pointer">
             <input type="radio" name="scenario" value="A" checked
-                  class="w-5 h-5 text-blue-600 border-gray-300 focus:ring-blue-500">
+              class="w-5 h-5 text-blue-600 border-gray-300 focus:ring-blue-500">
             <span class="text-gray-700 font-medium">Scenario A</span>
           </label>
 
           <label class="flex items-center space-x-2 cursor-pointer">
             <input type="radio" name="scenario" value="B"
-                  class="w-5 h-5 text-blue-600 border-gray-300 focus:ring-blue-500">
+              class="w-5 h-5 text-blue-600 border-gray-300 focus:ring-blue-500">
             <span class="text-gray-700 font-medium">Scenario B</span>
           </label>
         </div>
@@ -190,7 +194,8 @@
             class="w-full bg-indigo-600 text-white rounded-lg py-3 text-lg hover:bg-indigo-700 transition">
             Duplicate A to B
           </button>
-          <p class="block text-sm">Copies all setting from your scenario A to scenario B.  You can then make changes to scenario B and use the radio button above to switch between them to see the impact.</p>
+          <p class="block text-sm">Copies all setting from your scenario A to scenario B. You can then make changes to
+            scenario B and use the radio button above to switch between them to see the impact.</p>
         </div>
 
 
@@ -204,20 +209,24 @@
         <div id="chartContainer" class="w-full h-96 md:h-128">
           <canvas id="myChart"></canvas>
         </div>
-        <h1 id="percentageSuccess"></h1>
-        <div id="finalValue"></div>
+
+       <div id="medianFinalValue" class="font-medium text-gray-800 text-sm md:text-base">£${fmt(min)}</div>
+
+        <div id="statsGroup">
+          <h1 id="percentageSuccess"></h1>
+          <div id="finalValue"></div>
 
 
-        <div id="fvContainer" class="w-full p-4 bg-white rounded-xl shadow">
-          <div id="fvheading" class="text-center"></div>
-          <div id="fvbar" class="relative w-full h-2 bg-gray-200 rounded-full mt-3">
-            <div id="fvrange" class="absolute h-2 bg-indigo-400 rounded-full"></div>
-            <div id="fvmedian" class="absolute h-3 w-3 bg-indigo-800 rounded-full -top-0.5"></div>
+          <div id="fvContainer" class="w-full p-4 bg-white rounded-xl shadow">
+            <div id="fvheading" class="text-center"></div>
+            <div id="fvbar" class="relative w-full h-2 bg-gray-200 rounded-full mt-3">
+              <div id="fvrange" class="absolute h-2 bg-indigo-400 rounded-full"></div>
+              <div id="fvmedian" class="absolute h-3 w-3 bg-indigo-800 rounded-full -top-0.5"></div>
+            </div>
           </div>
+
+          <div id="statsContainer" class="mt-6"></div>
         </div>
-
-        <div id="statsContainer" class="mt-6"></div>
-
       </div>
 
 
@@ -225,15 +234,15 @@
   </div>
 
 
-<script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
-<script>
-  kofiWidgetOverlay.draw('captaincaaaaveman', {
-    'type': 'floating-chat',
-    'floating-chat.donateButton.text': 'Support me',
-    'floating-chat.donateButton.background-color': '#ff38b8',
-    'floating-chat.donateButton.text-color': '#fff'
-  });
-</script>
+  <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+  <script>
+    kofiWidgetOverlay.draw('captaincaaaaveman', {
+      'type': 'floating-chat',
+      'floating-chat.donateButton.text': 'Support me',
+      'floating-chat.donateButton.background-color': '#ff38b8',
+      'floating-chat.donateButton.text-color': '#fff'
+    });
+  </script>
 
   <!-- Existing JS -->
   <script type="module" src="js/main.js"></script>

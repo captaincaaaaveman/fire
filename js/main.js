@@ -129,6 +129,7 @@ function recalcAndUpdate() {
 }
 
 function updatePercentageHeading() {
+
   const heading = document.getElementById("percentageSuccess");
   if (!heading) return;
 
@@ -146,11 +147,19 @@ function updatePercentageHeading() {
   const finalValue = getFinalValues();
 
 
+  
 if (Array.isArray(finalValue) && finalValue.length === 5) {
   const [min, p25, median, p75, max] = finalValue;
 
   // Add thousand separators
   const fmt = v => Number(v).toLocaleString(undefined, { maximumFractionDigits: 0 });
+
+  const fv = document.getElementById("medianFinalValue");
+  if (fv) {
+        fv.textContent = `Median Final Value = £${fmt(median)}`;
+  }
+
+
 
   fvheading.innerHTML = `
     <div class="text-sm text-gray-500 mb-2 text-center">Range of Outcomes</div>
@@ -273,17 +282,34 @@ const debouncedRecalc = debounce(recalcAndUpdate, 250);
 //   recalcAndUpdate();
 // });
 
+const drawdownGroup = document.getElementById("drawdownGroup");
+const statsGroup = document.getElementById("statsGroup");
+
+historicSimulationCheckbox.addEventListener("click", () => {
+  showHideStats()
+});
+
+function showHideStats() {
+  if ( historicSimulationCheckbox.checked ) {
+    statsGroup.classList.remove("hidden");
+  } else {
+    statsGroup.classList.add("hidden");
+  }
+
+}
+
 initFromStorage();
 recalcAndUpdate();
 
-const drawdownGroup = document.getElementById("drawdownGroup");
 
 // Function to show/hide the drawdown section
 function toggleDrawdownGroup() {
   if (modelDrawdownCheckbox.checked) {
     drawdownGroup.classList.remove("hidden");
+    showHideStats();
   } else {
     drawdownGroup.classList.add("hidden");
+    statsGroup.classList.add("hidden");
   }
 }
 
