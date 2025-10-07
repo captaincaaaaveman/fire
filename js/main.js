@@ -48,9 +48,9 @@ function initFromStorage() {
   savingsAmountInput.value = model.savingsAmount || "20000";
   savingsPercentageInput.value = model.savingsPercentage || "-1";
   annualInvestmentInput.value = model.investment || "0";
-  investmentYearsInput.value = model.investmentYears || "11";
+  investmentYearsInput.value = model.investmentYears || "10";
   annualSavingsInput.value = model.savings || "12000";
-  savingsYearsInput.value = model.savingsYears || "11";
+  savingsYearsInput.value = model.savingsYears || "10";
   annualDrawdownUnder75Input.value = model.annualDrawdownUnder75 || "40000";
   annualDrawdown75orOverInput.value = model.annualDrawdown75orOver || "30000";
   statePensionInput.value = model.statePension || 23946;
