@@ -300,24 +300,25 @@ function showHideStats() {
 
 initFromStorage();
 recalcAndUpdate();
+showHideStats();
 
 
 // Function to show/hide the drawdown section
-function toggleDrawdownGroup() {
-  if (modelDrawdownCheckbox.checked) {
-    drawdownGroup.classList.remove("hidden");
-    showHideStats();
-  } else {
-    drawdownGroup.classList.add("hidden");
-    statsGroup.classList.add("hidden");
-  }
-}
+// function toggleDrawdownGroup() {
+//   if (modelDrawdownCheckbox.checked) {
+//     // drawdownGroup.classList.remove("hidden");
+//     showHideStats();
+//   } else {
+//     // drawdownGroup.classList.add("hidden");
+//     showHideStats();
+//   }
+// }
 
-// Run once on page load
-toggleDrawdownGroup();
+// // Run once on page load
+// toggleDrawdownGroup();
 
-// Re-run every time the checkbox changes
-modelDrawdownCheckbox.addEventListener("change", toggleDrawdownGroup);
+// // Re-run every time the checkbox changes
+// modelDrawdownCheckbox.addEventListener("change", toggleDrawdownGroup);
 
 
 // Get all radio buttons

@@ -149,6 +149,8 @@ export function getDatasets(model) {
       toAge = model.projectToAge
     }
 
+    let failedAt = undefined; 
+
     for (let i = age; i <= toAge; i++) {
 
       let year = i - age
@@ -157,7 +159,8 @@ export function getDatasets(model) {
       series[i - age] = totalInvestments + totalSavings;
 
       if (series[i - age] < 0) {
-        failureAges.push(i)
+        series[i - age] = 0
+        failedAt = i
         break
       }
 
@@ -203,6 +206,11 @@ export function getDatasets(model) {
           totalInvestments = 0; 
         }
       }
+
+      if ( failedAt ) {
+          failureAges.push(failedAt)
+      }
+
 
       // Set the label to the right age
       labels[i - age] = i;
@@ -266,9 +274,9 @@ export function getChartDatasets(age, retirementAge, amount, percentage) {
       borderWidth = 2
     }
 
-    borderColor = finalValue < 0 ? "#ff0000aa" : borderColor;
+    borderColor = finalValue <= 0 ? "#ff000055" : borderColor;
 
-    if (finalValue < 0) {
+    if (finalValue <= 0) {
       failureCases.push(data)
     } else {
       successCases.push(data)
