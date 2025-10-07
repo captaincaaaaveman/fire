@@ -230,8 +230,8 @@ export function getFinalValues() {
   return [c1v, c25v, c50v, c75v, c100v]
 }
 
-export function getChartDatasets(age, retirementAge, amount, percentage) {
-  const { datasets, labels, colours } = getDatasets(age, retirementAge, amount, percentage);
+export function getChartDatasets(model) {
+  const { datasets, labels, colours } = getDatasets(model);
 
   failureCases.length = 0
   successCases.length = 0
