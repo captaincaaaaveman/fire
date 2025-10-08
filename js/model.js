@@ -14,6 +14,9 @@ export const model = {
   annualDrawdownUnder75: 0,
   annualDrawdown75orOver: 0,
   statePensionInput: 0,
+  statePensionAgeInput: 0,
   modelDrawdown: false,
-  historicSimulation: false
+  historicSimulation: false,
+  definedBenefitPension: 0,
+  definedBenefitPensionAge: 0  
 };

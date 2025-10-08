@@ -32,6 +32,11 @@ const modelDrawdownCheckbox = document.getElementById("modelDrawdownCheckbox")
 const annualDrawdownUnder75Input = document.getElementById("annualDrawdownUnder75Input");
 const annualDrawdown75orOverInput = document.getElementById("annualDrawdown75orOverInput");
 const statePensionInput = document.getElementById("statePensionInput");
+const statePensionAgeInput = document.getElementById("statePensionAgeInput");
+
+const definedBenefitPensionInput = document.getElementById("definedBenefitPensionInput");
+const definedBenefitPensionAgeInput = document.getElementById("definedBenefitPensionAgeInput");
+
 const historicSimulationCheckbox = document.getElementById("historicSimulationCheckbox");
 
 // Prefill inputs from storage on load
@@ -54,6 +59,9 @@ function initFromStorage() {
   annualDrawdownUnder75Input.value = model.annualDrawdownUnder75 || "40000";
   annualDrawdown75orOverInput.value = model.annualDrawdown75orOver || "30000";
   statePensionInput.value = model.statePension || 23946;
+  statePensionAgeInput.value = model.statePensionAge || 67;
+  definedBenefitPensionInput.value = model.definedBenefitPension || 0;
+  definedBenefitPensionAgeInput.value = model.definedBenefitPensionAge || 0;
   modelDrawdownCheckbox.checked = model.modelDrawdown || false;
   historicSimulationCheckbox.checked = model.historicSimulation || false;
 }
@@ -76,6 +84,9 @@ function updateModel() {
   model.annualDrawdownUnder75 = parseInt(annualDrawdownUnder75Input.value) || 0;
   model.annualDrawdown75orOver = parseInt(annualDrawdown75orOverInput.value) || 0;
   model.statePension = parseInt(statePensionInput.value) || 0;
+  model.statePensionAge = parseInt(statePensionAgeInput.value) || 0;
+  model.definedBenefitPension = parseInt(definedBenefitPensionInput.value) || 0;
+  model.definedBenefitPensionAge = parseInt(definedBenefitPensionAgeInput.value) || 0;
   model.modelDrawdown = modelDrawdownCheckbox.checked;
   model.historicSimulation = historicSimulationCheckbox.checked;
 
@@ -273,6 +284,8 @@ const debouncedRecalc = debounce(recalcAndUpdate, 250);
 
 // Attach event listeners for auto-update
 [ageInput, projectToAgeInput, retirementAgeInput, investmentAmountInput, investmentPercentageInput, annualInvestmentInput, investmentYearsInput, annualDrawdown75orOverInput, annualDrawdownUnder75Input, statePensionInput,
+  statePensionAgeInput,
+  definedBenefitPensionInput,definedBenefitPensionAgeInput,
   savingsAmountInput, savingsPercentageInput, modelDrawdownCheckbox, annualSavingsInput, savingsYearsInput, historicSimulationCheckbox
 ].forEach(input => {
   input.addEventListener("input", debouncedRecalc);

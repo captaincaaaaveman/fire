@@ -194,8 +194,16 @@ export function getDatasets(model) {
           }
         }
 
-        if (i >= 67) {
+        if (i >= model.statePensionAge) {
           drawdown = drawdown - model.statePension
+        }
+
+        if (i >= model.definedBenefitPensionAge) {
+          drawdown = drawdown - model.definedBenefitPension
+        }
+
+        if ( drawdown < 0 ) {
+          drawdown = 0
         }
 
         if ( totalInvestments > drawdown ) {
