@@ -1,0 +1,109 @@
+  <details id="nvestments" class="bg-white rounded-xl shadow p-4 w-full">
+  <summary class="cursor-pointer font-semibold text-indigo-600 text-lg">Investments</summary>
+
+  <!-- Repeat this block for each account type -->
+  <details class="bg-white rounded-xl shadow p-4 w-full">
+    <summary class="cursor-pointer font-semibold text-indigo-600 text-lg">Cash</summary>
+    <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+      
+      <!-- Current Total Cash -->
+      <div class="md:col-span-2">
+        <label class="block text-lg font-medium" for="cashTotal">Current Total Cash</label>
+        <input type="number" id="cashTotal"
+          class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+      </div>
+
+      <!-- Annual Savings -->
+      <div>
+        <label class="block text-lg font-medium" for="cashAnnualSavings">Annual Savings</label>
+        <input type="number" id="cashAnnualSavings"
+          class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+      </div>
+
+      <!-- Annual Increase -->
+      <div>
+        <label class="block text-lg font-medium" for="cashAnnualIncrease">Annual Increase (%)</label>
+        <input type="number" id="cashAnnualIncrease"
+          class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+      </div>
+
+      <!-- Years -->
+      <div>
+        <label class="block text-lg font-medium" for="cashYears">For How Many Years</label>
+        <input type="number" id="cashYears"
+          class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+      </div>
+
+    </div>
+  </details>
+
+  <!-- Repeat for Pension -->
+  <details class="bg-white rounded-xl shadow p-4 w-full">
+    <summary class="cursor-pointer font-semibold text-indigo-600 text-lg">Pension</summary>
+    <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="md:col-span-2">
+        <label class="block text-lg font-medium" for="pensionTotal">Current Total Pension</label>
+        <input type="number" id="pensionTotal" class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+      </div>
+      <div>
+        <label class="block text-lg font-medium" for="pensionAnnualSavings">Annual Savings</label>
+        <input type="number" id="pensionAnnualSavings" class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+      </div>
+      <div>
+        <label class="block text-lg font-medium" for="pensionAnnualIncrease">Annual Increase (%)</label>
+        <input type="number" id="pensionAnnualIncrease" class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+      </div>
+      <div>
+        <label class="block text-lg font-medium" for="pensionYears">For How Many Years</label>
+        <input type="number" id="pensionYears" class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+      </div>
+    </div>
+  </details>
+
+  <!-- Repeat for ISA -->
+  <details class="bg-white rounded-xl shadow p-4 w-full">
+    <summary class="cursor-pointer font-semibold text-indigo-600 text-lg">ISA</summary>
+    <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="md:col-span-2">
+        <label class="block text-lg font-medium" for="isaTotal">Current Total ISA</label>
+        <input type="number" id="isaTotal" class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+      </div>
+      <div>
+        <label class="block text-lg font-medium" for="isaAnnualSavings">Annual Savings</label>
+        <input type="number" id="isaAnnualSavings" class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+      </div>
+      <div>
+        <label class="block text-lg font-medium" for="isaAnnualIncrease">Annual Increase (%)</label>
+        <input type="number" id="isaAnnualIncrease" class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+      </div>
+      <div>
+        <label class="block text-lg font-medium" for="isaYears">For How Many Years</label>
+        <input type="number" id="isaYears" class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+      </div>
+    </div>
+  </details>
+
+  <!-- Repeat for GIA -->
+  <details class="bg-white rounded-xl shadow p-4 w-full">
+    <summary class="cursor-pointer font-semibold text-indigo-600 text-lg">GIA</summary>
+    <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="md:col-span-2">
+        <label class="block text-lg font-medium" for="giaTotal">Current Total GIA</label>
+        <input type="number" id="giaTotal" class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+      </div>
+      <div>
+        <label class="block text-lg font-medium" for="giaAnnualSavings">Annual Savings</label>
+        <input type="number" id="giaAnnualSavings" class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+      </div>
+      <div>
+        <label class="block text-lg font-medium" for="giaAnnualIncrease">Annual Increase (%)</label>
+        <input type="number" id="giaAnnualIncrease" class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+      </div>
+      <div>
+        <label class="block text-lg font-medium" for="giaYears">For How Many Years</label>
+        <input type="number" id="giaYears" class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+      </div>
+    </div>
+  </details>
+
+  </details>
