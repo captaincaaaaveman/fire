@@ -35,15 +35,52 @@
               <input type="number" id="ageInput"
                 class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
             </div>
-            <div>
-              <label class="block text-lg font-medium" for="projectToAgeInput">Simulate to age</label>
-              <input type="number" id="projectToAgeInput"
+            <label class="inline-flex items-center space-x-2">
+              <input type="checkbox" id="spouseCheckbox"
+                class="h-5 w-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+              <span class="text-lg font-medium">Include Spouse?</span>
+            </label>
+            <div class="spouse">
+              <label class="block text-lg font-medium" for="spouseAgeInput">Spouse Age</label>
+              <input type="number" id="spouseAgeInput"
                 class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
             </div>
           </div>
         </details>
 
-        <!-- Saving and Investments Group -->
+
+       <div id="investmentsContainer"></div>
+       <div class="spouse" id="spouseInvestmentsContainer"></div>
+
+        <script>
+          async function loadSection(filename, containerId) {
+            const res = await fetch(filename);
+            const html = await res.text();
+            document.getElementById(containerId).insertAdjacentHTML('beforeend', html);
+          }
+
+          // Load each account section
+          loadSection('investments.html', 'investmentsContainer');
+          loadSection('spouseInvestments.html', 'spouseInvestmentsContainer');
+          
+        </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <!-- Saving and Investments Group 
         <details class="bg-white rounded-xl shadow p-4 w-full">
           <summary class="cursor-pointer font-semibold text-indigo-600 text-lg">Current Investments and Savings
           </summary>
@@ -61,6 +98,15 @@
               <p class="block text-sm">Include cash savings/premium bonds... </p>
             </div>
         </details>
+
+
+-->
+
+
+
+
+
+<!--
 
         <details class="bg-white rounded-xl shadow p-4 w-full">
           <summary class="cursor-pointer font-semibold text-indigo-600 text-lg">Regular Investing/Saving</summary>
@@ -93,7 +139,7 @@
           </div>
         </details>
 
-
+-->
         <!-- Assumed Growth Group -->
         <details class="bg-white rounded-xl shadow p-4 w-full">
           <summary class="cursor-pointer font-semibold text-indigo-600 text-lg">Growth Rates</summary>
@@ -136,6 +182,11 @@
           <summary class="cursor-pointer font-semibold text-indigo-600 text-lg">Retirement Drawdown</summary>
           <div class="mt-2 space-y-4">
             <div>
+              <label class="block text-lg font-medium" for="projectToAgeInput">Simulate to age</label>
+              <input type="number" id="projectToAgeInput"
+                class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+            </div>
+            <div>
               <label class="block text-lg font-medium" for="retirementAgeInput">Retirement Age</label>
               <input type="number" id="retirementAgeInput"
                 class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
@@ -171,7 +222,8 @@
                 class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
             </div>
             <div>
-              <label class="block text-lg font-medium" for="definedBenefitPensionAgeInput">Defined Benefit Pension Age</label>
+              <label class="block text-lg font-medium" for="definedBenefitPensionAgeInput">Defined Benefit Pension
+                Age</label>
               <input type="number" id="definedBenefitPensionAgeInput"
                 class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
             </div>
@@ -227,7 +279,7 @@
           <canvas id="myChart"></canvas>
         </div>
 
-       <div id="medianFinalValue" class="font-medium text-gray-800 text-sm md:text-base">£${fmt(min)}</div>
+        <div id="medianFinalValue" class="font-medium text-gray-800 text-sm md:text-base">£${fmt(min)}</div>
 
         <div id="statsGroup">
           <h1 id="percentageSuccess"></h1>

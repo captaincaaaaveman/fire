@@ -1,3 +1,6 @@
+import { model } from './model.js';
+
+
 // Hardcoded base data
 export const historicGrowthRates = [49.05,
   -6.46,
@@ -110,28 +113,16 @@ let c100v = 0;
  * Each series is an array corresponding to baseData
  * Example: creates N series where each series multiplies baseData by (multiplier * seriesIndex)
  */
-export function getDatasets(model) {
-
-  const { age,
-    retirementAge,
-    investmentAmount,
-    savingsAmount,
-    investmentPercentage,
-    savingsPercentage,
-    investment,
-    investmentYears,
-    savings,
-    savingsYears,
-    annualDrawdownUnder75,
-    annualDrawdown75orOver,
-    statePensionInput,
-    modelDrawdown } = model;
+/**
+ * @param {import('./model.js').model} m
+ */
+export function getDatasets(m) {
 
   const results = [];
   const labels = [];
   failureAges.length = 0;
 
-  let years = model.projectToAge - age;
+  let years = model.projectToAge - model.age;
 
   if (! model.historicSimulation) {
     years = historicGrowthRates.length - 1
@@ -139,15 +130,19 @@ export function getDatasets(model) {
 
   for (let historicYear = 0; historicYear < historicGrowthRates.length - years; historicYear++) {
 
-    let totalInvestments = investmentAmount;
-    let totalSavings = savingsAmount;
+    let totalIsa = model.isaTotal;
+    let totalCash = model.cashTotal;
+    let totalPension = model.pensionTotal;
+    let totalGia = model.giaTotal;
     const series = [];
 
-    let toAge = model.projectToAge
+    let isaSavings = model.isaAnnualSavings;
+    let cashSavings = model.cashAnnualSavings;
+    let pensionSavings = model.pensionAnnualSavings;
+    let giaSavings = model.giaAnnualSavings;
 
-    if (modelDrawdown) {
-      toAge = model.projectToAge
-    }
+    let toAge = model.projectToAge
+    const age = model.age
 
     let failedAt = undefined; 
 
@@ -156,37 +151,54 @@ export function getDatasets(model) {
       let year = i - age
 
       // Store in series
-      series[i - age] = totalInvestments + totalSavings;
+      series[i - age] = totalIsa + totalCash + totalPension + totalGia;
 
-      if (series[i - age] < 0) {
+      if (series[i - age] <= 0) {
         series[i - age] = 0
         failedAt = i
         break
       }
 
       // Apply interest / growth
-      let p = historicGrowthRates[historicYear + year]
+      let pIsa = historicGrowthRates[historicYear + year]
+      let pGia = historicGrowthRates[historicYear + year]
+      let pPension = historicGrowthRates[historicYear + year]
+      let pCash = -1
 
       if (! model.historicSimulation) {
-        p = investmentPercentage;
+        pIsa = model.investmentPercentage;
+        pGia = model.investmentPercentage;
+        pPension = model.investmentPercentage;
+        pCash = model.savingsPercentage;
       }
 
-      totalInvestments = totalInvestments * (1 + (p / 100));
-      totalSavings = totalSavings * (1 + (savingsPercentage / 100));
+      totalIsa = totalIsa * (1 + (pIsa / 100));
+      totalGia = totalGia * (1 + (pGia / 100));
+      totalPension = totalPension * (1 + (pPension / 100));
+      totalCash = totalCash * (1 + (model.savingsPercentage / 100));
 
-      // Add investment
-      if (year < investmentYears) {
-        totalInvestments = totalInvestments + investment
+      // Annual Investments
+      if (year < model.isaYears) {
+        totalIsa = totalIsa + isaSavings;
+        isaSavings = isaSavings * (1 + (model.isaAnnualIncrease/100)) 
       }
-      // Add savings
-      if (year < savingsYears) {
-        totalSavings = totalSavings + savings
+      if (year < model.cashYears) {
+        totalCash = totalCash + cashSavings;
+        cashSavings = cashSavings * (1 + (model.cashAnnualIncrease/100)) 
+      }
+      if (year < model.pensionYears) {
+        totalPension = totalPension + pensionSavings;
+        pensionSavings = pensionSavings * (1 + (model.pensionAnnualIncrease/100)) 
+      }
+      if (year < model.giaYears) {
+        totalGia = totalGia + giaSavings;
+        giaSavings = giaSavings * (1 + (model.giaIncrease/100)) 
       }
 
       if (model.modelDrawdown) {
         let drawdown = 0;
 
-        if (i >= retirementAge) {
+        if (i >= model.retirementAge) {
           if (i < 75) {
             drawdown = model.annualDrawdownUnder75
           } else {
@@ -206,22 +218,39 @@ export function getDatasets(model) {
           drawdown = 0
         }
 
-        if ( totalInvestments > drawdown ) {
-          totalInvestments = totalInvestments - drawdown
+        // Need to work out whether they can draw from pension at age i
+        if (totalPension > drawdown) {
+          totalPension = totalPension - drawdown
         } else {
-          let remainder = drawdown - totalInvestments;
-          totalSavings = totalSavings - remainder
-          totalInvestments = 0; 
+          let remainder = drawdown - totalPension;
+          totalPension = 0;
+          if (totalCash > remainder) {
+            totalCash = totalCash - drawdown
+          } else {
+            remainder = remainder - totalCash
+            totalCash = 0
+            if (totalIsa > remainder) {
+              totalIsa = totalIsa - remainder
+            } else {
+              remainder = remainder - totalIsa
+              totalIsa = 0
+              if (totalGia > remainder) {
+                totalGia = totalGia - remainder
+              } else {
+                remainder = remainder - totalGia
+                totalGia = 0
+              }
+            }
+          }
         }
       }
 
-      if ( failedAt ) {
-          failureAges.push(failedAt)
-      }
-
-
       // Set the label to the right age
       labels[i - age] = i;
+    }
+
+    if ( failedAt ) {
+      failureAges.push(failedAt)
     }
 
     results.push(series);

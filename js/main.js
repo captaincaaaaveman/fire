@@ -17,15 +17,18 @@ const ageInput = document.getElementById("ageInput");
 const projectToAgeInput = document.getElementById("projectToAgeInput");
 const retirementAgeInput = document.getElementById("retirementAgeInput");
 
-const investmentAmountInput = document.getElementById("investmentAmountInput");
+const spouseCheckbox = document.getElementById("spouseCheckbox");
+const spouseAgeInput = document.getElementById("spouseAgeInput");
+
+// const investmentAmountInput = document.getElementById("investmentAmountInput");
 const investmentPercentageInput = document.getElementById("investmentPercentageInput");
-const savingsAmountInput = document.getElementById("savingsAmountInput");
+// const savingsAmountInput = document.getElementById("savingsAmountInput");
 const savingsPercentageInput = document.getElementById("savingsPercentageInput");
 
-const annualInvestmentInput = document.getElementById("annualInvestmentInput");
-const investmentYearsInput = document.getElementById("investmentYearsInput");
-const annualSavingsInput = document.getElementById("annualSavingsInput");
-const savingsYearsInput = document.getElementById("savingsYearsInput");
+// const annualInvestmentInput = document.getElementById("annualInvestmentInput");
+// const investmentYearsInput = document.getElementById("investmentYearsInput");
+// const annualSavingsInput = document.getElementById("annualSavingsInput");
+// const savingsYearsInput = document.getElementById("savingsYearsInput");
 
 const modelDrawdownCheckbox = document.getElementById("modelDrawdownCheckbox")
 
@@ -39,6 +42,20 @@ const definedBenefitPensionAgeInput = document.getElementById("definedBenefitPen
 
 const historicSimulationCheckbox = document.getElementById("historicSimulationCheckbox");
 
+const investmentGroups = ["cash", "pension", "isa", "gia", 
+  "spouseCash", "spousePension", "spouseIsa", "spouseGia"];
+
+  const investmentInputs = {};
+
+for (const group of investmentGroups) {
+  investmentInputs[group] = {
+    total: document.getElementById(`${group}Total`),
+    annualSavings: document.getElementById(`${group}AnnualSavings`),
+    annualIncrease: document.getElementById(`${group}AnnualIncrease`),
+    years: document.getElementById(`${group}Years`)
+  };
+}
+
 // Prefill inputs from storage on load
 function initFromStorage() {
   const stored = loadModel(currentScenario);
@@ -46,16 +63,19 @@ function initFromStorage() {
     Object.assign(model, stored);
   }
   ageInput.value = model.age || "24";
+  spouseCheckbox.checked = model.spouse || false;
+  spouseAgeInput.value = model.spouseAge || 51;
+
   projectToAgeInput.value = model.projectToAge || "95";
   retirementAgeInput.value = model.retirementAge || "65";
-  investmentAmountInput.value = model.investmentAmount || "0";
+  // investmentAmountInput.value = model.investmentAmount || "0";
   investmentPercentageInput.value = model.investmentPercentage || "4";
-  savingsAmountInput.value = model.savingsAmount || "20000";
+  // savingsAmountInput.value = model.savingsAmount || "20000";
   savingsPercentageInput.value = model.savingsPercentage || "-1";
-  annualInvestmentInput.value = model.investment || "0";
-  investmentYearsInput.value = model.investmentYears || "10";
-  annualSavingsInput.value = model.savings || "12000";
-  savingsYearsInput.value = model.savingsYears || "10";
+  // annualInvestmentInput.value = model.investment || "0";
+  // investmentYearsInput.value = model.investmentYears || "10";
+  // annualSavingsInput.value = model.savings || "12000";
+  // savingsYearsInput.value = model.savingsYears || "10";
   annualDrawdownUnder75Input.value = model.annualDrawdownUnder75 || "40000";
   annualDrawdown75orOverInput.value = model.annualDrawdown75orOver || "30000";
   statePensionInput.value = model.statePension || 23946;
@@ -64,23 +84,36 @@ function initFromStorage() {
   definedBenefitPensionAgeInput.value = model.definedBenefitPensionAge || 0;
   modelDrawdownCheckbox.checked = model.modelDrawdown || false;
   historicSimulationCheckbox.checked = model.historicSimulation || false;
+
+  for (const group of investmentGroups) {
+    const fields = investmentInputs[group];
+    fields.total.value = model[`${group}Total`] || 0;
+    fields.annualSavings.value = model[`${group}AnnualSavings`] || 0;
+    fields.annualIncrease.value = model[`${group}AnnualIncrease`] || 0;
+    fields.years.value = model[`${group}Years`] || 0;
+  }
+
 }
 
 
 // Sync model whenever inputs change
 function updateModel() {
-  model.age = parseInt(ageInput.value, 10) || 51;
+  model.age = parseInt(ageInput.value) || 51;
+  model.spouse = spouseCheckbox.checked;
+  model.spouseAge = parseInt(spouseAgeInput.value) || 51;
+
+
   model.projectToAge = parseInt(projectToAgeInput.value) || 95
   model.retirementAge = parseInt(retirementAgeInput.value) || 0;
-  model.investmentAmount = parseInt(investmentAmountInput.value) || 0;
-  model.savingsAmount = parseInt(savingsAmountInput.value) || 0;
+  // model.investmentAmount = parseInt(investmentAmountInput.value) || 0;
+  // model.savingsAmount = parseInt(savingsAmountInput.value) || 0;
   const val = parseFloat(investmentPercentageInput.value);
   model.investmentPercentage = isNaN(val) ? undefined : val;
   model.savingsPercentage = parseFloat(savingsPercentageInput.value) || 0;
-  model.investment = parseInt(annualInvestmentInput.value) || 0;
-  model.investmentYears = parseInt(investmentYearsInput.value) || 0;
-  model.savings = parseInt(annualSavingsInput.value) || 0;
-  model.savingsYears = parseInt(savingsYearsInput.value) || 0;
+  // model.investment = parseInt(annualInvestmentInput.value) || 0;
+  // model.investmentYears = parseInt(investmentYearsInput.value) || 0;
+  // model.savings = parseInt(annualSavingsInput.value) || 0;
+  // model.savingsYears = parseInt(savingsYearsInput.value) || 0;
   model.annualDrawdownUnder75 = parseInt(annualDrawdownUnder75Input.value) || 0;
   model.annualDrawdown75orOver = parseInt(annualDrawdown75orOverInput.value) || 0;
   model.statePension = parseInt(statePensionInput.value) || 0;
@@ -89,6 +122,14 @@ function updateModel() {
   model.definedBenefitPensionAge = parseInt(definedBenefitPensionAgeInput.value) || 0;
   model.modelDrawdown = modelDrawdownCheckbox.checked;
   model.historicSimulation = historicSimulationCheckbox.checked;
+
+  for (const group of investmentGroups) {
+    const fields = investmentInputs[group];
+    model[`${group}Total`] = parseFloat(fields.total.value) || 0;
+    model[`${group}AnnualSavings`] = parseFloat(fields.annualSavings.value) || 0;
+    model[`${group}AnnualIncrease`] = parseFloat(fields.annualIncrease.value) || 0;
+    model[`${group}Years`] = parseInt(fields.years.value, 10) || 0;
+  }
 
   saveModel(model, currentScenario) ; // persist after every update
 
@@ -170,8 +211,6 @@ if (Array.isArray(finalValue) && finalValue.length === 5) {
   if (fv) {
         fv.textContent = `Median Final Value = £${fmt(median)}`;
   }
-
-
 
   fvheading.innerHTML = `
     <div class="text-sm text-gray-500 mb-2 text-center">Range of Outcomes</div>
@@ -276,20 +315,32 @@ if (statsContainer) {
   `;
 }
 
-
+    
 }
 
 
 const debouncedRecalc = debounce(recalcAndUpdate, 250);
 
 // Attach event listeners for auto-update
-[ageInput, projectToAgeInput, retirementAgeInput, investmentAmountInput, investmentPercentageInput, annualInvestmentInput, investmentYearsInput, annualDrawdown75orOverInput, annualDrawdownUnder75Input, statePensionInput,
+[ageInput, projectToAgeInput, retirementAgeInput, annualDrawdown75orOverInput, annualDrawdownUnder75Input, statePensionInput,
   statePensionAgeInput,
   definedBenefitPensionInput,definedBenefitPensionAgeInput,
-  savingsAmountInput, savingsPercentageInput, modelDrawdownCheckbox, annualSavingsInput, savingsYearsInput, historicSimulationCheckbox
+  modelDrawdownCheckbox, historicSimulationCheckbox,
+  spouseCheckbox, spouseAgeInput,
+  investmentPercentageInput, savingsPercentageInput
 ].forEach(input => {
   input.addEventListener("input", debouncedRecalc);
 });
+
+for (const group of investmentGroups) {
+  console.log(group);
+  const fields = investmentInputs[group];
+  Object.values(fields).forEach(input => {
+    input.addEventListener("input", debouncedRecalc);
+  });
+}
+
+
 
 // --- Calculate button ---
 // calculateBtn.addEventListener("click", () => {
@@ -298,6 +349,10 @@ const debouncedRecalc = debounce(recalcAndUpdate, 250);
 
 const drawdownGroup = document.getElementById("drawdownGroup");
 const statsGroup = document.getElementById("statsGroup");
+
+spouseCheckbox.addEventListener("click", () => {
+  showHideSpouse()
+});
 
 historicSimulationCheckbox.addEventListener("click", () => {
   showHideStats()
@@ -312,27 +367,24 @@ function showHideStats() {
 
 }
 
+function showHideSpouse() {
+  const spouseElements = document.querySelectorAll(".spouse");
+
+  spouseElements.forEach(el => {
+    if (spouseCheckbox.checked) {
+      el.classList.remove("hidden");
+    } else {
+      el.classList.add("hidden");
+    }
+  });
+}
+
 initFromStorage();
 recalcAndUpdate();
 showHideStats();
+showHideSpouse();
 
 
-// Function to show/hide the drawdown section
-// function toggleDrawdownGroup() {
-//   if (modelDrawdownCheckbox.checked) {
-//     // drawdownGroup.classList.remove("hidden");
-//     showHideStats();
-//   } else {
-//     // drawdownGroup.classList.add("hidden");
-//     showHideStats();
-//   }
-// }
-
-// // Run once on page load
-// toggleDrawdownGroup();
-
-// // Re-run every time the checkbox changes
-// modelDrawdownCheckbox.addEventListener("change", toggleDrawdownGroup);
 
 
 // Get all radio buttons
