@@ -134,6 +134,11 @@ export function getDatasets(m) {
     let totalCash = model.cashTotal;
     let totalPension = model.pensionTotal;
     let totalGia = model.giaTotal;
+
+    let totalIsa_Spouse = model.spouseIsaTotal;
+    let totalCash_Spouse = model.spouseCashTotal;
+    let totalPension_Spouse = model.spousePensionTotal;
+    let totalGia_Spouse = model.spouseGiaTotal;
     const series = [];
 
     let isaSavings = model.isaAnnualSavings;
@@ -141,20 +146,46 @@ export function getDatasets(m) {
     let pensionSavings = model.pensionAnnualSavings;
     let giaSavings = model.giaAnnualSavings;
 
+    let isaSavings_Spouse = model.spouseIsaAnnualSavings;
+    let cashSavings_Spouse = model.spouseCashAnnualSavings;
+    let pensionSavings_Spouse = model.spousePensionAnnualSavings;
+    let giaSavings_Spouse = model.spouseGiaAnnualSavings;
+
     let toAge = model.projectToAge
-    const age = model.age
+    let age = model.age
+    let spouseAge = model.spouseAge
+
+    let minAge = Math.min(age, spouseAge)
 
     let failedAt = undefined; 
 
-    for (let i = age; i <= toAge; i++) {
+    let year = 0;
 
-      let year = i - age
+    for (let i = minAge; i <= toAge; i++) {
+
+      age++; 
+      spouseAge++;
 
       // Store in series
-      series[i - age] = totalIsa + totalCash + totalPension + totalGia;
+      series[year] = totalIsa + totalCash + totalPension + totalGia
+      + totalIsa_Spouse + totalCash_Spouse + totalPension_Spouse + totalGia_Spouse;
 
-      if (series[i - age] <= 0) {
-        series[i - age] = 0
+      if ( year === 0 ) {
+        console.log(year + ' - ' +series[year])
+      } 
+ 
+      if ( year === 5 ) {
+        console.log(year + ' - ' +series[year])
+      } 
+      
+      if ( i == toAge ) {
+        console.log(year + ' - ' +series[year])
+      }
+
+
+      if (series[year] <= 0) {
+        console.log(year + ' - ' +series[year])        
+        series[year] = 0
         failedAt = i
         break
       }
@@ -177,6 +208,11 @@ export function getDatasets(m) {
       totalPension = totalPension * (1 + (pPension / 100));
       totalCash = totalCash * (1 + (model.savingsPercentage / 100));
 
+      totalIsa_Spouse = totalIsa_Spouse * (1 + (pIsa / 100));
+      totalGia_Spouse = totalGia_Spouse * (1 + (pGia / 100));
+      totalPension_Spouse = totalPension_Spouse * (1 + (pPension / 100));
+      totalCash_Spouse= totalCash_Spouse * (1 + (model.savingsPercentage / 100));
+
       // Annual Investments
       if (year < model.isaYears) {
         totalIsa = totalIsa + isaSavings;
@@ -195,10 +231,28 @@ export function getDatasets(m) {
         giaSavings = giaSavings * (1 + (model.giaIncrease/100)) 
       }
 
+      // Annual Investments Spouse
+      if (year < model.spouseIsaYears) {
+        totalIsa_Spouse = totalIsa_Spouse + isaSavings_Spouse;
+        isaSavings_Spouse = isaSavings_Spouse * (1 + (model.isaAnnualIncrease_Spouse/100)) 
+      }
+      if (year < model.spouseCashYears) {
+        totalCash_Spouse = totalCash_Spouse + cashSavings_Spouse;
+        cashSavings_Spouse = cashSavings_Spouse * (1 + (model.cashAnnualIncrease_Spouse/100)) 
+      }
+      if (year < model.spousePensionYears) {
+        totalPension_Spouse = totalPension_Spouse + pensionSavings_Spouse;
+        pensionSavings_Spouse = pensionSavings_Spouse * (1 + (model.pensionAnnualIncrease_Spouse/100)) 
+      }
+      if (year < model.spouseGiaYears) {
+        totalGia_Spouse = totalGia_Spouse + giaSavings_Spouse;
+        giaSavings_Spouse = giaSavings_Spouse * (1 + (model.giaIncrease_Spouse/100)) 
+      }
+
       if (model.modelDrawdown) {
         let drawdown = 0;
 
-        if (i >= model.retirementAge) {
+        if (age >= model.retirementAge) {
           if (i < 75) {
             drawdown = model.annualDrawdownUnder75
           } else {
@@ -206,47 +260,98 @@ export function getDatasets(m) {
           }
         }
 
-        if (i >= model.statePensionAge) {
+        if (age >= model.statePensionAge) {
           drawdown = drawdown - model.statePension
         }
 
-        if (i >= model.definedBenefitPensionAge) {
+        // TODO
+        // if (spouseAge >= model.spouseStatePensionAge) {
+        //   drawdown = drawdown - model.spouseStatePension
+        // }
+
+        if (age >= model.definedBenefitPensionAge) {
           drawdown = drawdown - model.definedBenefitPension
         }
+
+        // TODO
+        // if (spouseAge >= model.spouseDefinedBenefitPensionAge) {
+        //   drawdown = drawdown - model.spouseDefinedBenefitPension
+        // }
+
 
         if ( drawdown < 0 ) {
           drawdown = 0
         }
 
+        let remainder = 0
+        
         // Need to work out whether they can draw from pension at age i
         if (totalPension > drawdown) {
           totalPension = totalPension - drawdown
+          drawdown = 0
+          remainder = 0
         } else {
-          let remainder = drawdown - totalPension;
+          remainder = drawdown - totalPension;
           totalPension = 0;
           if (totalCash > remainder) {
+            remainder = 0
             totalCash = totalCash - drawdown
           } else {
             remainder = remainder - totalCash
             totalCash = 0
             if (totalIsa > remainder) {
+              remainder = 0
               totalIsa = totalIsa - remainder
             } else {
               remainder = remainder - totalIsa
               totalIsa = 0
               if (totalGia > remainder) {
+                remainder = 0
                 totalGia = totalGia - remainder
               } else {
                 remainder = remainder - totalGia
-                totalGia = 0
               }
             }
           }
         }
+
+        if (totalPension_Spouse > remainder) {
+          drawdown = 0
+          remainder = 0
+          totalPension_Spouse = totalPension_Spouse - drawdown
+        } else {
+          let remainder = drawdown - totalPension_Spouse;
+          totalPension_Spouse = 0;
+          if (totalCash_Spouse > remainder) {
+            totalCash_Spouse = totalCash_Spouse - drawdown
+            remainder = 0
+          } else {
+            remainder = remainder - totalCash_Spouse
+            totalCash_Spouse = 0
+            if (totalIsa_Spouse > remainder) {
+              totalIsa_Spouse = totalIsa_Spouse - remainder
+              remainder = 0
+            } else {
+              remainder = remainder - totalIsa_Spouse
+              totalIsa_Spouse = 0
+              if (totalGia_Spouse > remainder) {
+                totalGia_Spouse = totalGia_Spouse - remainder
+                remainder = 0
+              } else {
+                remainder = remainder - totalGia_Spouse
+                remainder = 0
+                totalGia_Spouse = 0
+              }
+            }
+          }
+        }
+
       }
 
       // Set the label to the right age
-      labels[i - age] = i;
+      labels[year] = i;
+      year++;
+
     }
 
     if ( failedAt ) {
