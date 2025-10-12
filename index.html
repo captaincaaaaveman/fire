@@ -57,7 +57,16 @@
                 class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
               <p class="text-sm text-gray-500 mt-1">This should be the age at which you want to simulate surviving to (for drawdown simulation) or the age at which you want to simulate investment growth to (no drawdown simulation)</p>
             </div>
-        </details>
+        <div>
+          <label class="inline-flex items-center space-x-2">
+            <input type="checkbox" id="modelDrawdownCheckbox"
+              class="h-5 w-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+            <span class="text-lg font-medium">Model retirement drawdown?</span>
+            <p class="block text-sm">Models flexible drawdown from investments after your chosen retirement age</p>
+          </label>
+        </div>
+
+          </details>
 
 
        <div id="investmentsContainer"></div>
@@ -104,14 +113,6 @@
           </div>
         </details>
 
-        <div>
-          <label class="inline-flex items-center space-x-2">
-            <input type="checkbox" id="modelDrawdownCheckbox"
-              class="h-5 w-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
-            <span class="text-lg font-medium">Model retirement drawdown?</span>
-            <p class="block text-sm">Models flexible drawdown from investments after your chosen retirement age</p>
-          </label>
-        </div>
 
         <!-- Retirement / Drawdown Group -->
         <details id="drawdownGroup" class="bg-white rounded-xl shadow p-4 w-full">

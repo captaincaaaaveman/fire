@@ -2,7 +2,7 @@ import { model } from './model.js';
 
 
 // Hardcoded base data
-export const historicGrowthRates = [49.05,
+export const historicGlobalGrowthRates = [49.05,
   -6.46,
   -23.02,
   -40.46,
@@ -97,6 +97,107 @@ export const historicGrowthRates = [49.05,
   14.89,
   19.26,
   -25.68,
+18.28,
+14.14
+];
+
+export const historicUSGrowthRates = [45.49,
+-8.83,
+-20.01,
+-38.07,
+1.82,
+48.85,
+-2.66,
+42.49,
+30.06,
+-37.13,
+32.98,
+-1.10,
+-11.31,
+-20.65,
+9.30,
+21.47,
+16.36,
+32.84,
+-22.48,
+-3.34,
+2.63,
+20.81,
+23.48,
+16.68,
+17.27,
+-1.94,
+53.71,
+32.10,
+4.33,
+-12.98,
+41.23,
+10.15,
+-1.01,
+25.79,
+-10.01,
+20.63,
+15.30,
+10.28,
+-12.98,
+20.15,
+5.82,
+-13.60,
+-1.90,
+10.61,
+14.84,
+-21.17,
+-34.04,
+28.11,
+18.09,
+-12.82,
+-2.30,
+4.61,
+17.08,
+-12.51,
+15.98,
+17.87,
+2.11,
+26.43,
+17.21,
+1.32,
+11.60,
+25.64,
+-8.64,
+26.36,
+4.46,
+7.03,
+-1.31,
+33.80,
+18.74,
+30.88,
+26.30,
+17.72,
+-12.01,
+-13.20,
+-23.78,
+25.99,
+7.25,
+1.37,
+12.75,
+1.35,
+-36.61,
+22.60,
+13.13,
+-0.84,
+13.91,
+30.19,
+12.67,
+0.64,
+9.50,
+19.09,
+-6.02,
+28.28,
+16.44,
+19.95,
+-22.96,
+22.14,
+21.50
 ];
 
 export const successCases = []
@@ -127,10 +228,10 @@ export function getDatasets(model) {
   let years = model.projectToAge -  Math.min(model.age, model.spouseAge);
 
   if (! model.historicSimulation) {
-    years = historicGrowthRates.length - 1
+    years = historicGlobalGrowthRates.length - 1
   }
 
-  for (let historicYear = 0; historicYear < historicGrowthRates.length - years; historicYear++) {
+  for (let historicYear = 0; historicYear < historicGlobalGrowthRates.length - years; historicYear++) {
 
     let totalIsa = model.isaTotal;
     let totalCash = model.cashTotal;
@@ -188,9 +289,9 @@ export function getDatasets(model) {
       }
 
       // Apply interest / growth
-      let pIsa = historicGrowthRates[historicYear + year]
-      let pGia = historicGrowthRates[historicYear + year]
-      let pPension = historicGrowthRates[historicYear + year]
+      let pIsa = historicGlobalGrowthRates[historicYear + year]
+      let pGia = historicGlobalGrowthRates[historicYear + year]
+      let pPension = historicGlobalGrowthRates[historicYear + year]
       let pCash = -1
 
       if (! model.historicSimulation) {

@@ -96,6 +96,7 @@ function initFromStorage() {
     fields.total.value = model[`${group}Total`] || 0;
     fields.annualSavings.value = model[`${group}AnnualSavings`] || 0;
     fields.annualIncrease.value = model[`${group}AnnualIncrease`] || 0;
+    fields.years.value = model[`${group}Years`] || 0;
 
     if ( group === 'pension' || group === 'spousePension') {
       fields.accessAge.value = model[`${group}AccessAge`] || 0;
