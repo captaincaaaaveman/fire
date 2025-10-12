@@ -15,7 +15,7 @@
 
   <div class="max-w-6xl mx-auto p-4" style="margin-bottom: 80px;">
 
-    <!-- Header -->
+      <!-- Header -->
     <header class="text-center mb-6">
       <h1 class="text-3xl font-bold text-indigo-700">Financial Projection</h1>
       <p class="text-gray-600">A work in progress</p>
@@ -24,6 +24,8 @@
     <!-- Main container: 2 columns on desktop, stacked on mobile -->
     <div class="flex flex-col md:flex-row gap-6">
 
+
+      
       <div class="w-full md:w-1/3 space-y-4">
 
         <!-- Personal Info Group -->
@@ -65,81 +67,6 @@
           
         </script>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        <!-- Saving and Investments Group 
-        <details class="bg-white rounded-xl shadow p-4 w-full">
-          <summary class="cursor-pointer font-semibold text-indigo-600 text-lg">Current Investments and Savings
-          </summary>
-          <div class="mt-2 space-y-4">
-            <div>
-              <label class="block text-lg font-medium" for="investmentAmountInput">Current S&S Investments</label>
-              <input type="number" id="investmentAmountInput"
-                class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
-              <p class="block text-sm">Include Pension/ISA/GIA</p>
-            </div>
-            <div>
-              <label class="block text-lg font-medium" for="savingsAmountInput">Current Cash Savings</label>
-              <input type="number" id="savingsAmountInput"
-                class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
-              <p class="block text-sm">Include cash savings/premium bonds... </p>
-            </div>
-        </details>
-
-
--->
-
-
-
-
-
-<!--
-
-        <details class="bg-white rounded-xl shadow p-4 w-full">
-          <summary class="cursor-pointer font-semibold text-indigo-600 text-lg">Regular Investing/Saving</summary>
-          <div class="mt-2 space-y-4">
-            <div>
-              <label class="block text-lg font-medium" for="annualInvestmentInput">Annual Investments into
-                ISA/GIA/Pension</label>
-              <input type="number" id="annualInvestmentInput"
-                class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
-              <p class="block text-sm">How much are you saving into pension/ISA/GIA each year </p>
-            </div>
-            <div>
-              <label class="block text-lg font-medium" for="investmentYearsInput">Investing for how many years</label>
-              <input type="number" id="investmentYearsInput"
-                class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
-              <p class="block text-sm">How may years are you intending to keep investing for </p>
-            </div>
-            <div>
-              <label class="block text-lg font-medium" for="annualSavingsInput">Annual Cash Savings</label>
-              <input type="number" id="annualSavingsInput"
-                class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
-              <p class="block text-sm">How much are you saving into cash/premium bonds etc each year </p>
-            </div>
-            <div>
-              <label class="block text-lg font-medium" for="savingsYearsInput">Saving for how many years</label>
-              <input type="number" id="savingsYearsInput"
-                class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
-              <p class="block text-sm">How may years are you intending to keep saving for </p>
-            </div>
-          </div>
-        </details>
-
--->
         <!-- Assumed Growth Group -->
         <details class="bg-white rounded-xl shadow p-4 w-full">
           <summary class="cursor-pointer font-semibold text-indigo-600 text-lg">Growth Rates</summary>
@@ -273,34 +200,37 @@
       </div>
 
 
-      <!-- Right column: Chart / Results -->
-      <div class="md:w-2/3 bg-white rounded-xl shadow p-4">
-        <div id="chartContainer" class="w-full h-96 md:h-128">
-          <canvas id="myChart"></canvas>
-        </div>
-
-        <div id="medianFinalValue" class="font-medium text-gray-800 text-sm md:text-base">£${fmt(min)}</div>
-
-        <div id="statsGroup">
-          <h1 id="percentageSuccess"></h1>
-          <div id="finalValue"></div>
+    <!-- Right column -->
+  <div class="md:w-2/3">
 
 
-          <div id="fvContainer" class="w-full p-4 bg-white rounded-xl shadow">
-            <div id="fvheading" class="text-center"></div>
-            <div id="fvbar" class="relative w-full h-2 bg-gray-200 rounded-full mt-3">
-              <div id="fvrange" class="absolute h-2 bg-indigo-400 rounded-full"></div>
-              <div id="fvmedian" class="absolute h-3 w-3 bg-indigo-800 rounded-full -top-0.5"></div>
-            </div>
-          </div>
 
-          <div id="statsContainer" class="mt-6"></div>
-        </div>
+    <div class="sticky top-4 bg-white rounded-xl shadow p-4">
+
+
+      <div id="chartContainer" class="w-full h-96">
+        <canvas id="myChart"></canvas>
       </div>
 
+      <div id="medianFinalValue" class="font-medium text-gray-800 text-sm md:text-base">£${fmt(min)}</div>
 
+      <div id="statsGroup">
+        <h1 id="percentageSuccess"></h1>
+        <div id="finalValue"></div>
+
+        <div id="fvContainer" class="w-full p-4 bg-white rounded-xl shadow">
+          <div id="fvheading" class="text-center"></div>
+          <div id="fvbar" class="relative w-full h-2 bg-gray-200 rounded-full mt-3">
+            <div id="fvrange" class="absolute h-2 bg-indigo-400 rounded-full"></div>
+            <div id="fvmedian" class="absolute h-3 w-3 bg-indigo-800 rounded-full -top-0.5"></div>
+          </div>
+        </div>
+
+        <div id="statsContainer" class="mt-6"></div>
+      </div>
     </div>
   </div>
+</div>
 
 
   <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>

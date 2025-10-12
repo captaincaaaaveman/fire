@@ -333,7 +333,6 @@ const debouncedRecalc = debounce(recalcAndUpdate, 250);
 });
 
 for (const group of investmentGroups) {
-  console.log(group);
   const fields = investmentInputs[group];
   Object.values(fields).forEach(input => {
     input.addEventListener("input", debouncedRecalc);

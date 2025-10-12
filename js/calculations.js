@@ -122,7 +122,7 @@ export function getDatasets(m) {
   const labels = [];
   failureAges.length = 0;
 
-  let years = model.projectToAge - model.age;
+  let years = model.projectToAge -  Math.min(model.age, model.spouseAge);
 
   if (! model.historicSimulation) {
     years = historicGrowthRates.length - 1
@@ -170,21 +170,7 @@ export function getDatasets(m) {
       series[year] = totalIsa + totalCash + totalPension + totalGia
       + totalIsa_Spouse + totalCash_Spouse + totalPension_Spouse + totalGia_Spouse;
 
-      if ( year === 0 ) {
-        console.log(year + ' - ' +series[year])
-      } 
- 
-      if ( year === 5 ) {
-        console.log(year + ' - ' +series[year])
-      } 
-      
-      if ( i == toAge ) {
-        console.log(year + ' - ' +series[year])
-      }
-
-
       if (series[year] <= 0) {
-        console.log(year + ' - ' +series[year])        
         series[year] = 0
         failedAt = i
         break
@@ -205,6 +191,7 @@ export function getDatasets(m) {
 
       totalIsa = totalIsa * (1 + (pIsa / 100));
       totalGia = totalGia * (1 + (pGia / 100));
+
       totalPension = totalPension * (1 + (pPension / 100));
       totalCash = totalCash * (1 + (model.savingsPercentage / 100));
 
@@ -283,31 +270,30 @@ export function getDatasets(m) {
           drawdown = 0
         }
 
-        let remainder = 0
+        let remainder = drawdown
         
         // Need to work out whether they can draw from pension at age i
-        if (totalPension > drawdown) {
-          totalPension = totalPension - drawdown
-          drawdown = 0
+        if (totalPension > remainder) {
+          totalPension = totalPension - remainder
           remainder = 0
         } else {
-          remainder = drawdown - totalPension;
+          remainder = remainder - totalPension;
           totalPension = 0;
           if (totalCash > remainder) {
-            remainder = 0
             totalCash = totalCash - drawdown
+            remainder = 0
           } else {
             remainder = remainder - totalCash
             totalCash = 0
             if (totalIsa > remainder) {
-              remainder = 0
               totalIsa = totalIsa - remainder
+              remainder = 0
             } else {
               remainder = remainder - totalIsa
               totalIsa = 0
               if (totalGia > remainder) {
-                remainder = 0
                 totalGia = totalGia - remainder
+                remainder = 0
               } else {
                 remainder = remainder - totalGia
               }
@@ -316,14 +302,13 @@ export function getDatasets(m) {
         }
 
         if (totalPension_Spouse > remainder) {
-          drawdown = 0
+          totalPension_Spouse = totalPension_Spouse - remainder
           remainder = 0
-          totalPension_Spouse = totalPension_Spouse - drawdown
         } else {
-          let remainder = drawdown - totalPension_Spouse;
+          remainder = remainder - totalPension_Spouse;
           totalPension_Spouse = 0;
           if (totalCash_Spouse > remainder) {
-            totalCash_Spouse = totalCash_Spouse - drawdown
+            totalCash_Spouse = totalCash_Spouse - remainder
             remainder = 0
           } else {
             remainder = remainder - totalCash_Spouse
@@ -339,7 +324,6 @@ export function getDatasets(m) {
                 remainder = 0
               } else {
                 remainder = remainder - totalGia_Spouse
-                remainder = 0
                 totalGia_Spouse = 0
               }
             }
@@ -411,8 +395,12 @@ export function getChartDatasets(model) {
       borderColor = "#666666AA"; // 25-50
     } else if (finalValue > c50v) {
       borderColor = "#666666AA"; // 25-50
+    } else if ( finalValue ) {
+      borderColor = "#0000FFFF"; // 50
+      borderWidth = 2
     } else {
-      borderColor = "#000000FF"; // 50
+      console.log('bad data' +data);
+      borderColor = "#ffff00FF"; // 50
       borderWidth = 2
     }
 
