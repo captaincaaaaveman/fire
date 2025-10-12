@@ -18,7 +18,8 @@
       <!-- Header -->
     <header class="text-center mb-6">
       <h1 class="text-3xl font-bold text-indigo-700">Financial Projection</h1>
-      <p class="text-gray-600">A work in progress</p>
+      <p class="text-gray-600">A work in progress - not financial advice - might have bugs</p>
+      <p class="text-gray-600">No data leaves your device - everything is stored in your local storage</p>
     </header>
 
     <!-- Main container: 2 columns on desktop, stacked on mobile -->
@@ -33,7 +34,8 @@
           <summary class="cursor-pointer font-semibold text-indigo-600 text-lg">Personal Info</summary>
           <div class="mt-2 space-y-4">
             <div>
-              <label class="block text-lg font-medium" for="ageInput">Age</label>
+              <label class="block text-lg font-medium" for="ageInput">Current Age
+              </label>
               <input type="number" id="ageInput"
                 class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
             </div>
@@ -41,13 +43,20 @@
               <input type="checkbox" id="spouseCheckbox"
                 class="h-5 w-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
               <span class="text-lg font-medium">Include Spouse?</span>
+              <p class="text-sm text-gray-500 mt-1">Do you want to include spouse pension/savings in the simualation. The simulation will run assuming both people survive until your chosen simulation end age</p>
             </label>
             <div class="spouse">
-              <label class="block text-lg font-medium" for="spouseAgeInput">Spouse Age</label>
+              <label class="block text-lg font-medium" for="spouseAgeInput">Spouse Current Age</label>
               <input type="number" id="spouseAgeInput"
                 class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
             </div>
           </div>
+            <div>
+              <label class="block text-lg font-medium" for="projectToAgeInput">Simulation end age</label>
+              <input type="number" id="projectToAgeInput"
+                class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+              <p class="text-sm text-gray-500 mt-1">This should be the age at which you want to simulate surviving to (for drawdown simulation) or the age at which you want to simulate investment growth to (no drawdown simulation)</p>
+            </div>
         </details>
 
 
@@ -109,11 +118,6 @@
           <summary class="cursor-pointer font-semibold text-indigo-600 text-lg">Retirement Drawdown</summary>
           <div class="mt-2 space-y-4">
             <div>
-              <label class="block text-lg font-medium" for="projectToAgeInput">Simulate to age</label>
-              <input type="number" id="projectToAgeInput"
-                class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
-            </div>
-            <div>
               <label class="block text-lg font-medium" for="retirementAgeInput">Retirement Age</label>
               <input type="number" id="retirementAgeInput"
                 class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
@@ -165,6 +169,18 @@
                 class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
             </div>
 
+                        <div>
+              <label class="block text-lg font-medium spouse" for="spouseDefinedBenefitPensionInput">Spouse Defined Benefit Pension</label>
+              <input type="number" id="spouseDefinedBenefitPensionInput"
+                class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+            </div>
+            <div>
+              <label class="block text-lg font-medium spouse" for="spouseDefinedBenefitPensionAgeInput">Spouse Defined Benefit Pension
+                Age</label>
+              <input type="number" id="spouseDefinedBenefitPensionAgeInput"
+                class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+            </div>
+
 
           </div>
         </details>
@@ -179,6 +195,10 @@
         </div>
         -->
 
+        <!-- Retirement / Drawdown Group -->
+        <details id="drawdownGroup" class="bg-white rounded-xl shadow p-4 w-full">
+          <summary class="cursor-pointer font-semibold text-indigo-600 text-lg">Alternative Scenarios (<span class="currentScenario">A</span>)</summary>
+          <p class="mt-2 text-gray-800">You are currently editing Scenario <span class="currentScenario">A</span></p>
         <div class="flex space-x-4 items-center">
           <label class="flex items-center space-x-2 cursor-pointer">
             <input type="radio" name="scenario" value="A" checked
@@ -193,8 +213,6 @@
           </label>
         </div>
 
-        <p class="mt-2 text-gray-800">Current scenario: <span id="currentScenario">A</span></p>
-
         <div class="mt-4">
           <button id="duplicateAtoBBtn" type="button"
             class="w-full bg-indigo-600 text-white rounded-lg py-3 text-lg hover:bg-indigo-700 transition">
@@ -203,7 +221,7 @@
           <p class="block text-sm">Copies all setting from your scenario A to scenario B. You can then make changes to
             scenario B and use the radio button above to switch between them to see the impact.</p>
         </div>
-
+</details>
 
 
 

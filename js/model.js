@@ -16,6 +16,8 @@
  * @property {boolean} historicSimulation
  * @property {number} definedBenefitPension
  * @property {number} definedBenefitPensionAge
+ * @property {number} spouseDefinedBenefitPension
+ * @property {number} spouseDefinedBenefitPensionAge
  * @property {number} investmentPercentage
  * @property {number} savingsPercentage
  * @property {number} cashTotal
@@ -75,6 +77,8 @@ export const model = {
   historicSimulation: false,
   definedBenefitPension: 0,
   definedBenefitPensionAge: 0,
+  spouseDefinedBenefitPension: 0,
+  spouseDefinedBenefitPensionAge: 0,  
 
   investmentPercentage: 0,
   savingsPercentage: 0,
@@ -88,6 +92,7 @@ export const model = {
   pensionAnnualSavings: 0,
   pensionAnnualIncrease: 0,
   pensionYears: 0,
+  pensionAccessAge: 0,
 
   isaTotal: 0,
   isaAnnualSavings: 0,
@@ -108,6 +113,7 @@ export const model = {
   spousePensionAnnualSavings: 0,
   spousePensionAnnualIncrease: 0,
   spousePensionYears: 0,
+  spousePensionAccessAge: 0,
 
   spouseIsaTotal: 0,
   spouseIsaAnnualSavings: 0,

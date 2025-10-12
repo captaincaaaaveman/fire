@@ -101,6 +101,7 @@ export const historicGrowthRates = [49.05,
 
 export const successCases = []
 export const failureCases = []
+export const failureBeforeRetirementCases = []
 export const failureAges = []
 let c1v = 0;
 let c25v = 0;
@@ -114,13 +115,14 @@ let c100v = 0;
  * Example: creates N series where each series multiplies baseData by (multiplier * seriesIndex)
  */
 /**
- * @param {import('./model.js').model} m
+ * @param {import('./model.js').model} model
  */
-export function getDatasets(m) {
+export function getDatasets(model) {
 
   const results = [];
   const labels = [];
   failureAges.length = 0;
+  failureBeforeRetirementCases.length = 0;
 
   let years = model.projectToAge -  Math.min(model.age, model.spouseAge);
 
@@ -270,13 +272,17 @@ export function getDatasets(m) {
 
         let remainder = drawdown
         
-        // Need to work out whether they can draw from pension at age i
-        if (totalPension > remainder) {
-          totalPension = totalPension - remainder
-          remainder = 0
-        } else {
-          remainder = remainder - totalPension;
-          totalPension = 0;
+        if ( model.pensionAccessAge <= age )  {
+          if (totalPension > remainder) {
+            totalPension = totalPension - remainder
+            remainder = 0
+          } else {
+            remainder = remainder - totalPension;
+            totalPension = 0;
+          }
+        }
+
+        if ( remainder > 0 ) {
           if (totalCash > remainder) {
             totalCash = totalCash - drawdown
             remainder = 0
@@ -296,36 +302,50 @@ export function getDatasets(m) {
                 remainder = remainder - totalGia
               }
             }
-          }
+          }          
         }
 
-        if (totalPension_Spouse > remainder) {
-          totalPension_Spouse = totalPension_Spouse - remainder
-          remainder = 0
-        } else {
-          remainder = remainder - totalPension_Spouse;
-          totalPension_Spouse = 0;
-          if (totalCash_Spouse > remainder) {
-            totalCash_Spouse = totalCash_Spouse - remainder
-            remainder = 0
-          } else {
-            remainder = remainder - totalCash_Spouse
-            totalCash_Spouse = 0
-            if (totalIsa_Spouse > remainder) {
-              totalIsa_Spouse = totalIsa_Spouse - remainder
+        if ( remainder > 0 ) {
+
+          if ( model.spousePensionAccessAge <= age )  {
+            if (totalPension_Spouse > remainder) {
+              totalPension_Spouse = totalPension_Spouse - remainder
               remainder = 0
             } else {
-              remainder = remainder - totalIsa_Spouse
-              totalIsa_Spouse = 0
-              if (totalGia_Spouse > remainder) {
-                totalGia_Spouse = totalGia_Spouse - remainder
+              remainder = remainder - totalPension_Spouse;
+              totalPension = 0;
+            }
+          }
+
+          if ( remainder > 0 ) {
+            if (totalCash_Spouse > remainder) {
+              totalCash_Spouse = totalCash_Spouse - remainder
+              remainder = 0
+            } else {
+              remainder = remainder - totalCash_Spouse
+              totalCash_Spouse = 0
+              if (totalIsa_Spouse > remainder) {
+                totalIsa_Spouse = totalIsa_Spouse - remainder
                 remainder = 0
               } else {
-                remainder = remainder - totalGia_Spouse
-                totalGia_Spouse = 0
+                remainder = remainder - totalIsa_Spouse
+                totalIsa_Spouse = 0
+                if (totalGia_Spouse > remainder) {
+                  totalGia_Spouse = totalGia_Spouse - remainder
+                  remainder = 0
+                } else {
+                  remainder = remainder - totalGia_Spouse
+                  totalGia_Spouse = 0
+                }
               }
             }
           }
+        }
+
+        if (remainder > 0 ) {
+          series[year] = 0
+          failedAt = i
+          break
         }
 
       }
@@ -338,6 +358,9 @@ export function getDatasets(m) {
 
     if ( failedAt ) {
       failureAges.push(failedAt)
+      if ( failedAt <= model.retirementAge ) {
+        failureBeforeRetirementCases.push(series)
+      }
     }
 
     results.push(series);
