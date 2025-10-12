@@ -251,19 +251,17 @@ export function getDatasets(m) {
           drawdown = drawdown - model.statePension
         }
 
-        // TODO
-        // if (spouseAge >= model.spouseStatePensionAge) {
-        //   drawdown = drawdown - model.spouseStatePension
-        // }
+        if (spouseAge >= model.spouseStatePensionAge) {
+          drawdown = drawdown - model.spouseStatePension
+        }
 
         if (age >= model.definedBenefitPensionAge) {
           drawdown = drawdown - model.definedBenefitPension
         }
 
-        // TODO
-        // if (spouseAge >= model.spouseDefinedBenefitPensionAge) {
-        //   drawdown = drawdown - model.spouseDefinedBenefitPension
-        // }
+        if (spouseAge >= model.spouseDefinedBenefitPensionAge) {
+          drawdown = drawdown - model.spouseDefinedBenefitPension
+        }
 
 
         if ( drawdown < 0 ) {

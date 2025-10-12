@@ -36,6 +36,8 @@ const annualDrawdownUnder75Input = document.getElementById("annualDrawdownUnder7
 const annualDrawdown75orOverInput = document.getElementById("annualDrawdown75orOverInput");
 const statePensionInput = document.getElementById("statePensionInput");
 const statePensionAgeInput = document.getElementById("statePensionAgeInput");
+const spouseStatePensionInput = document.getElementById("spouseStatePensionInput");
+const spouseStatePensionAgeInput = document.getElementById("spouseStatePensionAgeInput");
 
 const definedBenefitPensionInput = document.getElementById("definedBenefitPensionInput");
 const definedBenefitPensionAgeInput = document.getElementById("definedBenefitPensionAgeInput");
@@ -68,18 +70,14 @@ function initFromStorage() {
 
   projectToAgeInput.value = model.projectToAge || "95";
   retirementAgeInput.value = model.retirementAge || "65";
-  // investmentAmountInput.value = model.investmentAmount || "0";
   investmentPercentageInput.value = model.investmentPercentage || "4";
-  // savingsAmountInput.value = model.savingsAmount || "20000";
   savingsPercentageInput.value = model.savingsPercentage || "-1";
-  // annualInvestmentInput.value = model.investment || "0";
-  // investmentYearsInput.value = model.investmentYears || "10";
-  // annualSavingsInput.value = model.savings || "12000";
-  // savingsYearsInput.value = model.savingsYears || "10";
   annualDrawdownUnder75Input.value = model.annualDrawdownUnder75 || "40000";
   annualDrawdown75orOverInput.value = model.annualDrawdown75orOver || "30000";
-  statePensionInput.value = model.statePension || 23946;
+  statePensionInput.value = model.statePension || 11973;
   statePensionAgeInput.value = model.statePensionAge || 67;
+  spouseStatePensionInput.value = model.spouseStatePension || 11973;
+  spouseStatePensionAgeInput.value = model.spouseStatePensionAge || 67;
   definedBenefitPensionInput.value = model.definedBenefitPension || 0;
   definedBenefitPensionAgeInput.value = model.definedBenefitPensionAge || 0;
   modelDrawdownCheckbox.checked = model.modelDrawdown || false;
@@ -118,6 +116,8 @@ function updateModel() {
   model.annualDrawdown75orOver = parseInt(annualDrawdown75orOverInput.value) || 0;
   model.statePension = parseInt(statePensionInput.value) || 0;
   model.statePensionAge = parseInt(statePensionAgeInput.value) || 0;
+  model.spouseStatePension = parseInt(spouseStatePensionInput.value) || 0;
+  model.spouseStatePensionAge = parseInt(spouseStatePensionAgeInput.value) || 0;
   model.definedBenefitPension = parseInt(definedBenefitPensionInput.value) || 0;
   model.definedBenefitPensionAge = parseInt(definedBenefitPensionAgeInput.value) || 0;
   model.modelDrawdown = modelDrawdownCheckbox.checked;
@@ -322,8 +322,11 @@ if (statsContainer) {
 const debouncedRecalc = debounce(recalcAndUpdate, 250);
 
 // Attach event listeners for auto-update
-[ageInput, projectToAgeInput, retirementAgeInput, annualDrawdown75orOverInput, annualDrawdownUnder75Input, statePensionInput,
+[ageInput, projectToAgeInput, retirementAgeInput, annualDrawdown75orOverInput, annualDrawdownUnder75Input, 
+  statePensionInput,
   statePensionAgeInput,
+  spouseStatePensionInput,
+  spouseStatePensionAgeInput,
   definedBenefitPensionInput,definedBenefitPensionAgeInput,
   modelDrawdownCheckbox, historicSimulationCheckbox,
   spouseCheckbox, spouseAgeInput,

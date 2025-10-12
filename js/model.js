@@ -8,6 +8,8 @@
  * @property {number} retirementAge
  * @property {number} annualDrawdownUnder75
  * @property {number} annualDrawdown75orOver
+ * @property {number} spouseStatePensionInput
+ * @property {number} spouseStatePensionAgeInput
  * @property {number} statePensionInput
  * @property {number} statePensionAgeInput
  * @property {boolean} modelDrawdown
