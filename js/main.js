@@ -108,6 +108,7 @@ function initFromStorage() {
   }
 
   showHideSpouse();
+  showHideDrawdown();
 
 }
 
@@ -371,13 +372,6 @@ for (const group of investmentGroups) {
   });
 }
 
-
-
-// --- Calculate button ---
-// calculateBtn.addEventListener("click", () => {
-//   recalcAndUpdate();
-// });
-
 const drawdownGroup = document.getElementById("drawdownGroup");
 const statsGroup = document.getElementById("statsGroup");
 
@@ -385,18 +379,18 @@ spouseCheckbox.addEventListener("click", () => {
   showHideSpouse()
 });
 
-// historicSimulationCheckbox.addEventListener("click", () => {
-//   showHideStats()
-// });
+modelDrawdownCheckbox.addEventListener("click", () => {
+  showHideDrawdown()
+});
 
-// function showHideStats() {
-//   if ( historicSimulationCheckbox.checked ) {
-//     statsGroup.classList.remove("hidden");
-//   } else {
-//     statsGroup.classList.add("hidden");
-//   }
+function showHideDrawdown() {
+  if (modelDrawdownCheckbox.checked) {
+    drawdownGroup.classList.remove("hidden");
+  } else {
+    drawdownGroup.classList.add("hidden");
+  }
+}
 
-// }
 
 function showHideSpouse() {
   const spouseElements = document.querySelectorAll(".spouse");
