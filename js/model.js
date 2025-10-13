@@ -76,7 +76,7 @@ export const model = {
   statePensionAgeInput: 0,
   modelDrawdown: false,
   // historicSimulation: false,
-  simulationType: 'flat', // 'historic', 'historicUS', or 'flat'
+  simulationType: 'constant', // 'historic', 'historicUS', or 'flat'
   definedBenefitPension: 0,
   definedBenefitPensionAge: 0,
   spouseDefinedBenefitPension: 0,

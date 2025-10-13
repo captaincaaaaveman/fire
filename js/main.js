@@ -134,7 +134,7 @@ function updateModel() {
   model.spouseDefinedBenefitPensionAge = parseInt(spouseDefinedBenefitPensionAgeInput.value) || 0;
   model.modelDrawdown = modelDrawdownCheckbox.checked;
   // model.historicSimulation = historicSimulationCheckbox.checked;
-  model.simulationType = document.querySelector('input[name="simulationType"]:checked')?.value || 'flat';
+  model.simulationType = document.querySelector('input[name="simulationType"]:checked')?.value || 'constant';
 
 
   for (const group of investmentGroups) {
@@ -441,7 +441,7 @@ function showHideStats() {
   // find the selected simulation type
   const selected = document.querySelector('input[name="simulationType"]:checked').value;
 
-  if (selected !== 'flatRateGrowth') {
+  if (selected !== 'constantRateGrowth') {
     statsGroup.classList.remove("hidden");
   } else {
     statsGroup.classList.add("hidden");
