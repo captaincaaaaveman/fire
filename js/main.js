@@ -107,6 +107,8 @@ function initFromStorage() {
 
   }
 
+  showHideSpouse();
+
 }
 
 
