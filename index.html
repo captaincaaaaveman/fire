@@ -225,8 +225,25 @@
         </div>
         -->
 
-        <!-- Retirement / Drawdown Group -->
-        <details id="drawdownGroup" class="bg-white rounded-xl shadow p-4 w-full">
+
+
+
+      </div>
+
+
+    <!-- Right column -->
+  <div class="md:w-2/3">
+
+
+
+    <div class="sticky top-4 bg-white rounded-xl shadow p-4">
+
+      <div id="chartContainer" class="w-full h-96">
+        <canvas id="myChart"></canvas>
+      </div>
+
+
+         <details id="scenarios" class="bg-white rounded-xl shadow p-4 w-full mb-6">
           <summary class="cursor-pointer font-semibold text-indigo-600 text-lg">Alternative Scenarios (<span class="currentScenario">A</span>)</summary>
           <p class="mt-2 text-gray-800">You are currently editing Scenario <span class="currentScenario">A</span></p>
         <div class="flex space-x-4 items-center">
@@ -254,26 +271,14 @@
 </details>
 
 
-
-      </div>
-
-
-    <!-- Right column -->
-  <div class="md:w-2/3">
+<div id="fvContainer" class="bg-white rounded-xl shadow p-4 w-full grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+  <div id="percentageSuccess" class="font-medium text-gray-800 text-sm md:text-base"></div>
+  <div id="medianFinalValue" class="font-medium text-gray-800 text-sm md:text-base">£${fmt(min)}</div>
+</div>
 
 
 
-    <div class="sticky top-4 bg-white rounded-xl shadow p-4">
-
-
-      <div id="chartContainer" class="w-full h-96">
-        <canvas id="myChart"></canvas>
-      </div>
-
-      <div id="medianFinalValue" class="font-medium text-gray-800 text-sm md:text-base">£${fmt(min)}</div>
-
-      <div id="statsGroup">
-        <h1 id="percentageSuccess"></h1>
+      <div id="statsGroup" class="font-medium text-gray-800 text-sm md:text-base">
         <div id="finalValue"></div>
 
         <div id="fvContainer" class="w-full p-4 bg-white rounded-xl shadow">

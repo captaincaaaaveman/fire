@@ -233,34 +233,40 @@ if (Array.isArray(finalValue) && finalValue.length === 5) {
   }
 
   fvheading.innerHTML = `
-    <div class="text-sm text-gray-500 mb-2 text-center">Range of Outcomes</div>
 
-    <!-- Gradient Bar -->
-    <div class="h-1 bg-gradient-to-r from-red-300 via-yellow-300 to-green-300 rounded-full mb-3"></div>
+<div id="rangeOfOutcomes" class="bg-white rounded-xl shadow p-4 w-full space-y-4  mb-6">
 
-    <!-- Grid of Values + Labels -->
-    <div class="grid grid-cols-5 gap-2 text-center">
-      <div>
-        <div class="font-medium text-gray-800 text-sm md:text-base">£${fmt(min)}</div>
-        <div class="text-xs text-gray-400 mt-1">Lowest</div>
-      </div>
-      <div>
-        <div class="font-medium text-gray-800 text-sm md:text-base">£${fmt(p25)}</div>
-        <div class="text-xs text-gray-400 mt-1">25th</div>
-      </div>
-      <div>
-        <div class="font-bold text-indigo-600 text-sm md:text-base">£${fmt(median)}</div>
-        <div class="text-xs text-gray-400 mt-1">Median</div>
-      </div>
-      <div>
-        <div class="font-medium text-gray-800 text-sm md:text-base">£${fmt(p75)}</div>
-        <div class="text-xs text-gray-400 mt-1">75th</div>
-      </div>
-      <div>
-        <div class="font-medium text-gray-800 text-sm md:text-base">£${fmt(max)}</div>
-        <div class="text-xs text-gray-400 mt-1">Highest</div>
-      </div>
+  <!-- Title centered -->
+  <div class="font-medium text-gray-800 text-base text-center">Range of Outcomes</div>
+
+  <!-- Gradient Bar -->
+  <div class="h-2 bg-gradient-to-r from-red-300 via-yellow-300 to-green-300 rounded-full"></div>
+
+  <!-- Grid of Values + Labels -->
+  <div class="grid grid-cols-5 gap-2 text-center">
+    <div>
+      <div class="font-medium text-gray-800 text-sm md:text-base">£${fmt(min)}</div>
+      <div class="text-xs text-gray-400 mt-1">Lowest</div>
     </div>
+    <div>
+      <div class="font-medium text-gray-800 text-sm md:text-base">£${fmt(p25)}</div>
+      <div class="text-xs text-gray-400 mt-1">25th</div>
+    </div>
+    <div>
+      <div class="font-bold text-indigo-600 text-sm md:text-base">£${fmt(median)}</div>
+      <div class="text-xs text-gray-400 mt-1">Median</div>
+    </div>
+    <div>
+      <div class="font-medium text-gray-800 text-sm md:text-base">£${fmt(p75)}</div>
+      <div class="text-xs text-gray-400 mt-1">75th</div>
+    </div>
+    <div>
+      <div class="font-medium text-gray-800 text-sm md:text-base">£${fmt(max)}</div>
+      <div class="text-xs text-gray-400 mt-1">Highest</div>
+    </div>
+  </div>
+</div>
+
   `;
 } else {
   fvheading.textContent = "—";
