@@ -232,7 +232,7 @@ export function getDatasets(model) {
       ? historicUSGrowthRates
       : historicGlobalGrowthRates;
 
-  if ( model.simulationType === 'flat') {
+  if ( model.simulationType === 'constant') {
     years = growthRates.length - 1
   }
 
@@ -299,7 +299,7 @@ export function getDatasets(model) {
       let pPension = growthRates[historicYear + year]
       let pCash = -1
 
-      if ( model.simulationType === 'flat' ) {
+      if ( model.simulationType === 'constant' ) {
         pIsa = model.investmentPercentage;
         pGia = model.investmentPercentage;
         pPension = model.investmentPercentage;

@@ -45,7 +45,7 @@ const definedBenefitPensionAgeInput = document.getElementById("definedBenefitPen
 const spouseDefinedBenefitPensionInput = document.getElementById("spouseDefinedBenefitPensionInput");
 const spouseDefinedBenefitPensionAgeInput = document.getElementById("spouseDefinedBenefitPensionAgeInput");
 
-const historicSimulationCheckbox = document.getElementById("historicSimulationCheckbox");
+// const historicSimulationCheckbox = document.getElementById("historicSimulationCheckbox");
 
 const investmentGroups = ["cash", "pension", "isa", "gia", 
   "spouseCash", "spousePension", "spouseIsa", "spouseGia"];
@@ -352,7 +352,7 @@ const simulationRadios = document.querySelectorAll('input[name="simulationType"]
   spouseStatePensionAgeInput,
   definedBenefitPensionInput,definedBenefitPensionAgeInput,
   spouseDefinedBenefitPensionInput,spouseDefinedBenefitPensionAgeInput,
-  modelDrawdownCheckbox, historicSimulationCheckbox,
+  modelDrawdownCheckbox, 
   spouseCheckbox, spouseAgeInput,
   investmentPercentageInput, savingsPercentageInput,
   ...simulationRadios
@@ -383,18 +383,18 @@ spouseCheckbox.addEventListener("click", () => {
   showHideSpouse()
 });
 
-historicSimulationCheckbox.addEventListener("click", () => {
-  showHideStats()
-});
+// historicSimulationCheckbox.addEventListener("click", () => {
+//   showHideStats()
+// });
 
-function showHideStats() {
-  if ( historicSimulationCheckbox.checked ) {
-    statsGroup.classList.remove("hidden");
-  } else {
-    statsGroup.classList.add("hidden");
-  }
+// function showHideStats() {
+//   if ( historicSimulationCheckbox.checked ) {
+//     statsGroup.classList.remove("hidden");
+//   } else {
+//     statsGroup.classList.add("hidden");
+//   }
 
-}
+// }
 
 function showHideSpouse() {
   const spouseElements = document.querySelectorAll(".spouse");
@@ -430,13 +430,23 @@ duplicateAtoBBtn.addEventListener("click", () => {
 
 simulationRadios.forEach(radio => {
   radio.addEventListener('change', () => {
-    model.historicSimulation = (radio.value === 'historicSimulation');
-    model.historicUSSimulation = (radio.value === 'historicUSSimulation');
-    model.flatRateGrowth = (radio.value === 'flatRateGrowth');
-    console.log('Selected simulation:', radio.value);
+    // model.historicSimulation = (radio.value === 'historicSimulation');
+    // model.historicUSSimulation = (radio.value === 'historicUSSimulation');
+    // model.flatRateGrowth = (radio.value === 'flatRateGrowth');
+    showHideStats();
   });
 });
 
+function showHideStats() {
+  // find the selected simulation type
+  const selected = document.querySelector('input[name="simulationType"]:checked').value;
+
+  if (selected !== 'flatRateGrowth') {
+    statsGroup.classList.remove("hidden");
+  } else {
+    statsGroup.classList.add("hidden");
+  }
+}
 
 
 radios.forEach(radio => {
