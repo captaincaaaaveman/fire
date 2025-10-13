@@ -89,7 +89,10 @@ function initFromStorage() {
   spouseDefinedBenefitPensionInput.value = model.spouseDefinedBenefitPension || 0;
   spouseDefinedBenefitPensionAgeInput.value = model.spouseDefinedBenefitPensionAge || 0;
   modelDrawdownCheckbox.checked = model.modelDrawdown || false;
-  historicSimulationCheckbox.checked = model.historicSimulation || false;
+  // historicSimulationCheckbox.checked = model.historicSimulation || false;
+  simulationRadios.forEach(radio => {
+    radio.checked = (radio.value === model.simulationType);
+  });
 
   for (const group of investmentGroups) {
     const fields = investmentInputs[group];
@@ -130,7 +133,9 @@ function updateModel() {
   model.spouseDefinedBenefitPension = parseInt(spouseDefinedBenefitPensionInput.value) || 0;
   model.spouseDefinedBenefitPensionAge = parseInt(spouseDefinedBenefitPensionAgeInput.value) || 0;
   model.modelDrawdown = modelDrawdownCheckbox.checked;
-  model.historicSimulation = historicSimulationCheckbox.checked;
+  // model.historicSimulation = historicSimulationCheckbox.checked;
+  model.simulationType = document.querySelector('input[name="simulationType"]:checked')?.value || 'flat';
+
 
   for (const group of investmentGroups) {
     const fields = investmentInputs[group];
@@ -337,6 +342,7 @@ if (statsContainer) {
 
 
 const debouncedRecalc = debounce(recalcAndUpdate, 250);
+const simulationRadios = document.querySelectorAll('input[name="simulationType"]');
 
 // Attach event listeners for auto-update
 [ageInput, projectToAgeInput, retirementAgeInput, annualDrawdown75orOverInput, annualDrawdownUnder75Input, 
@@ -348,7 +354,8 @@ const debouncedRecalc = debounce(recalcAndUpdate, 250);
   spouseDefinedBenefitPensionInput,spouseDefinedBenefitPensionAgeInput,
   modelDrawdownCheckbox, historicSimulationCheckbox,
   spouseCheckbox, spouseAgeInput,
-  investmentPercentageInput, savingsPercentageInput
+  investmentPercentageInput, savingsPercentageInput,
+  ...simulationRadios
 ].forEach(input => {
   input.addEventListener("input", debouncedRecalc);
 });
@@ -419,6 +426,17 @@ duplicateAtoBBtn.addEventListener("click", () => {
   saveModel(model, "B")
   currentScenario = "A"
 });
+
+
+simulationRadios.forEach(radio => {
+  radio.addEventListener('change', () => {
+    model.historicSimulation = (radio.value === 'historicSimulation');
+    model.historicUSSimulation = (radio.value === 'historicUSSimulation');
+    model.flatRateGrowth = (radio.value === 'flatRateGrowth');
+    console.log('Selected simulation:', radio.value);
+  });
+});
+
 
 
 radios.forEach(radio => {

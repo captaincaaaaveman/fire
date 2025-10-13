@@ -227,11 +227,16 @@ export function getDatasets(model) {
 
   let years = model.projectToAge -  Math.min(model.age, model.spouseAge);
 
-  if (! model.historicSimulation) {
-    years = historicGlobalGrowthRates.length - 1
+  const growthRates =
+    model.simulationType === 'historicUSSimulation'
+      ? historicUSGrowthRates
+      : historicGlobalGrowthRates;
+
+  if ( model.simulationType === 'flat') {
+    years = growthRates.length - 1
   }
 
-  for (let historicYear = 0; historicYear < historicGlobalGrowthRates.length - years; historicYear++) {
+  for (let historicYear = 0; historicYear < growthRates.length - years; historicYear++) {
 
     let totalIsa = model.isaTotal;
     let totalCash = model.cashTotal;
@@ -289,12 +294,12 @@ export function getDatasets(model) {
       }
 
       // Apply interest / growth
-      let pIsa = historicGlobalGrowthRates[historicYear + year]
-      let pGia = historicGlobalGrowthRates[historicYear + year]
-      let pPension = historicGlobalGrowthRates[historicYear + year]
+      let pIsa = growthRates[historicYear + year]
+      let pGia = growthRates[historicYear + year]
+      let pPension = growthRates[historicYear + year]
       let pCash = -1
 
-      if (! model.historicSimulation) {
+      if ( model.simulationType === 'flat' ) {
         pIsa = model.investmentPercentage;
         pGia = model.investmentPercentage;
         pPension = model.investmentPercentage;

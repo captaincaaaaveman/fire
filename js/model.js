@@ -59,6 +59,7 @@
  * @property {number} spouseGiaAnnualSavings
  * @property {number} spouseGiaAnnualIncrease
  * @property {number} spouseGiaYears
+ * @property {string} simulationType
  */
 
 
@@ -74,7 +75,8 @@ export const model = {
   statePensionInput: 0,
   statePensionAgeInput: 0,
   modelDrawdown: false,
-  historicSimulation: false,
+  // historicSimulation: false,
+  simulationType: 'flat', // 'historic', 'historicUS', or 'flat'
   definedBenefitPension: 0,
   definedBenefitPensionAge: 0,
   spouseDefinedBenefitPension: 0,
