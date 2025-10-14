@@ -143,7 +143,7 @@
         </details>
 
 
-        <!-- Retirement / Drawdown Group -->
+        <!-- Retirement / Drawdown Group 
         <details id="drawdownGroup" class="bg-white rounded-xl shadow p-4 w-full">
           <summary class="cursor-pointer font-semibold text-indigo-600 text-lg">Retirement Drawdown</summary>
           <div class="mt-2 space-y-4">
@@ -160,11 +160,16 @@
               <p class="block text-sm">When you might want to spend a bit more</p>
             </div>
             <div>
-              <label class="block text-lg font-medium" for="annualDrawdown75orOverInput">Annual Drawdown (75 or
-                over)</label>
-              <input type="number" id="annualDrawdown75orOverInput"
+              <label class="block text-lg font-medium" for="annualDrawdown75to89Input">Annual Drawdown (75-89)</label>
+              <input type="number" id="annualDrawdown75to89Input"
                 class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
               <p class="block text-sm">When you might want to spend a bit less</p>
+            </div>
+            <div>
+              <label class="block text-lg font-medium" for="annualDrawdown90PlusInput">Annual Drawdown (90 or over)</label>
+              <input type="number" id="annualDrawdown90PlusInput"
+                class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+              <p class="block text-sm">When you might want to spend a bit more for care</p>
             </div>
             <div>
               <label class="block text-lg font-medium" for="statePensionInput">State Pension</label>
@@ -225,7 +230,117 @@
 
 
           </div>
-        </details>
+        </details>-->
+
+<!-- Retirement / Drawdown Group -->
+<details id="drawdownGroup" class="bg-white rounded-xl shadow p-4 w-full">
+  <summary class="cursor-pointer font-semibold text-indigo-600 text-lg">Retirement Drawdown</summary>
+  
+  <div class="mt-4 space-y-6">
+
+    <!-- Retirement Age -->
+    <div>
+      <label class="block text-lg font-medium" for="retirementAgeInput">Retirement Age</label>
+      <input type="number" id="retirementAgeInput"
+        class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+    </div>
+
+    <!-- Drawdown by Age Groups -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div>
+        <label class="block text-lg font-medium" for="annualDrawdownUnder75Input">Annual Drawdown (Under 75)</label>
+        <input type="number" id="annualDrawdownUnder75Input"
+          class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+        <p class="text-sm mt-1">When you might want to spend a bit more</p>
+      </div>
+      <div>
+        <label class="block text-lg font-medium" for="annualDrawdown75to89Input">Annual Drawdown (75-89)</label>
+        <input type="number" id="annualDrawdown75to89Input"
+          class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+        <p class="text-sm mt-1">When you might want to spend a bit less</p>
+      </div>
+      <div>
+        <label class="block text-lg font-medium" for="annualDrawdown90PlusInput">Annual Drawdown (90+)</label>
+        <input type="number" id="annualDrawdown90PlusInput"
+          class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+        <p class="text-sm mt-1">When you might want to spend more for care</p>
+      </div>
+    </div>
+
+    <!-- State Pensions -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 spouse-option">
+      <div>
+        <h3 class="text-lg font-semibold text-indigo-600 mb-2 md:block">You</h3>
+        <label class="block text-lg font-medium" for="statePensionInput">Your State Pension</label>
+        <input type="number" id="statePensionInput"
+          class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+      </div>
+      <div class="spouse">
+        <h3 class="text-lg font-semibold text-indigo-600 mb-2 hidden md:block">Spouse</h3>
+        <label class="block text-lg font-medium" for="spouseStatePensionInput">Spouse State Pension</label>
+        <input type="number" id="spouseStatePensionInput"
+          class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 spouse-option">
+      <div>
+        <label class="block text-lg font-medium" for="statePensionAgeInput">Your State Pension Age</label>
+        <input type="number" id="statePensionAgeInput"
+          class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+      </div>
+      <div class="spouse">
+        <label class="block text-lg font-medium" for="spouseStatePensionAgeInput">Spouse State Pension Age</label>
+        <input type="number" id="spouseStatePensionAgeInput"
+          class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+      </div>
+    </div>
+
+    <!-- Defined Benefit Pensions -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 spouse-option">
+      <div>
+        <label class="block text-lg font-medium" for="definedBenefitPensionInput">Your Defined Benefit Pension</label>
+        <input type="number" id="definedBenefitPensionInput"
+          class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+      </div>
+      <div class="spouse">
+        <label class="block text-lg font-medium" for="spouseDefinedBenefitPensionInput">Spouse Defined Benefit Pension</label>
+        <input type="number" id="spouseDefinedBenefitPensionInput"
+          class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 spouse-option">
+      <div>
+        <label class="block text-lg font-medium" for="definedBenefitPensionAgeInput">Your Defined Benefit Pension Age</label>
+        <input type="number" id="definedBenefitPensionAgeInput"
+          class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+      </div>
+      <div class="spouse">
+        <label class="block text-lg font-medium" for="spouseDefinedBenefitPensionAgeInput">Spouse Defined Benefit Pension Age</label>
+        <input type="number" id="spouseDefinedBenefitPensionAgeInput"
+          class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+      </div>
+    </div>
+
+    <!-- Death Ages -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 spouse spouse-option">
+      <div>
+        <label class="block text-lg font-medium" for="deathAgeInput">Your Simulated Death Age</label>
+        <input type="number" id="deathAgeInput"
+          class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+      </div>
+      <div class="spouse">
+        <label class="block text-lg font-medium" for="spouseDeathAgeInput">Spouse Simulated Death Age</label>
+        <input type="number" id="spouseDeathAgeInput"
+          class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+      </div>
+    </div>
+
+  </div>
+</details>
+
+
 
         <!-- Calculate Button 
         <div class="mt-4">
