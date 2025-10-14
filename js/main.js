@@ -45,6 +45,9 @@ const definedBenefitPensionAgeInput = document.getElementById("definedBenefitPen
 const spouseDefinedBenefitPensionInput = document.getElementById("spouseDefinedBenefitPensionInput");
 const spouseDefinedBenefitPensionAgeInput = document.getElementById("spouseDefinedBenefitPensionAgeInput");
 
+const deathAgeInput = document.getElementById("deathAgeInput");
+const spouseDeathAgeInput = document.getElementById("spouseDeathAgeInput");
+
 // const historicSimulationCheckbox = document.getElementById("historicSimulationCheckbox");
 
 const investmentGroups = ["cash", "pension", "isa", "gia", 
@@ -89,6 +92,10 @@ function initFromStorage() {
   spouseDefinedBenefitPensionInput.value = model.spouseDefinedBenefitPension || 0;
   spouseDefinedBenefitPensionAgeInput.value = model.spouseDefinedBenefitPensionAge || 0;
   modelDrawdownCheckbox.checked = model.modelDrawdown || false;
+
+  deathAgeInput.value = model.deathAge || 96;
+  spouseDeathAgeInput.value = model.spouseDeathAge || 96;
+
   // historicSimulationCheckbox.checked = model.historicSimulation || false;
   simulationRadios.forEach(radio => {
     radio.checked = (radio.value === model.simulationType);
@@ -139,6 +146,8 @@ function updateModel() {
   // model.historicSimulation = historicSimulationCheckbox.checked;
   model.simulationType = document.querySelector('input[name="simulationType"]:checked')?.value || 'constant';
 
+  model.deathAge = parseInt(deathAgeInput.value) || 96;
+  model.spouseDeathAge = parseInt(spouseDeathAgeInput.value) || 96;
 
   for (const group of investmentGroups) {
     const fields = investmentInputs[group];
@@ -364,6 +373,7 @@ const simulationRadios = document.querySelectorAll('input[name="simulationType"]
   modelDrawdownCheckbox, 
   spouseCheckbox, spouseAgeInput,
   investmentPercentageInput, savingsPercentageInput,
+  deathAgeInput, spouseDeathAgeInput,
   ...simulationRadios
 ].forEach(input => {
   input.addEventListener("input", debouncedRecalc);

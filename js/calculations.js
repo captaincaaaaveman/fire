@@ -366,19 +366,19 @@ export function getDatasets(model) {
           }
         }
 
-        if (age >= model.statePensionAge) {
+        if (age >= model.statePensionAge && age < model.deathAge ) {
           drawdown = drawdown - model.statePension
         }
 
-        if (model.spouse && spouseAge >= model.spouseStatePensionAge) {
+        if (model.spouse && spouseAge >= model.spouseStatePensionAge && spouseAge < model.spouseDeathAge ) {
           drawdown = drawdown - model.spouseStatePension
         }
 
-        if (age >= model.definedBenefitPensionAge) {
+        if (age >= model.definedBenefitPensionAge && age < model.deathAge ) {
           drawdown = drawdown - model.definedBenefitPension
         }
 
-        if (model.spouse && spouseAge >= model.spouseDefinedBenefitPensionAge) {
+        if (model.spouse && spouseAge >= model.spouseDefinedBenefitPensionAge && spouseAge < model.spouseDeathAge ) {
           drawdown = drawdown - model.spouseDefinedBenefitPension
         }
 

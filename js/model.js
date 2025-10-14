@@ -60,6 +60,8 @@
  * @property {number} spouseGiaAnnualIncrease
  * @property {number} spouseGiaYears
  * @property {string} simulationType
+ * @property {number} deathAge
+ * @property {number} spouseDeathAge
  */
 
 
@@ -125,7 +127,10 @@ export const model = {
   spouseGiaTotal: 0,
   spouseGiaAnnualSavings: 0,
   spouseGiaAnnualIncrease: 0,
-  spouseGiaYears: 0
+  spouseGiaYears: 0,
+
+  deathAge: 96,
+  spouseDeathAge: 96
 };
 
 
