@@ -427,12 +427,12 @@ function showHideSpouse() {
   const spouseOptionDivs = document.querySelectorAll('.spouse-option');
 
   spouseOptionDivs.forEach(div => {
-    if (model.spouse) {
-      div.classList.remove('md:grid-cols-2');
-      div.classList.add('md:grid-cols-1');
-    } else {
+    if (spouseCheckbox.checked) {
       div.classList.remove('md:grid-cols-1');
       div.classList.add('md:grid-cols-2');
+    } else {
+      div.classList.remove('md:grid-cols-2');
+      div.classList.add('md:grid-cols-1');
     }
   });
 
