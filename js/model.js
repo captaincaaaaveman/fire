@@ -7,7 +7,8 @@
  * @property {number} projectToAge
  * @property {number} retirementAge
  * @property {number} annualDrawdownUnder75
- * @property {number} annualDrawdown75orOver
+ * @property {number} annualDrawdown75to89
+ * @property {number} annualDrawdown90Plus
  * @property {number} spouseStatePensionInput
  * @property {number} spouseStatePensionAgeInput
  * @property {number} statePensionInput
@@ -73,7 +74,8 @@ export const model = {
   projectToAge: 0,
   retirementAge: 0,
   annualDrawdownUnder75: 0,
-  annualDrawdown75orOver: 0,
+  annualDrawdown75to89: 0,
+  annualDrawdown90Plus: 0,
   statePensionInput: 0,
   statePensionAgeInput: 0,
   modelDrawdown: false,

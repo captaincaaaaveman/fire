@@ -278,6 +278,13 @@ export function getDatasets(model) {
       age++; 
       spouseAge++;
 
+      if ( age > model.deathAge && spouseAge > model.deathAge ) {
+        break;
+      }
+      if ( !model.spouse && age > model.deathAge ) {
+        break;
+      }
+
       // Store in series
       series[year] = totalIsa + totalCash + totalPension + totalGia;
 
@@ -361,8 +368,10 @@ export function getDatasets(model) {
         if (age >= model.retirementAge) {
           if (i < 75) {
             drawdown = model.annualDrawdownUnder75
+          } else if ( i < 90 ) {
+            drawdown = model.annualDrawdown75to89
           } else {
-            drawdown = model.annualDrawdown75orOver
+            drawdown = model.annualDrawdown90Plus
           }
         }
 
@@ -537,7 +546,7 @@ export function getChartDatasets(model) {
       borderColor = "#0000FFFF"; // 50
       borderWidth = 2
     } else {
-      console.log('bad data' +data);
+      // console.log('bad data' +data);
       borderColor = "#ffff00FF"; // 50
       borderWidth = 2
     }

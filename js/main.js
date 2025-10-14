@@ -33,7 +33,9 @@ const savingsPercentageInput = document.getElementById("savingsPercentageInput")
 const modelDrawdownCheckbox = document.getElementById("modelDrawdownCheckbox")
 
 const annualDrawdownUnder75Input = document.getElementById("annualDrawdownUnder75Input");
-const annualDrawdown75orOverInput = document.getElementById("annualDrawdown75orOverInput");
+const annualDrawdown75to89Input = document.getElementById("annualDrawdown75to89Input");
+const annualDrawdown90PlusInput = document.getElementById("annualDrawdown90PlusInput");
+
 const statePensionInput = document.getElementById("statePensionInput");
 const statePensionAgeInput = document.getElementById("statePensionAgeInput");
 const spouseStatePensionInput = document.getElementById("spouseStatePensionInput");
@@ -82,7 +84,8 @@ function initFromStorage() {
   investmentPercentageInput.value = model.investmentPercentage || "4";
   savingsPercentageInput.value = model.savingsPercentage || "-1";
   annualDrawdownUnder75Input.value = model.annualDrawdownUnder75 || "40000";
-  annualDrawdown75orOverInput.value = model.annualDrawdown75orOver || "30000";
+  annualDrawdown75to89Input.value = model.annualDrawdown75to89 || "30000";
+  annualDrawdown90PlusInput.value = model.annualDrawdown90Plus || "60000";
   statePensionInput.value = model.statePension || 11973;
   statePensionAgeInput.value = model.statePensionAge || 67;
   spouseStatePensionInput.value = model.spouseStatePension || 11973;
@@ -133,7 +136,8 @@ function updateModel() {
   model.investmentPercentage = isNaN(val) ? undefined : val;
   model.savingsPercentage = parseFloat(savingsPercentageInput.value) || 0;
   model.annualDrawdownUnder75 = parseInt(annualDrawdownUnder75Input.value) || 0;
-  model.annualDrawdown75orOver = parseInt(annualDrawdown75orOverInput.value) || 0;
+  model.annualDrawdown75to89 = parseInt(annualDrawdown75to89Input.value) || 0;
+  model.annualDrawdown90Plus = parseInt(annualDrawdown90PlusInput.value) || 0;
   model.statePension = parseInt(statePensionInput.value) || 0;
   model.statePensionAge = parseInt(statePensionAgeInput.value) || 0;
   model.spouseStatePension = parseInt(spouseStatePensionInput.value) || 0;
@@ -363,7 +367,8 @@ const debouncedRecalc = debounce(recalcAndUpdate, 250);
 const simulationRadios = document.querySelectorAll('input[name="simulationType"]');
 
 // Attach event listeners for auto-update
-[ageInput, projectToAgeInput, retirementAgeInput, annualDrawdown75orOverInput, annualDrawdownUnder75Input, 
+[ageInput, projectToAgeInput, retirementAgeInput, 
+  annualDrawdownUnder75Input, annualDrawdown75to89Input, annualDrawdown90PlusInput, 
   statePensionInput,
   statePensionAgeInput,
   spouseStatePensionInput,
@@ -418,6 +423,19 @@ function showHideSpouse() {
       el.classList.add("hidden");
     }
   });
+
+  const spouseOptionDivs = document.querySelectorAll('.spouse-option');
+
+  spouseOptionDivs.forEach(div => {
+    if (model.spouse) {
+      div.classList.remove('md:grid-cols-2');
+      div.classList.add('md:grid-cols-1');
+    } else {
+      div.classList.remove('md:grid-cols-1');
+      div.classList.add('md:grid-cols-2');
+    }
+  });
+
 }
 
 initFromStorage();
