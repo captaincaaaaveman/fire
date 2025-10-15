@@ -221,9 +221,13 @@ let c100v = 0;
 export function getDatasets(model) {
 
   const results = [];
+  const tax = [];
   const labels = [];
   failureAges.length = 0;
   failureBeforeRetirementCases.length = 0;
+
+  let freeTaxBand = 12570;
+  let twentyPercentBandLimit = 50270;
 
   let years = model.projectToAge -  Math.min(model.age, model.spouseAge);
 
@@ -273,20 +277,25 @@ export function getDatasets(model) {
 
     let year = 0;
 
+    let tax_for_this_series = 0
+
     for (let i = minAge; i <= toAge; i++) {
 
       age++; 
       spouseAge++;
 
-      if ( age > model.deathAge && spouseAge > model.deathAge ) {
+      if ( age > model.deathAge && spouseAge > model.spouseDeathAge ) {
+        console.log('Both have died')
         break;
       }
-      if ( !model.spouse && age > model.deathAge ) {
+      if ( (!model.spouse) && age > model.deathAge ) {
+        console.log('Main has died')
         break;
       }
 
       // Store in series
       series[year] = totalIsa + totalCash + totalPension + totalGia;
+      tax[year] = tax_for_this_series;
 
       if ( model.spouse ) {
         series[year] = series[year] + totalIsa_Spouse + totalCash_Spouse + totalPension_Spouse + totalGia_Spouse;
