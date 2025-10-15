@@ -107,7 +107,7 @@
             <div>
 <fieldset class="space-y-2">
   <legend class="text-lg font-medium mb-1">Simulation Type</legend>
-     <p class="text-sm text-gray-500 mt-1">Description</p>
+     <p class="text-sm text-gray-500 mt-1">Growth of the investment stocks can either use the percentage value above - or a set of historical real inflation adjusted growth rates from 1928-2024</p>
  
   <label class="inline-flex items-center space-x-2">
     <input type="radio" name="simulationType" id="historicSimulationRadio"
@@ -127,7 +127,7 @@
     <input type="radio" name="simulationType" id="constantRateGrowthRadio"
            value="constant"
            class="h-5 w-5 text-indigo-600 border-gray-300 focus:ring-indigo-500">
-    <span>Constant Rate Growth</span>
+    <span>Constant Growth Percentage</span>
   </label>
 </fieldset>
 </div>
@@ -135,7 +135,6 @@
 
             <div>
               <label class="block text-lg font-medium" for="savingsPercentageInput">Cash Savings Growth %</label>
-   <p class="text-sm text-gray-500 mt-1">Description</p>
                <input type="number" id="savingsPercentageInput"
                 class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
               <p class="block text-sm"> This is the expected growth rate <em>after inflation</em> for your cash savings
@@ -245,7 +244,7 @@
       <label class="block text-lg font-medium" for="retirementAgeInput">Retirement Age</label>
       <input type="number" id="retirementAgeInput"
         class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
-   <p class="text-sm text-gray-500 mt-1">Description</p>
+   <p class="text-sm text-gray-500 mt-1">This is the age at which you start drawing down from your investments</p>
      </div>
 
     <!-- Drawdown by Age Groups -->
@@ -325,7 +324,14 @@
           class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
       </div>
     </div>
+</div>
+    <div class="spouse spouse-option">
+       <p class="text-sm text-gray-500 mt-1">Adding a simulated death age for you or your spouse will enable you to simulate what will happen when 
+        one of your defined benefit or state pensions stops 
+       </p>
+    </div>
 
+<div>
     <!-- Death Ages -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 spouse spouse-option">
       <div>
@@ -339,6 +345,7 @@
           class="mt-1 w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
       </div>
     </div>
+
 
   </div>
 </details>
