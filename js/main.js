@@ -1,5 +1,5 @@
 // --- Show screen function ---
-import { getChartDatasets, getSuccessPercentage, getFinalValues, failureAges, failureBeforeRetirementCases, successCases, failureCases } from './calculations.js';
+import { getChartDatasets, getSuccessPercentage, getFinalValues, failureAges, failureBeforeRetirementCases, successCases, failureCases, getMedianIndex } from './calculations.js';
 import { saveModel, loadModel } from "./storage.js";
 import { model } from "./model.js";
 import { debounce } from "./utils.js";
@@ -11,6 +11,7 @@ const menuBtn = document.getElementById("menuBtn");
 const tabsList = document.getElementById("tabs");
 
 let currentScenario = "A"; 
+let mWithdrawals = [];
 
 // DOM Elements
 const ageInput = document.getElementById("ageInput");
@@ -199,18 +200,24 @@ let chart = new Chart(ctx, {
 // --- Update chart ---
 function updateChart() {
 
-  const { datasets, labels } = getChartDatasets(model);
+  const { datasets, labels, withdrawals } = getChartDatasets(model);
 
+  mWithdrawals = withdrawals[getMedianIndex()]
+  
   chart.data.datasets = datasets;
   chart.data.labels = labels;
 
   chart.update();
+
 }
+
+document.getElementById("showWithdrawalsButton").addEventListener("click", () => {
+  showWithdrawalsPage( mWithdrawals);
+});
 
 function recalcAndUpdate() {
   updateModel();
-  const { datasets, labels } = getChartDatasets(model);
-  updateChart(datasets, labels);
+  updateChart();
   updatePercentageHeading()
 }
 
@@ -515,6 +522,61 @@ radios.forEach(radio => {
   });
 });
 
+
+function showWithdrawalsPage(withdrawals) {
+  const container = document.getElementById("withdrawalsPage");
+  const tableContainer = document.getElementById("withdrawalsTableContainer");
+
+  // Clear old content
+  tableContainer.innerHTML = "";
+
+  if (!model || !withdrawals || withdrawals.length === 0) {
+    tableContainer.innerHTML = "<p>No data available.</p>";
+    return;
+  }
+
+  const startAge = model.age || 0;
+
+  // Build table HTML
+  let html = `
+    <table class="w-full border-collapse text-sm shadow-sm rounded-lg overflow-hidden">
+      <thead class="bg-gray-100 border-b">
+        <tr>
+          <th class="text-left py-2 px-3">Age</th>
+          <th class="text-right py-2 px-3">Drawdown (£)</th>
+          <th class="text-right py-2 px-3">Tax (£)</th>
+          <th class="text-right py-2 px-3">Spouse Tax (£)</th>
+          <th class="text-right py-2 px-3">Net (£)</th>
+        </tr>
+      </thead>
+      <tbody>
+  `;
+
+  withdrawals.forEach((w, i) => {
+    const age = startAge + i;
+    const drawdown = w.main?.drawdown || 0;
+    const tax = w.main?.tax || 0;
+    const spouseTax = w.spouse?.tax || 0;
+    const net = (w.main?.netDrawdown || 0) + (w.spouse?.netDrawdown || 0);
+
+    html += `
+      <tr class="border-b hover:bg-gray-50">
+        <td class="py-2 px-3">${age}</td>
+        <td class="py-2 px-3 text-right">£${drawdown.toLocaleString()}</td>
+        <td class="py-2 px-3 text-right">£${tax.toLocaleString()}</td>
+        <td class="py-2 px-3 text-right">£${spouseTax.toLocaleString()}</td>
+        <td class="py-2 px-3 text-right font-semibold">£${net.toLocaleString()}</td>
+      </tr>
+    `;
+  });
+
+  html += `</tbody></table>`;
+  tableContainer.innerHTML = html;
+
+  // Show this page (and optionally hide others)
+  document.querySelectorAll(".page").forEach(p => p.classList.add("hidden"));
+  container.classList.remove("hidden");
+}
 
 
 

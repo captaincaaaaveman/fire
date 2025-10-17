@@ -209,6 +209,7 @@ let c25v = 0;
 let c50v = 0;
 let c75v = 0;
 let c100v = 0;
+let medianIndex = 0;
 
 /**
  * Generates a 2D array of calculated datasets
@@ -221,7 +222,7 @@ let c100v = 0;
 export function getDatasets(model) {
 
   const results = [];
-  const tax = [];
+  const withdrawals = [];
   const labels = [];
   failureAges.length = 0;
   failureBeforeRetirementCases.length = 0;
@@ -252,6 +253,7 @@ export function getDatasets(model) {
     let totalPension_Spouse = model.spousePensionTotal;
     let totalGia_Spouse = model.spouseGiaTotal;
     const series = [];
+    const withdrawalSeries = [];
 
     let isaSavings = model.isaAnnualSavings;
     let cashSavings = model.cashAnnualSavings;
@@ -295,7 +297,6 @@ export function getDatasets(model) {
 
       // Store in series
       series[year] = totalIsa + totalCash + totalPension + totalGia;
-      tax[year] = tax_for_this_series;
 
       if ( model.spouse ) {
         series[year] = series[year] + totalIsa_Spouse + totalCash_Spouse + totalPension_Spouse + totalGia_Spouse;
@@ -374,6 +375,29 @@ export function getDatasets(model) {
       if (model.modelDrawdown) {
         let drawdown = 0;
 
+        let withdrawalInfo = {
+          drawdown: 0,
+          dbPension: 0,
+          statePension: 0,
+          dcPension: 0,
+          isa:0,
+          gia: 0,
+          cash: 0,
+          tax: 0,
+          netDrawdown: 0
+        };
+        let spouseWithdrawalInfo = {
+          drawdown: 0,
+          dbPension: 0,
+          statePension: 0,
+          dcPension: 0,
+          isa:0,
+          gia: 0,
+          cash: 0,
+          tax: 0,
+          netDrawdown: 0
+        };
+
         if (age >= model.retirementAge) {
           if (i < 75) {
             drawdown = model.annualDrawdownUnder75
@@ -384,20 +408,26 @@ export function getDatasets(model) {
           }
         }
 
+        withdrawalInfo["drawdown"] = drawdown
+
         if (age >= model.statePensionAge && age < model.deathAge ) {
           drawdown = drawdown - model.statePension
+          withdrawalInfo['statePension'] = model.statePension;
         }
 
         if (model.spouse && spouseAge >= model.spouseStatePensionAge && spouseAge < model.spouseDeathAge ) {
           drawdown = drawdown - model.spouseStatePension
+          spouseWithdrawalInfo['statePension'] = model.spouseStatePension;
         }
 
         if (age >= model.definedBenefitPensionAge && age < model.deathAge ) {
-          drawdown = drawdown - model.definedBenefitPension
+          drawdown = drawdown - model.definedBenefitPension;
+          withdrawalInfo['dbPension'] = model.definedBenefitPension;
         }
 
         if (model.spouse && spouseAge >= model.spouseDefinedBenefitPensionAge && spouseAge < model.spouseDeathAge ) {
           drawdown = drawdown - model.spouseDefinedBenefitPension
+          spouseWithdrawalInfo['dbPension'] = model.spouseDefinedBenefitPension;
         }
 
 
@@ -410,8 +440,10 @@ export function getDatasets(model) {
         if ( model.pensionAccessAge <= age )  {
           if (totalPension > remainder) {
             totalPension = totalPension - remainder
+            withdrawalInfo['dcPension'] = remainder;
             remainder = 0
           } else {
+            withdrawalInfo['dcPension'] = totalPension;
             remainder = remainder - totalPension;
             totalPension = 0;
           }
@@ -419,22 +451,29 @@ export function getDatasets(model) {
 
         if ( remainder > 0 ) {
           if (totalCash > remainder) {
-            totalCash = totalCash - drawdown
+            totalCash = totalCash - remainder
+            withdrawalInfo['cash'] = remainder
             remainder = 0
           } else {
+            withdrawalInfo['cash'] = totalCash
             remainder = remainder - totalCash
             totalCash = 0
             if (totalIsa > remainder) {
+              withdrawalInfo['isa'] = remainder
               totalIsa = totalIsa - remainder
               remainder = 0
             } else {
               remainder = remainder - totalIsa
+              withdrawalInfo['isa'] = totalIsa
               totalIsa = 0
               if (totalGia > remainder) {
                 totalGia = totalGia - remainder
+                withdrawalInfo['gia'] = remainder
                 remainder = 0
               } else {
+                withdrawalInfo['gia'] = totalGia
                 remainder = remainder - totalGia
+                totalGia = 0
               }
             }
           }          
@@ -445,31 +484,39 @@ export function getDatasets(model) {
           if ( model.spousePensionAccessAge <= age )  {
             if (totalPension_Spouse > remainder) {
               totalPension_Spouse = totalPension_Spouse - remainder
+              spouseWithdrawalInfo['dcPension'] = remainder;
               remainder = 0
             } else {
               remainder = remainder - totalPension_Spouse;
-              totalPension = 0;
+              spouseWithdrawalInfo['dcPension'] = totalPension_Spouse;
+              totalPension_Spouse = 0;
             }
           }
 
           if ( remainder > 0 ) {
             if (totalCash_Spouse > remainder) {
               totalCash_Spouse = totalCash_Spouse - remainder
+              spouseWithdrawalInfo['cash'] = remainder
               remainder = 0
             } else {
               remainder = remainder - totalCash_Spouse
+              spouseWithdrawalInfo['cash'] = totalCash_Spouse
               totalCash_Spouse = 0
               if (totalIsa_Spouse > remainder) {
                 totalIsa_Spouse = totalIsa_Spouse - remainder
+                spouseWithdrawalInfo['isa'] = remainder
                 remainder = 0
               } else {
                 remainder = remainder - totalIsa_Spouse
+                spouseWithdrawalInfo['isa'] = totalIsa_Spouse
                 totalIsa_Spouse = 0
                 if (totalGia_Spouse > remainder) {
                   totalGia_Spouse = totalGia_Spouse - remainder
+                  spouseWithdrawalInfo['gia'] = remainder
                   remainder = 0
                 } else {
                   remainder = remainder - totalGia_Spouse
+                  spouseWithdrawalInfo['gia'] = totalGia_Spouse
                   totalGia_Spouse = 0
                 }
               }
@@ -482,6 +529,9 @@ export function getDatasets(model) {
           failedAt = i
           break
         }
+        calculateTax(withdrawalInfo)
+        calculateTax(spouseWithdrawalInfo)
+        withdrawalSeries[year] = { main: withdrawalInfo,  spouse: spouseWithdrawalInfo };
 
       }
 
@@ -498,10 +548,39 @@ export function getDatasets(model) {
       }
     }
 
+    withdrawals.push(withdrawalSeries);
     results.push(series);
   }
 
-  return { datasets: results, labels };
+  return { datasets: results, labels, withdrawals };
+}
+
+function calculateTax( withdrawalInfo ) {
+  // 25% of each pension withdrawal is tax free
+  const pensionTaxable = withdrawalInfo["dcPension"] * 0.75;
+  const pensionTaxfree = withdrawalInfo["dcPension"] * 0.25;
+  // Sum up all taxable sources
+  const totalIncome =
+    pensionTaxable +
+    withdrawalInfo["dbPension"] +
+    withdrawalInfo["statePension"] +
+    withdrawalInfo["gia"];
+
+  let tax = 0;
+  const freeTaxBand = 12570;
+  const twentyPercentBandLimit = 50270;
+
+  if (totalIncome <= freeTaxBand) {
+    tax = 0;
+  } else if (totalIncome <= twentyPercentBandLimit) {
+    tax = (totalIncome - freeTaxBand) * 0.2;
+  } else {
+    tax =
+      (twentyPercentBandLimit - freeTaxBand) * 0.2 +
+      (totalIncome - twentyPercentBandLimit) * 0.4;
+  }
+  withdrawalInfo["tax"] = tax;
+  withdrawalInfo["netDrawdown"] = withdrawalInfo["drawdown"] - tax;
 }
 
 export function getSuccessPercentage() {
@@ -512,8 +591,12 @@ export function getFinalValues() {
   return [c1v, c25v, c50v, c75v, c100v]
 }
 
+export function getMedianIndex() {
+  return medianIndex;
+}
+
 export function getChartDatasets(model) {
-  const { datasets, labels, colours } = getDatasets(model);
+  const { datasets, labels, withdrawals } = getDatasets(model);
 
   failureCases.length = 0
   successCases.length = 0
@@ -527,13 +610,13 @@ export function getChartDatasets(model) {
 
   const c1 = 0;
   const c25 = Math.floor(n * 0.25);
-  const c50 = Math.min(Math.ceil(n * 0.50), n-1);
+  medianIndex = Math.min(Math.ceil(n * 0.50), n-1);
   const c75 = Math.floor(n * 0.75);
   const c100 = n - 1;
 
   c1v = sorted[c1];
   c25v = sorted[c25];
-  c50v = sorted[c50];
+  c50v = sorted[medianIndex];
   c75v = sorted[c75];
   c100v = sorted[c100];
 
@@ -581,6 +664,6 @@ export function getChartDatasets(model) {
     };
   });
 
-  return { datasets: chartDatasets, labels };
+  return { datasets: chartDatasets, labels, withdrawals };
 }
 
