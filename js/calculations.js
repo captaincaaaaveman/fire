@@ -467,76 +467,37 @@ export function getDatasets(model) {
           }
 
 
-        if ( remainder > 0 ) {
-          if (totalCash > remainder) {
-            totalCash = totalCash - remainder
-            withdrawalInfo['cash'] = remainder
-            remainder = 0
-          } else {
-            withdrawalInfo['cash'] = totalCash
-            remainder = remainder - totalCash
-            totalCash = 0
-            if (totalIsa > remainder) {
-              withdrawalInfo['isa'] = remainder
-              totalIsa = totalIsa - remainder
-              remainder = 0
-            } else {
-              remainder = remainder - totalIsa
-              withdrawalInfo['isa'] = totalIsa
-              totalIsa = 0
-              if (totalGia > remainder) {
-                totalGia = totalGia - remainder
-                withdrawalInfo['gia'] = remainder
-                remainder = 0
-              } else {
-                withdrawalInfo['gia'] = totalGia
-                remainder = remainder - totalGia
-                totalGia = 0
-              }
-            }
-          }          
-        }
 
-        if ( model.spouse && remainder > 0 ) {
+        // ({ remainder, totalCash, totalIsa, totalGia, totalCash_Spouse, totalIsa_Spouse, totalGia_Spouse } = calculateWithdrawals(remainder, totalCash, withdrawalInfo, totalIsa, totalGia, model, totalCash_Spouse, spouseWithdrawalInfo, totalIsa_Spouse, totalGia_Spouse));
 
-          if ( remainder > 0 ) {
-            if (totalCash_Spouse > remainder) {
-              totalCash_Spouse = totalCash_Spouse - remainder
-              spouseWithdrawalInfo['cash'] = remainder
-              remainder = 0
-            } else {
-              remainder = remainder - totalCash_Spouse
-              spouseWithdrawalInfo['cash'] = totalCash_Spouse
-              totalCash_Spouse = 0
-              if (totalIsa_Spouse > remainder) {
-                totalIsa_Spouse = totalIsa_Spouse - remainder
-                spouseWithdrawalInfo['isa'] = remainder
-                remainder = 0
-              } else {
-                remainder = remainder - totalIsa_Spouse
-                spouseWithdrawalInfo['isa'] = totalIsa_Spouse
-                totalIsa_Spouse = 0
-                if (totalGia_Spouse > remainder) {
-                  totalGia_Spouse = totalGia_Spouse - remainder
-                  spouseWithdrawalInfo['gia'] = remainder
-                  remainder = 0
-                } else {
-                  remainder = remainder - totalGia_Spouse
-                  spouseWithdrawalInfo['gia'] = totalGia_Spouse
-                  totalGia_Spouse = 0
-                }
-              }
-            }
-          }
-        }
+        calculateTax(withdrawalInfo)
+        calculateTax(spouseWithdrawalInfo)
 
         if (remainder > 0 ) {
           series[year] = 0
           failedAt = i
           break
-        }
-        calculateTax(withdrawalInfo)
-        calculateTax(spouseWithdrawalInfo)
+        } 
+
+        remainder = withdrawalInfo.tax + spouseWithdrawalInfo.tax;
+        let taxToAdd = remainder;
+
+        // console.log(calculateWithdrawals(remainder, totalCash, withdrawalInfo, totalIsa, totalGia, model, totalCash_Spouse, spouseWithdrawalInfo, totalIsa_Spouse, totalGia_Spouse));
+
+        // try to extract the tax from the ISA etc
+       (
+        { remainder, totalCash, totalIsa, totalGia, totalCash_Spouse, totalIsa_Spouse, totalGia_Spouse } =
+        calculateWithdrawals(remainder, totalCash, withdrawalInfo, totalIsa, totalGia, model,
+                       totalCash_Spouse, spouseWithdrawalInfo, totalIsa_Spouse, totalGia_Spouse)
+        );
+
+        taxToAdd = taxToAdd - remainder;
+
+        if (remainder > 0 && totalPension <= 0 && totalPension_Spouse <= 0 ) {
+          series[year] = 0
+          failedAt = i
+          break
+        } 
 
         const totalWithdrawalInfo = Object.keys(withdrawalInfo).reduce((acc, key) => {
           const mainVal = withdrawalInfo[key] || 0;
@@ -550,7 +511,7 @@ export function getDatasets(model) {
         }, {});
 
         totalWithdrawalInfo["drawdown"] = requiredIncome;
-        totalWithdrawalInfo["netDrawdown"] = requiredIncome - totalWithdrawalInfo["tax"];
+        totalWithdrawalInfo["netDrawdown"] = requiredIncome - totalWithdrawalInfo["tax"] + taxToAdd;
 
         withdrawalSeries[year] = { totalWithdrawalInfo };
 
@@ -577,6 +538,72 @@ export function getDatasets(model) {
   }
 
   return { datasets: results, labels, withdrawals };
+}
+
+function calculateWithdrawals(remainder, totalCash, withdrawalInfo, totalIsa, totalGia, model, totalCash_Spouse, spouseWithdrawalInfo, totalIsa_Spouse, totalGia_Spouse) {
+  if (remainder > 0) {
+    if (totalCash > remainder) {
+      totalCash = totalCash - remainder;
+      withdrawalInfo['cash'] = withdrawalInfo['cash'] + remainder;
+      remainder = 0;
+    } else {
+      withdrawalInfo['cash'] = withdrawalInfo['cash'] + totalCash;
+      remainder = remainder - totalCash;
+      totalCash = 0;
+      if (totalIsa > remainder) {
+        withdrawalInfo['isa'] = withdrawalInfo['isa'] + remainder;
+        totalIsa = totalIsa - remainder;
+        remainder = 0;
+      } else {
+        remainder = remainder - totalIsa;
+        withdrawalInfo['isa'] = withdrawalInfo['isa'] + totalIsa;
+        totalIsa = 0;
+        if (totalGia > remainder) {
+          totalGia = totalGia - remainder;
+          withdrawalInfo['gia'] = withdrawalInfo['gia'] + remainder;
+          remainder = 0;
+        } else {
+          withdrawalInfo['gia'] = withdrawalInfo['gia'] + totalGia;
+          remainder = remainder - totalGia;
+          totalGia = 0;
+        }
+      }
+    }
+  }
+
+  if (model.spouse && remainder > 0) {
+
+    if (remainder > 0) {
+      if (totalCash_Spouse > remainder) {
+        totalCash_Spouse = totalCash_Spouse - remainder;
+        spouseWithdrawalInfo['cash'] = spouseWithdrawalInfo['cash'] + remainder;
+        remainder = 0;
+      } else {
+        remainder = remainder - totalCash_Spouse;
+        spouseWithdrawalInfo['cash'] = spouseWithdrawalInfo['cash'] + totalCash_Spouse;
+        totalCash_Spouse = 0;
+        if (totalIsa_Spouse > remainder) {
+          totalIsa_Spouse = totalIsa_Spouse - remainder;
+          spouseWithdrawalInfo['isa'] = spouseWithdrawalInfo['isa'] + remainder;
+          remainder = 0;
+        } else {
+          remainder = remainder - totalIsa_Spouse;
+          spouseWithdrawalInfo['isa'] = spouseWithdrawalInfo['isa'] + totalIsa_Spouse;
+          totalIsa_Spouse = 0;
+          if (totalGia_Spouse > remainder) {
+            totalGia_Spouse = totalGia_Spouse - remainder;
+            spouseWithdrawalInfo['gia'] = spouseWithdrawalInfo['gia'] + remainder;
+            remainder = 0;
+          } else {
+            remainder = remainder - totalGia_Spouse;
+            spouseWithdrawalInfo['gia'] = spouseWithdrawalInfo['gia'] + totalGia_Spouse;
+            totalGia_Spouse = 0;
+          }
+        }
+      }
+    }
+  }
+  return { remainder, totalCash, totalIsa, totalGia, totalCash_Spouse, totalIsa_Spouse, totalGia_Spouse };
 }
 
 function calculateTax( withdrawalInfo ) {
