@@ -391,10 +391,10 @@ export function getDatasets(model) {
           drawdown: 0,
           dbPension: 0,
           statePension: 0,
-          totalPension: totalPension,
-          totalIsa: totalIsa,
-          totalGia: totalGia,
-          totalCash: totalCash,
+          totalPension: totalPension_Spouse,
+          totalIsa: totalIsa_Spouse,
+          totalGia: totalGia_Spouse,
+          totalCash: totalCash_Spouse,
           pension: 0,
           isa: 0,
           gia: 0,
@@ -689,4 +689,5 @@ export function getChartDatasets(model) {
 
   return { datasets: chartDatasets, labels, withdrawals };
 }
+
 
