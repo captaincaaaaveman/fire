@@ -587,11 +587,59 @@ function showWithdrawalsPage(withdrawals) {
   });
 
   html += `</tbody></table>`;
+
+  html += getInvestmentsTable(withdrawals);
+  
   tableContainer.innerHTML = html;
 
   // Show this page (and optionally hide others)
   document.querySelectorAll(".page").forEach(p => p.classList.add("hidden"));
   container.classList.remove("hidden");
+}
+
+function getInvestmentsTable(withdrawals) {
+  const startAge = model.age || 0;
+
+  // Build table HTML
+  let html = `
+    <table class="w-full border-collapse text-sm shadow-sm rounded-lg overflow-hidden">
+      <thead class="bg-gray-100 border-b">
+        <tr>
+          <th class="text-left py-2 px-3">Age</th>
+          <th class="text-right py-2 px-3">DC Pension Value (£)</th>
+          <th class="text-right py-2 px-3">ISA Value (£)</th>
+          <th class="text-right py-2 px-3">GIA Value (£)</th>
+          <th class="text-right py-2 px-3">Cash Vash (£)</th>
+          <th class="text-right py-2 px-3">Total Value (£)</th>
+        </tr>
+      </thead>
+      <tbody>
+  `;
+
+  withdrawals.forEach((withdrawal, i) => {
+    const w = withdrawal.totalWithdrawalInfo
+    const age = startAge + i;
+    const pension = Math.round((w["totalPension"]) || 0);
+    const isa = Math.round((w["totalIsa"]) || 0);
+    const gia = Math.round((w["totalGia"]) || 0);
+    const cash = Math.round((w["totalCash"]) || 0);
+    const total = pension + isa + gia + cash
+
+    html += `
+      <tr class="border-b hover:bg-gray-50">
+        <td class="py-2 px-3">${age}</td>
+        <td class="py-2 px-3 text-right">£${pension.toLocaleString()}</td>
+        <td class="py-2 px-3 text-right">£${isa.toLocaleString()}</td>
+        <td class="py-2 px-3 text-right">£${gia.toLocaleString()}</td>
+        <td class="py-2 px-3 text-right">£${cash.toLocaleString()}</td>
+        <td class="py-2 px-3 text-right font-semibold">£${total.toLocaleString()}</td>
+      </tr>
+    `;
+  });
+
+  html += `</tbody></table>`;
+
+  return html;
 }
 
 
