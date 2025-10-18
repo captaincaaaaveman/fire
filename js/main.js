@@ -543,28 +543,44 @@ function showWithdrawalsPage(withdrawals) {
       <thead class="bg-gray-100 border-b">
         <tr>
           <th class="text-left py-2 px-3">Age</th>
-          <th class="text-right py-2 px-3">Drawdown (£)</th>
+          <th class="text-right py-2 px-3">Required Drawdown (£)</th>
+          <th class="text-right py-2 px-3">State Pension (£)</th>
+          <th class="text-right py-2 px-3">DB Pension Withdrawal (£)</th>
+          <th class="text-right py-2 px-3">DC Pension Withdrawal (£)</th>
+          <th class="text-right py-2 px-3">ISA Withdrawal (£)</th>
+          <th class="text-right py-2 px-3">GIA Withdrawal (£)</th>
+          <th class="text-right py-2 px-3">Cash Withdrawal (£)</th>
           <th class="text-right py-2 px-3">Tax (£)</th>
-          <th class="text-right py-2 px-3">Spouse Tax (£)</th>
           <th class="text-right py-2 px-3">Net (£)</th>
         </tr>
       </thead>
       <tbody>
   `;
 
-  withdrawals.forEach((w, i) => {
+  withdrawals.forEach((withdrawal, i) => {
+    const w = withdrawal.totalWithdrawalInfo
     const age = startAge + i;
-    const drawdown = w.main?.drawdown || 0;
-    const tax = w.main?.tax || 0;
-    const spouseTax = w.spouse?.tax || 0;
-    const net = (w.main?.netDrawdown || 0) + (w.spouse?.netDrawdown || 0);
+    const drawdown = Math.round(w["drawdown"]) || 0;
+    const tax = Math.round(w["tax"]) || 0;
+    const net = Math.round((w["netDrawdown"]) || 0);
+    const pension = Math.round((w["pension"]) || 0);
+    const isa = Math.round((w["isa"]) || 0);
+    const gia = Math.round((w["gia"]) || 0);
+    const cash = Math.round((w["cash"]) || 0);
+    const dbPension = Math.round((w["dbPension"]) || 0);
+    const statePension = Math.round((w["statePension"]) || 0);
 
     html += `
       <tr class="border-b hover:bg-gray-50">
         <td class="py-2 px-3">${age}</td>
         <td class="py-2 px-3 text-right">£${drawdown.toLocaleString()}</td>
+        <td class="py-2 px-3 text-right">£${statePension.toLocaleString()}</td>
+        <td class="py-2 px-3 text-right">£${dbPension.toLocaleString()}</td>
+        <td class="py-2 px-3 text-right">£${pension.toLocaleString()}</td>
+        <td class="py-2 px-3 text-right">£${isa.toLocaleString()}</td>
+        <td class="py-2 px-3 text-right">£${gia.toLocaleString()}</td>
+        <td class="py-2 px-3 text-right">£${cash.toLocaleString()}</td>
         <td class="py-2 px-3 text-right">£${tax.toLocaleString()}</td>
-        <td class="py-2 px-3 text-right">£${spouseTax.toLocaleString()}</td>
         <td class="py-2 px-3 text-right font-semibold">£${net.toLocaleString()}</td>
       </tr>
     `;

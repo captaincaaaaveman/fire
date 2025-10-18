@@ -283,9 +283,6 @@ export function getDatasets(model) {
 
     for (let i = minAge; i <= toAge; i++) {
 
-      age++; 
-      spouseAge++;
-
       if ( age > model.deathAge && spouseAge > model.spouseDeathAge ) {
         console.log('Both have died')
         break;
@@ -379,8 +376,12 @@ export function getDatasets(model) {
           drawdown: 0,
           dbPension: 0,
           statePension: 0,
-          dcPension: 0,
-          isa:0,
+          totalPension: totalPension,
+          totalIsa: totalIsa,
+          totalGia: totalGia,
+          totalCash: totalCash,
+          pension: 0,
+          isa: 0,
           gia: 0,
           cash: 0,
           tax: 0,
@@ -390,8 +391,12 @@ export function getDatasets(model) {
           drawdown: 0,
           dbPension: 0,
           statePension: 0,
-          dcPension: 0,
-          isa:0,
+          totalPension: totalPension,
+          totalIsa: totalIsa,
+          totalGia: totalGia,
+          totalCash: totalCash,
+          pension: 0,
+          isa: 0,
           gia: 0,
           cash: 0,
           tax: 0,
@@ -408,7 +413,7 @@ export function getDatasets(model) {
           }
         }
 
-        withdrawalInfo["drawdown"] = drawdown
+        let requiredIncome = drawdown
 
         if (age >= model.statePensionAge && age < model.deathAge ) {
           drawdown = drawdown - model.statePension
@@ -440,14 +445,27 @@ export function getDatasets(model) {
         if ( model.pensionAccessAge <= age )  {
           if (totalPension > remainder) {
             totalPension = totalPension - remainder
-            withdrawalInfo['dcPension'] = remainder;
+            withdrawalInfo['pension'] = remainder;
             remainder = 0
           } else {
-            withdrawalInfo['dcPension'] = totalPension;
+            withdrawalInfo['pension'] = totalPension;
             remainder = remainder - totalPension;
             totalPension = 0;
           }
         }
+
+        if ( model.spousePensionAccessAge <= age )  {
+            if (totalPension_Spouse > remainder) {
+              totalPension_Spouse = totalPension_Spouse - remainder
+              spouseWithdrawalInfo['pension'] = remainder;
+              remainder = 0
+            } else {
+              remainder = remainder - totalPension_Spouse;
+              spouseWithdrawalInfo['pension'] = totalPension_Spouse;
+              totalPension_Spouse = 0;
+            }
+          }
+
 
         if ( remainder > 0 ) {
           if (totalCash > remainder) {
@@ -480,18 +498,6 @@ export function getDatasets(model) {
         }
 
         if ( model.spouse && remainder > 0 ) {
-
-          if ( model.spousePensionAccessAge <= age )  {
-            if (totalPension_Spouse > remainder) {
-              totalPension_Spouse = totalPension_Spouse - remainder
-              spouseWithdrawalInfo['dcPension'] = remainder;
-              remainder = 0
-            } else {
-              remainder = remainder - totalPension_Spouse;
-              spouseWithdrawalInfo['dcPension'] = totalPension_Spouse;
-              totalPension_Spouse = 0;
-            }
-          }
 
           if ( remainder > 0 ) {
             if (totalCash_Spouse > remainder) {
@@ -531,13 +537,31 @@ export function getDatasets(model) {
         }
         calculateTax(withdrawalInfo)
         calculateTax(spouseWithdrawalInfo)
-        withdrawalSeries[year] = { main: withdrawalInfo,  spouse: spouseWithdrawalInfo };
+
+        const totalWithdrawalInfo = Object.keys(withdrawalInfo).reduce((acc, key) => {
+          const mainVal = withdrawalInfo[key] || 0;
+          const spouseVal = spouseWithdrawalInfo[key] || 0;
+
+          // Only sum numeric fields; copy others if needed
+          acc[key] = (typeof mainVal === "number" && typeof spouseVal === "number")
+            ? mainVal + spouseVal
+            : mainVal; // fallback if non-numeric
+          return acc;
+        }, {});
+
+        totalWithdrawalInfo["drawdown"] = requiredIncome;
+        totalWithdrawalInfo["netDrawdown"] = requiredIncome - totalWithdrawalInfo["tax"];
+
+        withdrawalSeries[year] = { totalWithdrawalInfo };
 
       }
 
       // Set the label to the right age
       labels[year] = i;
       year++;
+      age++; 
+      spouseAge++;
+
 
     }
 
@@ -557,8 +581,8 @@ export function getDatasets(model) {
 
 function calculateTax( withdrawalInfo ) {
   // 25% of each pension withdrawal is tax free
-  const pensionTaxable = withdrawalInfo["dcPension"] * 0.75;
-  const pensionTaxfree = withdrawalInfo["dcPension"] * 0.25;
+  const pensionTaxable = withdrawalInfo["pension"] * 0.75;
+  const pensionTaxfree = withdrawalInfo["pension"] * 0.25;
   // Sum up all taxable sources
   const totalIncome =
     pensionTaxable +
@@ -580,7 +604,6 @@ function calculateTax( withdrawalInfo ) {
       (totalIncome - twentyPercentBandLimit) * 0.4;
   }
   withdrawalInfo["tax"] = tax;
-  withdrawalInfo["netDrawdown"] = withdrawalInfo["drawdown"] - tax;
 }
 
 export function getSuccessPercentage() {
