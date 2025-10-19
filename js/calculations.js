@@ -349,19 +349,19 @@ export function getDatasets(model) {
       // Annual Investments Spouse
       if ( model.spouse && year < model.spouseIsaYears) {
         totalIsa_Spouse = totalIsa_Spouse + isaSavings_Spouse;
-        isaSavings_Spouse = isaSavings_Spouse * (1 + (model.isaAnnualIncrease_Spouse/100)) 
+        isaSavings_Spouse = isaSavings_Spouse * (1 + (model.spouseIsaAnnualIncrease/100)) 
       }
       if (model.spouse && year < model.spouseCashYears) {
         totalCash_Spouse = totalCash_Spouse + cashSavings_Spouse;
-        cashSavings_Spouse = cashSavings_Spouse * (1 + (model.cashAnnualIncrease_Spouse/100)) 
+        cashSavings_Spouse = cashSavings_Spouse * (1 + (model.spouseCashAnnualIncrease/100)) 
       }
       if (model.spouse && year < model.spousePensionYears) {
         totalPension_Spouse = totalPension_Spouse + pensionSavings_Spouse;
-        pensionSavings_Spouse = pensionSavings_Spouse * (1 + (model.pensionAnnualIncrease_Spouse/100)) 
+        pensionSavings_Spouse = pensionSavings_Spouse * (1 + (model.spousePensionAnnualIncrease/100)) 
       }
       if (model.spouse && year < model.spouseGiaYears) {
         totalGia_Spouse = totalGia_Spouse + giaSavings_Spouse;
-        giaSavings_Spouse = giaSavings_Spouse * (1 + (model.giaIncrease_Spouse/100)) 
+        giaSavings_Spouse = giaSavings_Spouse * (1 + (model.spouseGiaIncrease/100)) 
       }
 
       if (model.modelDrawdown) {
