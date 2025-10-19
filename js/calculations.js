@@ -292,12 +292,7 @@ export function getDatasets(model) {
         break;
       }
 
-      // Store in series
-      series[year] = totalIsa + totalCash + totalPension + totalGia;
-
-      if ( model.spouse ) {
-        series[year] = series[year] + totalIsa_Spouse + totalCash_Spouse + totalPension_Spouse + totalGia_Spouse;
-      }
+ 
 
 
 
@@ -313,7 +308,7 @@ export function getDatasets(model) {
       let pPension = growthRates[historicYear + year]
       let pCash = -1
 
-      if ( model.simulationType === 'constant' ) {
+      if ( model.simulationType === 'constant' || age < model.retirementAge ) {
         pIsa = model.investmentPercentage;
         pGia = model.investmentPercentage;
         pPension = model.investmentPercentage;
@@ -499,6 +494,18 @@ export function getDatasets(model) {
           break
         } 
 
+        withdrawalInfo["totalPension"] = totalPension;
+        spouseWithdrawalInfo["totalPension"] = totalPension_Spouse;
+
+        withdrawalInfo["totalIsa"] = totalIsa;
+        spouseWithdrawalInfo["totalIsa"] = totalIsa_Spouse;
+
+        withdrawalInfo["totalGia"] = totalGia;
+        spouseWithdrawalInfo["totalGia"] = totalGia_Spouse;
+
+        withdrawalInfo["totalCash"] = totalCash;
+        spouseWithdrawalInfo["totalCash"] = totalCash_Spouse;
+
         const totalWithdrawalInfo = Object.keys(withdrawalInfo).reduce((acc, key) => {
           const mainVal = withdrawalInfo[key] || 0;
           const spouseVal = spouseWithdrawalInfo[key] || 0;
@@ -516,7 +523,14 @@ export function getDatasets(model) {
         withdrawalSeries[year] = { totalWithdrawalInfo };
 
       }
+      
+     // Store in series
+      series[year] = totalIsa + totalCash + totalPension + totalGia;
 
+      if ( model.spouse ) {
+        series[year] = series[year] + totalIsa_Spouse + totalCash_Spouse + totalPension_Spouse + totalGia_Spouse;
+      }
+      
       // Set the label to the right age
       labels[year] = i;
       year++;
@@ -534,8 +548,12 @@ export function getDatasets(model) {
     }
 
     withdrawals.push(withdrawalSeries);
+
+    series['withdrawals'] = withdrawalSeries
     results.push(series);
   }
+
+  // console.log('withdrawals' + withdrawals)
 
   return { datasets: results, labels, withdrawals };
 }
@@ -648,27 +666,41 @@ export function getMedianIndex() {
 export function getChartDatasets(model) {
   const { datasets, labels, withdrawals } = getDatasets(model);
 
+  // console.log(datasets);
+
   failureCases.length = 0
   successCases.length = 0
 
   // Compute final values of each dataset
   const finalValues = datasets.map(d => d[d.length - 1]);
 
+  // Create array of indices [0, 1, 2, ..., n-1]
+  const indices = finalValues.map((_, i) => i);
+
+  // Sort indices by their corresponding final value
+  indices.sort((a, b) => finalValues[a] - finalValues[b]);
+
   // Compute median
   const sorted = [...finalValues].sort((a, b) => a - b);
   const n = sorted.length;
 
-  const c1 = 0;
-  const c25 = Math.floor(n * 0.25);
-  medianIndex = Math.min(Math.ceil(n * 0.50), n-1);
-  const c75 = Math.floor(n * 0.75);
-  const c100 = n - 1;
+  // const c1 = 0;
+  // const c25 = Math.floor(n * 0.25);
+  // medianIndex = Math.min(Math.ceil(n * 0.50), n-1);
+  // const c75 = Math.floor(n * 0.75);
+  // const c100 = n - 1;
 
-  c1v = sorted[c1];
-  c25v = sorted[c25];
-  c50v = sorted[medianIndex];
-  c75v = sorted[c75];
-  c100v = sorted[c100];
+  const c1 = indices[0];
+  const c25 = indices[Math.floor(n * 0.25)];
+  medianIndex = indices[Math.min(Math.ceil(n * 0.5), n - 1)];
+  const c75 = indices[Math.floor(n * 0.75)];
+  const c100 = indices[n - 1];
+
+  c1v = finalValues[c1];
+  c25v = finalValues[c25];
+  c50v = finalValues[medianIndex];
+  c75v = finalValues[c75];
+  c100v = finalValues[c100];
 
   // Build chart datasets
   const chartDatasets = datasets.map((data, index) => {
@@ -710,7 +742,8 @@ export function getChartDatasets(model) {
       borderWidth: borderWidth,
       pointRadius: 0,
       pointHoverRadius: 2,
-      tension: 0.2
+      tension: 0.2,
+      withdrawals: data["withdrawals"]
     };
   });
 

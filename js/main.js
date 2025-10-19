@@ -202,7 +202,9 @@ function updateChart() {
 
   const { datasets, labels, withdrawals } = getChartDatasets(model);
 
-  mWithdrawals = withdrawals[getMedianIndex()]
+  mWithdrawals = datasets[getMedianIndex()]["withdrawals"]
+  
+  // withdrawals[getMedianIndex()]
   
   chart.data.datasets = datasets;
   chart.data.labels = labels;
