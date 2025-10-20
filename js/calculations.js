@@ -211,6 +211,32 @@ let c75v = 0;
 let c100v = 0;
 let medianIndex = 0;
 
+
+function applyGrowth(balance, growth, hasSpouse = false, spouseBalance = 0) {
+  const newBalance = balance * (1 + growth/100);
+  const newSpouseBalance = hasSpouse ? spouseBalance * (1 + growth/100) : spouseBalance;
+  return [newBalance, newSpouseBalance];
+}
+
+
+function createWithdrawalInfo(totalPension, totalIsa, totalGia, totalCash) {
+  return {
+    drawdown: 0,
+    dbPension: 0,
+    statePension: 0,
+    totalPension,
+    totalIsa,
+    totalGia,
+    totalCash,
+    pension: 0,
+    isa: 0,
+    gia: 0,
+    cash: 0,
+    tax: 0,
+    netDrawdown: 0
+  };
+}
+
 /**
  * Generates a 2D array of calculated datasets
  * Each series is an array corresponding to baseData
@@ -222,13 +248,9 @@ let medianIndex = 0;
 export function getDatasets(model) {
 
   const results = [];
-  const withdrawals = [];
   const labels = [];
   failureAges.length = 0;
   failureBeforeRetirementCases.length = 0;
-
-  let freeTaxBand = 12570;
-  let twentyPercentBandLimit = 50270;
 
   let years = model.projectToAge -  Math.min(model.age, model.spouseAge);
 
@@ -292,10 +314,6 @@ export function getDatasets(model) {
         break;
       }
 
- 
-
-
-
       if (series[year] <= 0) {
         series[year] = 0
         failedAt = i
@@ -315,18 +333,25 @@ export function getDatasets(model) {
         pCash = model.savingsPercentage;
       }
 
-      totalIsa = totalIsa * (1 + (pIsa / 100));
-      totalGia = totalGia * (1 + (pGia / 100));
+      // totalIsa = totalIsa * (1 + (pIsa / 100));
+      // totalGia = totalGia * (1 + (pGia / 100));
 
-      totalPension = totalPension * (1 + (pPension / 100));
-      totalCash = totalCash * (1 + (model.savingsPercentage / 100));
+      // totalPension = totalPension * (1 + (pPension / 100));
+      // totalCash = totalCash * (1 + (model.savingsPercentage / 100));
 
-      if ( model.spouse ) {
-        totalIsa_Spouse = totalIsa_Spouse * (1 + (pIsa / 100));
-        totalGia_Spouse = totalGia_Spouse * (1 + (pGia / 100));
-        totalPension_Spouse = totalPension_Spouse * (1 + (pPension / 100));
-        totalCash_Spouse= totalCash_Spouse * (1 + (model.savingsPercentage / 100));
-      }
+      // if ( model.spouse ) {
+      //   totalIsa_Spouse = totalIsa_Spouse * (1 + (pIsa / 100));
+      //   totalGia_Spouse = totalGia_Spouse * (1 + (pGia / 100));
+      //   totalPension_Spouse = totalPension_Spouse * (1 + (pPension / 100));
+      //   totalCash_Spouse= totalCash_Spouse * (1 + (model.savingsPercentage / 100));
+      // }
+
+      [totalIsa, totalIsa_Spouse] = applyGrowth(totalIsa, pIsa, model.spouse, totalIsa_Spouse);
+      [totalGia, totalGia_Spouse] = applyGrowth(totalGia, pGia, model.spouse, totalGia_Spouse);
+      [totalPension, totalPension_Spouse] = applyGrowth(totalPension, pPension, model.spouse, totalPension_Spouse);
+      [totalCash, totalCash_Spouse] = applyGrowth(totalCash, pCash, model.spouse, totalCash_Spouse);
+
+
 
       // Annual Investments
       if (year < model.isaYears) {
@@ -367,36 +392,8 @@ export function getDatasets(model) {
       if (model.modelDrawdown) {
         let drawdown = 0;
 
-        let withdrawalInfo = {
-          drawdown: 0,
-          dbPension: 0,
-          statePension: 0,
-          totalPension: totalPension,
-          totalIsa: totalIsa,
-          totalGia: totalGia,
-          totalCash: totalCash,
-          pension: 0,
-          isa: 0,
-          gia: 0,
-          cash: 0,
-          tax: 0,
-          netDrawdown: 0
-        };
-        let spouseWithdrawalInfo = {
-          drawdown: 0,
-          dbPension: 0,
-          statePension: 0,
-          totalPension: totalPension_Spouse,
-          totalIsa: totalIsa_Spouse,
-          totalGia: totalGia_Spouse,
-          totalCash: totalCash_Spouse,
-          pension: 0,
-          isa: 0,
-          gia: 0,
-          cash: 0,
-          tax: 0,
-          netDrawdown: 0
-        };
+        let withdrawalInfo = createWithdrawalInfo(totalPension, totalIsa, totalGia, totalCash);
+        let spouseWithdrawalInfo = createWithdrawalInfo(totalPension_Spouse, totalIsa_Spouse, totalGia_Spouse, totalCash_Spouse);
 
         if (age >= model.retirementAge) {
           if (i < 75) {
@@ -436,7 +433,8 @@ export function getDatasets(model) {
         }
 
         let remainder = drawdown
-        
+
+        // First try to drawdown from the pension
         if ( model.pensionAccessAge <= age )  {
           if (totalPension > remainder) {
             totalPension = totalPension - remainder
@@ -449,6 +447,7 @@ export function getDatasets(model) {
           }
         }
 
+        // Then try to drawdown from the spouse pension
         if ( model.spousePensionAccessAge <= age )  {
             if (totalPension_Spouse > remainder) {
               totalPension_Spouse = totalPension_Spouse - remainder
@@ -459,11 +458,11 @@ export function getDatasets(model) {
               spouseWithdrawalInfo['pension'] = totalPension_Spouse;
               totalPension_Spouse = 0;
             }
-          }
+        }
 
-
-
-        ({ remainder, totalCash, totalIsa, totalGia, totalCash_Spouse, totalIsa_Spouse, totalGia_Spouse } = calculateWithdrawals(remainder, totalCash, withdrawalInfo, totalIsa, totalGia, model, totalCash_Spouse, spouseWithdrawalInfo, totalIsa_Spouse, totalGia_Spouse));
+        // Any remainder should be withdrawn from Cash/ISA/Gia
+        ({ remainder, totalCash, totalIsa, totalGia, totalCash_Spouse, totalIsa_Spouse, totalGia_Spouse } = 
+          calculateWithdrawals(remainder, totalCash, withdrawalInfo, totalIsa, totalGia, model, totalCash_Spouse, spouseWithdrawalInfo, totalIsa_Spouse, totalGia_Spouse));
 
         calculateTax(withdrawalInfo)
         calculateTax(spouseWithdrawalInfo)
@@ -474,17 +473,18 @@ export function getDatasets(model) {
           break
         } 
 
+        // We have extracted the required drawdown amount but that may have resulted in a tax bill - we now need to extract this tax too
         remainder = withdrawalInfo.tax + spouseWithdrawalInfo.tax;
         let taxToAdd = remainder;
 
-        // console.log(calculateWithdrawals(remainder, totalCash, withdrawalInfo, totalIsa, totalGia, model, totalCash_Spouse, spouseWithdrawalInfo, totalIsa_Spouse, totalGia_Spouse));
-
-        // try to extract the tax from the ISA etc
+        // try to extract the tax from the ISA/Cash/Gia
         (
         { remainder, totalCash, totalIsa, totalGia, totalCash_Spouse, totalIsa_Spouse, totalGia_Spouse } =
-        calculateWithdrawals(remainder, totalCash, withdrawalInfo, totalIsa, totalGia, model,
-                       totalCash_Spouse, spouseWithdrawalInfo, totalIsa_Spouse, totalGia_Spouse)
+        calculateWithdrawals(remainder, totalCash, withdrawalInfo, totalIsa, totalGia, model, totalCash_Spouse, spouseWithdrawalInfo, totalIsa_Spouse, totalGia_Spouse)
         );
+
+        calculateTax(withdrawalInfo)
+        calculateTax(spouseWithdrawalInfo)
 
         taxToAdd = taxToAdd - remainder;
 
@@ -494,17 +494,17 @@ export function getDatasets(model) {
           break
         } 
 
-        withdrawalInfo["totalPension"] = totalPension;
-        spouseWithdrawalInfo["totalPension"] = totalPension_Spouse;
+        // withdrawalInfo["totalPension"] = totalPension;
+        // spouseWithdrawalInfo["totalPension"] = totalPension_Spouse;
 
-        withdrawalInfo["totalIsa"] = totalIsa;
-        spouseWithdrawalInfo["totalIsa"] = totalIsa_Spouse;
+        // withdrawalInfo["totalIsa"] = totalIsa;
+        // spouseWithdrawalInfo["totalIsa"] = totalIsa_Spouse;
 
-        withdrawalInfo["totalGia"] = totalGia;
-        spouseWithdrawalInfo["totalGia"] = totalGia_Spouse;
+        // withdrawalInfo["totalGia"] = totalGia;
+        // spouseWithdrawalInfo["totalGia"] = totalGia_Spouse;
 
-        withdrawalInfo["totalCash"] = totalCash;
-        spouseWithdrawalInfo["totalCash"] = totalCash_Spouse;
+        // withdrawalInfo["totalCash"] = totalCash;
+        // spouseWithdrawalInfo["totalCash"] = totalCash_Spouse;
 
         const totalWithdrawalInfo = Object.keys(withdrawalInfo).reduce((acc, key) => {
           const mainVal = withdrawalInfo[key] || 0;
@@ -547,15 +547,11 @@ export function getDatasets(model) {
       }
     }
 
-    withdrawals.push(withdrawalSeries);
-
     series['withdrawals'] = withdrawalSeries
     results.push(series);
   }
 
-  // console.log('withdrawals' + withdrawals)
-
-  return { datasets: results, labels, withdrawals };
+  return { datasets: results, labels };
 }
 
 function calculateWithdrawals(remainder, totalCash, withdrawalInfo, totalIsa, totalGia, model, totalCash_Spouse, spouseWithdrawalInfo, totalIsa_Spouse, totalGia_Spouse) {
@@ -664,7 +660,7 @@ export function getMedianIndex() {
 }
 
 export function getChartDatasets(model) {
-  const { datasets, labels, withdrawals } = getDatasets(model);
+  const { datasets, labels } = getDatasets(model);
 
   // console.log(datasets);
 
@@ -747,7 +743,7 @@ export function getChartDatasets(model) {
     };
   });
 
-  return { datasets: chartDatasets, labels, withdrawals };
+  return { datasets: chartDatasets, labels };
 }
 
 
