@@ -76,12 +76,12 @@ function initFromStorage() {
   if (stored) {
     Object.assign(model, stored);
   }
-  ageInput.value = model.age || "24";
-  spouseCheckbox.checked = model.spouse || false;
-  spouseAgeInput.value = model.spouseAge || 51;
+  ageInput.value = model.age || 45;
+  spouseCheckbox.checked = model.spouse || true;
+  spouseAgeInput.value = model.spouseAge || 45;
 
   projectToAgeInput.value = model.projectToAge || "95";
-  retirementAgeInput.value = model.retirementAge || "65";
+  retirementAgeInput.value = model.retirementAge || "55";
   investmentPercentageInput.value = model.investmentPercentage || "4";
   savingsPercentageInput.value = model.savingsPercentage || "-1";
   annualDrawdownUnder75Input.value = model.annualDrawdownUnder75 || "40000";
@@ -95,7 +95,7 @@ function initFromStorage() {
   definedBenefitPensionAgeInput.value = model.definedBenefitPensionAge || 0;
   spouseDefinedBenefitPensionInput.value = model.spouseDefinedBenefitPension || 0;
   spouseDefinedBenefitPensionAgeInput.value = model.spouseDefinedBenefitPensionAge || 0;
-  modelDrawdownCheckbox.checked = model.modelDrawdown || false;
+  modelDrawdownCheckbox.checked = model.modelDrawdown || trur;
 
   deathAgeInput.value = model.deathAge || 96;
   spouseDeathAgeInput.value = model.spouseDeathAge || 96;
@@ -107,13 +107,13 @@ function initFromStorage() {
 
   for (const group of investmentGroups) {
     const fields = investmentInputs[group];
-    fields.total.value = model[`${group}Total`] || 0;
-    fields.annualSavings.value = model[`${group}AnnualSavings`] || 0;
-    fields.annualIncrease.value = model[`${group}AnnualIncrease`] || 0;
-    fields.years.value = model[`${group}Years`] || 0;
+    fields.total.value = model[`${group}Total`] || 10000;
+    fields.annualSavings.value = model[`${group}AnnualSavings`] || 4500;
+    fields.annualIncrease.value = model[`${group}AnnualIncrease`] || 2;
+    fields.years.value = model[`${group}Years`] || 10;
 
     if ( group === 'pension' || group === 'spousePension') {
-      fields.accessAge.value = model[`${group}AccessAge`] || 0;
+      fields.accessAge.value = model[`${group}AccessAge`] || 57;
     }
 
   }
@@ -606,6 +606,7 @@ function showWithdrawalsPage(withdrawals) {
   tableContainer.innerHTML = html;
 
 }
+
 
 
 
