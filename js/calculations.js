@@ -463,7 +463,7 @@ export function getDatasets(model) {
 
 
 
-        // ({ remainder, totalCash, totalIsa, totalGia, totalCash_Spouse, totalIsa_Spouse, totalGia_Spouse } = calculateWithdrawals(remainder, totalCash, withdrawalInfo, totalIsa, totalGia, model, totalCash_Spouse, spouseWithdrawalInfo, totalIsa_Spouse, totalGia_Spouse));
+        ({ remainder, totalCash, totalIsa, totalGia, totalCash_Spouse, totalIsa_Spouse, totalGia_Spouse } = calculateWithdrawals(remainder, totalCash, withdrawalInfo, totalIsa, totalGia, model, totalCash_Spouse, spouseWithdrawalInfo, totalIsa_Spouse, totalGia_Spouse));
 
         calculateTax(withdrawalInfo)
         calculateTax(spouseWithdrawalInfo)
@@ -480,7 +480,7 @@ export function getDatasets(model) {
         // console.log(calculateWithdrawals(remainder, totalCash, withdrawalInfo, totalIsa, totalGia, model, totalCash_Spouse, spouseWithdrawalInfo, totalIsa_Spouse, totalGia_Spouse));
 
         // try to extract the tax from the ISA etc
-       (
+        (
         { remainder, totalCash, totalIsa, totalGia, totalCash_Spouse, totalIsa_Spouse, totalGia_Spouse } =
         calculateWithdrawals(remainder, totalCash, withdrawalInfo, totalIsa, totalGia, model,
                        totalCash_Spouse, spouseWithdrawalInfo, totalIsa_Spouse, totalGia_Spouse)
