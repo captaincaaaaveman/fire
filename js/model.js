@@ -9,10 +9,10 @@
  * @property {number} annualDrawdownUnder75
  * @property {number} annualDrawdown75to89
  * @property {number} annualDrawdown90Plus
- * @property {number} spouseStatePensionInput
- * @property {number} spouseStatePensionAgeInput
- * @property {number} statePensionInput
- * @property {number} statePensionAgeInput
+ * @property {number} spouseStatePension
+ * @property {number} spouseStatePensionAge
+ * @property {number} statePension
+ * @property {number} statePensionAge
  * @property {boolean} modelDrawdown
  * @property {boolean} historicSimulation
  * @property {number} definedBenefitPension
@@ -76,8 +76,10 @@ export const model = {
   annualDrawdownUnder75: 0,
   annualDrawdown75to89: 0,
   annualDrawdown90Plus: 0,
-  statePensionInput: 0,
-  statePensionAgeInput: 0,
+  statePension: 0,
+  statePensionAge: 0,
+  spouseStatePension: 0,
+  spouseStatePensionAge: 0,
   modelDrawdown: false,
   // historicSimulation: false,
   simulationType: 'constant', // 'historic', 'historicUS', or 'flat'
