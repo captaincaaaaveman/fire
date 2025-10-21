@@ -95,14 +95,14 @@ function initFromStorage() {
   definedBenefitPensionAgeInput.value = model.definedBenefitPensionAge || 0;
   spouseDefinedBenefitPensionInput.value = model.spouseDefinedBenefitPension || 0;
   spouseDefinedBenefitPensionAgeInput.value = model.spouseDefinedBenefitPensionAge || 0;
-  modelDrawdownCheckbox.checked = model.modelDrawdown || trur;
+  modelDrawdownCheckbox.checked = model.modelDrawdown || true;
 
   deathAgeInput.value = model.deathAge || 96;
   spouseDeathAgeInput.value = model.spouseDeathAge || 96;
 
   // historicSimulationCheckbox.checked = model.historicSimulation || false;
   simulationRadios.forEach(radio => {
-    radio.checked = (radio.value === model.simulationType);
+    radio.checked = (radio.value === model.simulationType || 'historicSimulation');
   });
 
   for (const group of investmentGroups) {

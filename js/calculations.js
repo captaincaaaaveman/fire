@@ -368,7 +368,7 @@ export function getDatasets(model) {
       }
       if (year < model.giaYears) {
         totalGia = totalGia + giaSavings;
-        giaSavings = giaSavings * (1 + (model.giaIncrease/100)) 
+        giaSavings = giaSavings * (1 + (model.giaAnnualIncrease/100)) 
       }
 
       // Annual Investments Spouse
@@ -386,7 +386,7 @@ export function getDatasets(model) {
       }
       if (model.spouse && year < model.spouseGiaYears) {
         totalGia_Spouse = totalGia_Spouse + giaSavings_Spouse;
-        giaSavings_Spouse = giaSavings_Spouse * (1 + (model.spouseGiaIncrease/100)) 
+        giaSavings_Spouse = giaSavings_Spouse * (1 + (model.spouseGiaAnnualIncrease/100)) 
       }
 
       if (model.modelDrawdown) {
