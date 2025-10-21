@@ -102,7 +102,7 @@ function initFromStorage() {
 
   // historicSimulationCheckbox.checked = model.historicSimulation || false;
   simulationRadios.forEach(radio => {
-    radio.checked = (radio.value === model.simulationType || 'historicSimulation');
+    radio.checked = (radio.value === model.simulationType);
   });
 
   for (const group of investmentGroups) {

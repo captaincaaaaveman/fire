@@ -82,7 +82,7 @@ export const model = {
   spouseStatePensionAge: 0,
   modelDrawdown: false,
   // historicSimulation: false,
-  simulationType: 'constant', // 'historic', 'historicUS', or 'flat'
+  simulationType: 'historicSimulation', // 'historic', 'historicUS', or 'flat'
   definedBenefitPension: 0,
   definedBenefitPensionAge: 0,
   spouseDefinedBenefitPension: 0,
@@ -96,7 +96,7 @@ export const model = {
   cashAnnualIncrease: 0,
   cashYears: 0,
 
-  pensionTotal: 0,
+  pensionTotal: 150000,
   pensionAnnualSavings: 0,
   pensionAnnualIncrease: 0,
   pensionYears: 0,
