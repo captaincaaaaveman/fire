@@ -526,10 +526,23 @@ export function getDatasets(model) {
       
      // Store in series
       series[year] = totalIsa + totalCash + totalPension + totalGia;
+      
+      withdrawalSeries[year]["totalWithdrawalInfo"]["totalPension"] = totalPension;
+      withdrawalSeries[year]["totalWithdrawalInfo"]["totalIsa"] = totalIsa;
+      withdrawalSeries[year]["totalWithdrawalInfo"]["totalGia"] = totalGia;
+      withdrawalSeries[year]["totalWithdrawalInfo"]["totalCash"] = totalCash;
 
       if ( model.spouse ) {
         series[year] = series[year] + totalIsa_Spouse + totalCash_Spouse + totalPension_Spouse + totalGia_Spouse;
+
+        withdrawalSeries[year]["totalWithdrawalInfo"]["totalPension"] = withdrawalSeries[year]["totalWithdrawalInfo"]["totalPension"] + totalPension_Spouse;
+        withdrawalSeries[year]["totalWithdrawalInfo"]["totalIsa"] = withdrawalSeries[year]["totalWithdrawalInfo"]["totalIsa"] + totalIsa_Spouse;
+        withdrawalSeries[year]["totalWithdrawalInfo"]["totalGia"] = withdrawalSeries[year]["totalWithdrawalInfo"]["totalGia"] + totalGia_Spouse;
+        withdrawalSeries[year]["totalWithdrawalInfo"]["totalCash"] = withdrawalSeries[year]["totalWithdrawalInfo"]["totalCash"] + totalCash_Spouse;
+      
       }
+
+
       
       // Set the label to the right age
       labels[year] = i;
@@ -662,7 +675,7 @@ export function getMedianIndex() {
 export function getChartDatasets(model) {
   const { datasets, labels } = getDatasets(model);
 
-  // console.log(datasets);
+  console.log(datasets);
 
   failureCases.length = 0
   successCases.length = 0
@@ -692,11 +705,20 @@ export function getChartDatasets(model) {
   const c75 = indices[Math.floor(n * 0.75)];
   const c100 = indices[n - 1];
 
+  if ( datasets && datasets[medianIndex] ) {
+    // console.log( datasets.data[medianIndex].withdrawals )    
+  }
+  
   c1v = finalValues[c1];
   c25v = finalValues[c25];
   c50v = finalValues[medianIndex];
   c75v = finalValues[c75];
   c100v = finalValues[c100];
+
+for (let i = 0; i < 45; i++) {
+  console.log(i + ' - ' + finalValues[i]);
+}
+
 
   // Build chart datasets
   const chartDatasets = datasets.map((data, index) => {
