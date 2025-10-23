@@ -3,6 +3,31 @@ import { getChartDatasets, getSuccessPercentage, getFinalValues, failureAges, fa
 import { saveModel, loadModel } from "./storage.js";
 import { model } from "./model.js";
 import { debounce } from "./utils.js";
+// import {
+//   Chart,
+//   LineController,
+//   LineElement,
+//   PointElement,
+//   LinearScale,
+//   CategoryScale,
+//   Filler,
+//   Legend,
+//   Tooltip,
+// } from 'chart.js';
+// Chart.register(
+//   LineController,
+//   LineElement,
+//   PointElement,
+//   LinearScale,
+//   CategoryScale,
+//   Filler,
+//   Legend,
+//   Tooltip
+// );
+
+let withdrawalsChartInstance = null;
+let taxChartInstance = null;
+let assetsChartInstance = null;
 
 // Input fields
 const screens = document.querySelectorAll(".screen");
@@ -218,7 +243,10 @@ function recalcAndUpdate() {
   updateChart();
   updatePercentageHeading();
   showWithdrawalsPage(mWithdrawals);
+  renderWithdrawalsCharts(mWithdrawals);
 }
+
+
 
 function updatePercentageHeading() {
 
@@ -561,6 +589,8 @@ function showWithdrawalsPage(withdrawals) {
       <tbody>
   `;
 
+
+
   withdrawals.forEach((withdrawal, i) => {
     const w = withdrawal.totalWithdrawalInfo
     const age = startAge + i;
@@ -605,6 +635,237 @@ function showWithdrawalsPage(withdrawals) {
   
   tableContainer.innerHTML = html;
 
+}
+
+
+export function renderWithdrawalsCharts(withdrawals) {
+  if (!model || !withdrawals?.length) return;
+
+  const labels = withdrawals.map((_, i) => (model.age || 0) + i);
+
+  // Extract datasets
+  const dbPension = withdrawals.map(w => w.totalWithdrawalInfo?.dbPension || 0);
+  const statePension = withdrawals.map(w => w.totalWithdrawalInfo?.statePension || 0);
+  const pension = withdrawals.map(w => w.totalWithdrawalInfo?.pension || 0);
+  const isa = withdrawals.map(w => w.totalWithdrawalInfo?.isa || 0);
+  const gia = withdrawals.map(w => w.totalWithdrawalInfo?.gia || 0);
+  const cash = withdrawals.map(w => w.totalWithdrawalInfo?.cash || 0);
+  const tax = withdrawals.map(w => w.totalWithdrawalInfo?.tax || 0);
+  const netDrawdown = withdrawals.map(w => w.totalWithdrawalInfo?.netDrawdown || 0);
+  
+  const totalPension = withdrawals.map(w => w.totalWithdrawalInfo?.totalPension || 0);
+  const totalIsa = withdrawals.map(w => w.totalWithdrawalInfo?.totalIsa || 0);
+  const totalGia = withdrawals.map(w => w.totalWithdrawalInfo?.totalGia || 0);
+  const totalCash = withdrawals.map(w => w.totalWithdrawalInfo?.totalCash || 0);
+
+
+  // Destroy previous charts if they exist
+  if (withdrawalsChartInstance) withdrawalsChartInstance.destroy();
+  if (taxChartInstance) taxChartInstance.destroy();
+  if (assetsChartInstance) assetsChartInstance.destroy();
+
+  const ctx1 = document.getElementById('withdrawalsChart').getContext('2d');
+  const ctx2 = document.getElementById('assetsChart').getContext('2d');
+  const ctx3 = document.getElementById('taxChart').getContext('2d');
+
+
+
+  
+// --- Chart 1: Withdrawals Breakdown (Stacked Area Chart) ---
+withdrawalsChartInstance = new Chart(ctx1, {
+  type: "line",
+  data: {
+    labels,
+    datasets: [
+      {
+        label: "DB Pension",
+        data: dbPension,
+        borderColor: "#4F46E5",
+        backgroundColor: "#4F46E5FF",
+        fill: 'origin',
+        tension: 0.3,
+        pointRadius: 0,
+        stack: 'withdrawals',
+      },
+      {
+        label: "State Pension",
+        data: statePension,
+        borderColor: "#777777",
+        backgroundColor: "#777777FF",
+        fill: 'origin',
+        tension: 0.3,
+        pointRadius: 0,
+        stack: 'withdrawals',
+      },
+      {
+        label: "Pension Withdrawals",
+        data: pension,
+        borderColor: "#3B82F6",
+        backgroundColor: "#3B82F6FF",
+        fill: 'origin',
+        tension: 0.3,
+        pointRadius: 0,
+        stack: 'withdrawals',
+      },
+      {
+        label: "ISA Withdrawals",
+        data: isa,
+        borderColor: "#F59E0B",
+        backgroundColor: "#F59E0BFF",
+        fill: 'origin',
+        tension: 0.3,
+        pointRadius: 0,
+        stack: 'withdrawals',
+      },
+      {
+        label: "GIA Withdrawals",
+        data: gia,
+        borderColor: "#22C55E",
+        backgroundColor: "#22C55EFF",
+        fill: 'origin',
+        tension: 0.3,
+        pointRadius: 0,
+        stack: 'withdrawals',
+      },
+      {
+        label: "Cash Withdrawals",
+        data: cash,
+        borderColor: "#06B6D4",
+        backgroundColor: "#06B6D4FF",
+        fill: 'origin',
+        tension: 0.3,
+        pointRadius: 0,
+        stack: 'withdrawals',
+      }
+    ],
+  },
+  options: {
+    responsive: true,
+    interaction: { mode: "index", intersect: false },
+    plugins: {
+      legend: { position: "bottom" },
+      tooltip: {
+        callbacks: {
+          label: ctx => `${ctx.dataset.label}: £${ctx.parsed.y.toLocaleString()}`,
+        },
+      },
+    },
+  scales: {
+  x: { title: { display: true, text: "Age" }, stacked: true },
+  y: { title: { display: true, text: "Withdrawal Amount (£)" }, stacked: true, beginAtZero: true},
+  },
+  },
+});
+
+
+
+taxChartInstance = new Chart(ctx3, {
+  type: "line",
+  data: {
+    labels,
+    datasets: [
+      {
+        label: "Drawdown",
+        data: netDrawdown,
+        borderColor: "#4F46E5",
+        backgroundColor: "#4F46E5FF",
+        fill: 'origin',
+        tension: 0.3,
+        pointRadius: 0,
+        stack: 'withdrawals',
+      },
+      {
+        label: "Tax",
+        data: tax,
+        borderColor: "#E11D48",
+        backgroundColor: "#E11D48FF",
+        fill: 'origin',
+        tension: 0.3,
+        pointRadius: 0,
+        stack: 'withdrawals',
+      }
+    ],
+  },
+  options: {
+    responsive: true,
+    interaction: { mode: "index", intersect: false },
+    plugins: {
+      legend: { position: "bottom" },
+      tooltip: {
+        callbacks: {
+          label: ctx => `${ctx.dataset.label}: £${ctx.parsed.y.toLocaleString()}`,
+        },
+      },
+    },
+  scales: {
+  x: { title: { display: true, text: "Age" }, stacked: true },
+  y: { title: { display: true, text: "Withdrawal Amount (£)" }, stacked: true, beginAtZero: true },
+  },
+  },
+});
+
+  // --- Chart 2: Total Assets ---
+  assetsChartInstance = new Chart(ctx2, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: 'Total Pension',
+          data: totalPension,
+          borderColor: '#4F46E5',
+          backgroundColor: '#4F46E533',
+          fill: false,
+          tension: 0.3,
+        },
+        {
+          label: 'Total ISA',
+          data: totalIsa,
+          borderColor: '#F59E0B',
+          backgroundColor: '#F59E0B33',
+          fill: false,
+          tension: 0.3,
+        },
+        {
+          label: 'Total GIA',
+          data: totalGia,
+          borderColor: '#E11D48',
+          backgroundColor: '#E11D4833',
+          fill: false,
+          tension: 0.3,
+        },
+        {
+          label: 'Total Cash',
+          data: totalCash,
+          borderColor: '#06B6D4',
+          backgroundColor: '#06B6D433',
+          fill: false,
+          tension: 0.3,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { position: 'bottom' },
+        tooltip: {
+          callbacks: {
+            label: ctx => `${ctx.dataset.label}: £${ctx.parsed.y.toLocaleString()}`,
+          },
+        },
+      },
+      scales: {
+        x: {
+          title: { display: true, text: 'Age' },
+        },
+        y: {
+          title: { display: true, text: 'Total Value (£)' },
+          beginAtZero: true,
+        },
+      },
+    },
+  });
 }
 
 
