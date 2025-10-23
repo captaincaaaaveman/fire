@@ -1,5 +1,5 @@
 // --- Show screen function ---
-import { getChartDatasets, getSuccessPercentage, getFinalValues, failureAges, failureBeforeRetirementCases, successCases, failureCases, getMedianIndex } from './calculations.js';
+import { getChartDatasets, getSuccessPercentage, getFinalValues, failureAges, failureBeforeRetirementCases, successCases, failureCases, indices, getMedianIndex } from './calculations.js';
 import { saveModel, loadModel } from "./storage.js";
 import { model } from "./model.js";
 import { debounce } from "./utils.js";
@@ -227,7 +227,13 @@ function updateChart() {
 
   const { datasets, labels, withdrawals } = getChartDatasets(model);
 
-  mWithdrawals = datasets[getMedianIndex()]["withdrawals"]
+  let a = datasets[getSelectedIndex()]
+
+  if ( a == undefined ) {
+    a = datasets[getMedianIndex()]
+  }
+
+  mWithdrawals = a["withdrawals"]
   
   // withdrawals[getMedianIndex()]
   
@@ -869,6 +875,63 @@ taxChartInstance = new Chart(ctx3, {
 }
 
 
+function populateDropdown() {
+  const select = document.getElementById('indexSelect');
+  select.innerHTML = '';
 
+  const n = indices.length;
+  const medianIndex = getMedianIndex();
+
+  indices.forEach((value, i) => {
+    const position = i + 1; // convert 0-based to 1-based
+    const option = document.createElement('option');
+    option.value = value;
+
+    // Assign readable text based on position
+    if (position === 1) {
+      option.textContent = 'worst';
+    } else if (position === 2) {
+      option.textContent = '2nd worst';
+    } else if (position === 3) {
+      option.textContent = '3rd worst';
+    } else if (position === medianIndex + 1) {
+      option.textContent = 'median';
+    } else if (position === n - 2) {
+      option.textContent = '3rd best';
+    } else if (position === n - 1) {
+      option.textContent = '2nd best';
+    } else if (position === n) {
+      option.textContent = 'best';
+    } else {
+      option.textContent = position.toString();
+    }
+
+    select.appendChild(option);
+  });
+
+  select.value = indices[medianIndex];
+}
+
+// Handle button click
+document.getElementById('indexButton').addEventListener('click', () => {
+  const select = document.getElementById('indexSelect');
+  const selectedValue = select.value;
+  console.log('Selected value from indices array:', selectedValue);
+      chart.options.animation = { duration: 0 };
+  updateChart();
+    showWithdrawalsPage(mWithdrawals);
+  renderWithdrawalsCharts(mWithdrawals);
+      setTimeout(() => {
+      chart.options.animation = undefined;
+    });
+
+});
+
+function getSelectedIndex() {
+  return document.getElementById('indexSelect').value;
+
+}
+
+populateDropdown();
 
 

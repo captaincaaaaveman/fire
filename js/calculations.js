@@ -672,6 +672,8 @@ export function getMedianIndex() {
   return medianIndex;
 }
 
+export let indices = [];
+
 export function getChartDatasets(model) {
   const { datasets, labels } = getDatasets(model);
 
@@ -684,7 +686,7 @@ export function getChartDatasets(model) {
   const finalValues = datasets.map(d => d[d.length - 1]);
 
   // Create array of indices [0, 1, 2, ..., n-1]
-  const indices = finalValues.map((_, i) => i);
+  indices = finalValues.map((_, i) => i);
 
   // Sort indices by their corresponding final value
   indices.sort((a, b) => finalValues[a] - finalValues[b]);

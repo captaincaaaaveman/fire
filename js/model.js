@@ -137,4 +137,74 @@ export const model = {
   spouseDeathAge: 96
 };
 
+export const myModel = {
+  age: 51,
+  spouse: true,
+  spouseAge: 51,
+  projectToAge: 95,
+  retirementAge: 57,
+  annualDrawdownUnder75: 50000,
+  annualDrawdown75to89: 35000,
+  annualDrawdown90Plus: 60000,
+  statePension: 0,
+  statePensionAge: 0,
+  spouseStatePension: 0,
+  spouseStatePensionAge: 0,
+  modelDrawdown: false,
+  // historicSimulation: false,
+  simulationType: 'historicSimulation', // 'historic', 'historicUS', or 'flat'
+  definedBenefitPension: 0,
+  definedBenefitPensionAge: 0,
+  spouseDefinedBenefitPension: 0,
+  spouseDefinedBenefitPensionAge: 0,  
+
+  investmentPercentage: 0,
+  savingsPercentage: 0,
+
+  cashTotal: 0,
+  cashAnnualSavings: 0,
+  cashAnnualIncrease: 0,
+  cashYears: 0,
+
+  pensionTotal: 150000,
+  pensionAnnualSavings: 0,
+  pensionAnnualIncrease: 0,
+  pensionYears: 0,
+  pensionAccessAge: 0,
+
+  isaTotal: 0,
+  isaAnnualSavings: 0,
+  isaAnnualIncrease: 0,
+  isaYears: 0,
+
+  giaTotal: 0,
+  giaAnnualSavings: 0,
+  giaAnnualIncrease: 0,
+  giaYears: 0,
+
+  spouseCashTotal: 0,
+  spouseCashAnnualSavings: 0,
+  spouseCashAnnualIncrease: 0,
+  spouseCashYears: 0,
+
+  spousePensionTotal: 0,
+  spousePensionAnnualSavings: 0,
+  spousePensionAnnualIncrease: 0,
+  spousePensionYears: 0,
+  spousePensionAccessAge: 0,
+
+  spouseIsaTotal: 0,
+  spouseIsaAnnualSavings: 0,
+  spouseIsaAnnualIncrease: 0,
+  spouseIsaYears: 0,
+
+  spouseGiaTotal: 0,
+  spouseGiaAnnualSavings: 0,
+  spouseGiaAnnualIncrease: 0,
+  spouseGiaYears: 0,
+
+  deathAge: 96,
+  spouseDeathAge: 96
+};
+
 

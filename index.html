@@ -428,16 +428,60 @@
 
 <div id="withdrawalsPage" class="p-6">
 
-<div class="overflow-x-auto">
-  <h2 class="text-2xl font-semibold mb-4">Withdrawals - For the median simulation line</h2>
+<div class="flex items-center gap-3 mb-6">
+  <label for="indexSelect" class="text-gray-700 font-medium">Select Index:</label>
+  
+  <select id="indexSelect" class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+    <!-- Options will be added dynamically -->
+  </select>
+
+  <button id="indexButton" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition">
+    Apply
+  </button>
+</div>
+
+
+<div class="overflow-x-auto space-y-10">
+  <!-- Withdrawals Chart Section -->
+  <div>
+    <h2 class="text-2xl font-semibold text-gray-800 mb-2">
+      Withdrawals - Simulation Line
+    </h2>
+    <p class="text-gray-600 mb-4">
+      The withdrawal strategy is very basic.  First use state pension and DB pension, then try to take the remainder from defined contribution pension.  Any remainder will be taken from main cash, then ISA, then GIA. 
+    </p>
+
   <canvas id="withdrawalsChart" class="mb-6"></canvas>
-  <h2 class="text-2xl font-semibold mb-4">Drawdown and Tax - For the median simulation line</h2>
+</div>
+
+<div class="overflow-x-auto space-y-10">
+  <!-- Withdrawals Chart Section -->
+  <div>
+    <h2 class="text-2xl font-semibold text-gray-800 mb-2">
+      Drawdown and Tax - Simulation Line
+    </h2>
+    <p class="text-gray-600 mb-4">
+      The withdrawal strategy is very very basic, but hopfully it gives an idea.  We try to take the full drawdown amount from pension, then cash, then ISA, then GIA.  If there are any tax implications then we try to drawdown the tax amount from cash and ISA. 
+    </p>
+
   <canvas id="taxChart" class="mb-6"></canvas>
-  <h2 class="text-2xl font-semibold mb-4">Total Assets - For the median simulation line</h2>
+</div>
+
+<div class="overflow-x-auto space-y-10">
+  <!-- Withdrawals Chart Section -->
+  <div>
+    <h2 class="text-2xl font-semibold text-gray-800 mb-2">
+      Total Assets - for the selected simulation
+    </h2>
+    <p class="text-gray-600 mb-4">
+      This shows the accumulation and drawdown of the assets over the course of the selected simulation.  
+    </p>
+
+  <h2 class="text-2xl font-semibold mb-4">Total Assets - For the selected simulation</h2>
   <canvas id="assetsChart"></canvas>
 </div>
 
-  <h2 class="text-2xl font-semibold mb-4">Year by year breakdown - For the median simulation line</h2>
+  <h2 class="text-2xl font-semibold mb-4">Year by year breakdown - For the selected simulation</h2>
   <div id="withdrawalsTableContainer"></div>
 
 </div>
