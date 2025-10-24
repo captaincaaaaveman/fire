@@ -1,29 +1,9 @@
 // --- Show screen function ---
-import { getChartDatasets, getSuccessPercentage, getFinalValues, failureAges, failureBeforeRetirementCases, successCases, failureCases, indices, getMedianIndex } from './calculations.js';
+import { getChartDatasets, getSuccessPercentage, getFinalValues, failureAges, failureBeforeRetirementCases, successCases, failureCases, indices, getMedianIndex, historicGlobalGrowthRates, historicUSGrowthRates } from './calculations.js';
 import { saveModel, loadModel } from "./storage.js";
 import { model,exampleModel } from "./model.js";
 import { debounce } from "./utils.js";
-// import {
-//   Chart,
-//   LineController,
-//   LineElement,
-//   PointElement,
-//   LinearScale,
-//   CategoryScale,
-//   Filler,
-//   Legend,
-//   Tooltip,
-// } from 'chart.js';
-// Chart.register(
-//   LineController,
-//   LineElement,
-//   PointElement,
-//   LinearScale,
-//   CategoryScale,
-//   Filler,
-//   Legend,
-//   Tooltip
-// );
+
 
 let withdrawalsChartInstance = null;
 let taxChartInstance = null;
@@ -707,7 +687,7 @@ withdrawalsChartInstance = new Chart(ctx1, {
         stack: 'withdrawals',
       },
       {
-        label: "Pension Withdrawals",
+        label: "DC Pension Withdrawals",
         data: pension,
         borderColor: "#3B82F6",
         backgroundColor: "#3B82F6FF",
@@ -1001,5 +981,54 @@ window.addEventListener('scroll', () => {
     floatingSelect.classList.remove('hidden');
   } else {
     floatingSelect.classList.add('hidden');
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+const showBtn = document.getElementById('showHistoricRates');
+const modal = document.getElementById('historicModal');
+const closeBtn = document.getElementById('closeHistoricModal');
+const tableBody = document.getElementById('historicTableBody');
+
+// Populate table once
+historicGlobalGrowthRates.forEach((rate, index) => {
+  const year = 1928 + index;
+  const row = document.createElement('tr');
+  row.innerHTML = `
+    <td class="pr-2 border-b border-gray-200">${year}</td>
+    <td class="border-b border-gray-200">${rate.toFixed(2)}%</td>
+    <td class="border-b border-gray-200">${historicUSGrowthRates[index].toFixed(2)}%</td>
+  `;
+  tableBody.appendChild(row);
+});
+
+// Open modal
+showBtn.addEventListener('click', () => {
+  modal.classList.remove('hidden');
+  modal.classList.add('flex'); // Tailwind flex centering
+});
+
+// Close modal
+closeBtn.addEventListener('click', () => {
+  modal.classList.add('hidden');
+  modal.classList.remove('flex');
+});
+
+// Optional: close modal when clicking outside content
+modal.addEventListener('click', (e) => {
+  if (e.target === modal) {
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
   }
 });
