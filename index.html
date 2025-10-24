@@ -2,6 +2,14 @@
 <html lang="en">
 
 <head>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8F5TX87T0G"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-8F5TX87T0G');
+</script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Financial Projection</title>
@@ -20,6 +28,9 @@
       <h1 class="text-3xl font-bold text-indigo-700">Financial Projection</h1>
       <p class="text-gray-600">A work in progress - not financial advice - might have bugs</p>
       <p class="text-gray-600">No data leaves your device - everything is stored in your local storage</p>
+<button id="example" class="bg-indigo-600 text-white text-sm px-2 py-1 rounded hover:bg-indigo-700 transition">
+  Demo load with example data
+</button>
     </header>
 
     <!-- Main container: 2 columns on desktop, stacked on mobile -->
@@ -451,7 +462,12 @@
       Drawdown and Tax - For simulation year <span class="simYear"></span>
     </h2>
     <p class="text-gray-600 mb-4">
-      The withdrawal strategy is very very basic, but hopfully it gives an idea.  We try to take the full drawdown amount from pension, then cash, then ISA, then GIA.  If there are any tax implications then we try to drawdown the tax amount from cash and ISA. 
+      The withdrawal strategy is very very basic, but hopfully it gives an idea.  
+      We try to take the full drawdown amount from pension, then cash, then ISA, then GIA.  
+      If there are any tax implications then we try to drawdown the tax amount from cash and ISA. 
+      GIA withdrawals are all assumed to have a 10% GCT liability.  
+      The pension is assumed to have a 25% tax free entitlement for each withdrawal.  
+      Tax on the remainder is calculated using the normal income tax bands.  
     </p>
 
   <canvas id="taxChart" class="mb-6"></canvas>
@@ -478,14 +494,16 @@
   <canvas id="assetsChart"></canvas>
 </div>
 
-  <h2 class="text-2xl font-semibold mb-4">Year by year breakdown - For simulation year <span class="simYear"></span></h2>
+  <h2 class="text-2xl font-semibold mb-4">Year by year breakdown - For simulation year <span class="simYear"></span> 
+  </h2>
+  <button id="showWithdrawlsTable" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition">
+    Show/Hide
+  </button>
   <div id="withdrawalsTableContainer"></div>
 
 </div>
 
-  <button id="example" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition">
-    Example
-  </button>
+
 
 
   <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>

@@ -641,8 +641,7 @@ function calculateTax( withdrawalInfo ) {
   const totalIncome =
     pensionTaxable +
     withdrawalInfo["dbPension"] +
-    withdrawalInfo["statePension"] +
-    withdrawalInfo["gia"];
+    withdrawalInfo["statePension"];
 
   let tax = 0;
   const freeTaxBand = 12570;
@@ -657,6 +656,9 @@ function calculateTax( withdrawalInfo ) {
       (twentyPercentBandLimit - freeTaxBand) * 0.2 +
       (totalIncome - twentyPercentBandLimit) * 0.4;
   }
+  
+  tax = tax + withdrawalInfo["gia"] * 0.1
+
   withdrawalInfo["tax"] = tax;
 }
 

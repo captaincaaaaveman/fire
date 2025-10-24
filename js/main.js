@@ -647,6 +647,9 @@ function showWithdrawalsPage(withdrawals) {
 export function renderWithdrawalsCharts(withdrawals) {
   if (!model || !withdrawals?.length) return;
 
+
+
+
   const labels = withdrawals.map((_, i) => (model.age || 0) + i);
 
   // Extract datasets
@@ -915,24 +918,25 @@ function populateDropdown() {
   });
 
   select.value = indices[medianIndex];
+
+  document.querySelectorAll('.simYear').forEach(el => {
+    el.textContent = select.options[select.selectedIndex].text;
+  });
+
 }
 
 // Handle selection changed
 document.getElementById('indexSelect').addEventListener('change', () => {
   const select = document.getElementById('indexSelect');
   const selectedValue = select.value;
-  console.log('Selected value from indices array:', selectedValue);
-withdrawalsChartInstance.update({ animation: false });
-taxChartInstance.update({ animation: false });
-assetsChartInstance.update({ animation: false });
+
+document.querySelectorAll('.simYear').forEach(el => {
+  el.textContent = select.options[select.selectedIndex].text;
+});
+
   updateChart();
     showWithdrawalsPage(mWithdrawals);
   renderWithdrawalsCharts(mWithdrawals);
-      setTimeout(() => {
-      chart.options.animation = undefined;
-   taxChartInstance.options.animation = undefined;
-  assetsChartInstance.options.animation = undefined;
-    });
 
 });
 
@@ -941,6 +945,29 @@ function getSelectedIndex() {
 }
 
 populateDropdown();
+
+  const select = document.getElementById('indexSelect');
+
+  document.querySelectorAll('.simYear').forEach(el => {
+    el.textContent = select.options[select.selectedIndex].text;
+  });
+
+document.getElementById('showWithdrawlsTable').addEventListener('click', () => {
+  const container = document.getElementById("withdrawalsTableContainer");
+
+  const select = document.getElementById('indexSelect');
+
+  document.querySelectorAll('.simYear').forEach(el => {
+    el.textContent = select.options[select.selectedIndex].text;
+  });
+  
+  if (container.classList.contains("hidden")) {
+    container.classList.remove("hidden");
+  } else {
+    container.classList.add("hidden");
+  }
+});
+
 
 document.getElementById('example').addEventListener('click', () => {
     Object.assign(model, exampleModel); // <-- mutate properties
@@ -965,6 +992,7 @@ function updateAllCharts() {
 
 const floatingSelect = document.getElementById('floatingSelect');
 const targetElement = document.getElementById('withdrawalsPage');
+floatingSelect.classList.add('hidden');
 
 window.addEventListener('scroll', () => {
   const rect = targetElement.getBoundingClientRect();
