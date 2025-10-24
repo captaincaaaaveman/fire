@@ -80,6 +80,8 @@ function initFromStorage() {
   const stored = loadModel(currentScenario);
   if (stored) {
     Object.assign(model, stored);
+  } else {
+    Object.assign(model, exampleModel); // <-- mutate properties
   }
   ageInput.value = model.age ?? 45;
   spouseCheckbox.checked = model.spouse ?? true;
@@ -928,9 +930,6 @@ populateDropdown();
 
   const select = document.getElementById('indexSelect');
 
-  document.querySelectorAll('.simYear').forEach(el => {
-    el.textContent = select.options[select.selectedIndex].text;
-  });
 
 document.getElementById('showWithdrawlsTable').addEventListener('click', () => {
   const container = document.getElementById("withdrawalsTableContainer");
