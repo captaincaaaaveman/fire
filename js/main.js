@@ -1,7 +1,7 @@
 // --- Show screen function ---
 import { getChartDatasets, getSuccessPercentage, getFinalValues, failureAges, failureBeforeRetirementCases, successCases, failureCases, indices, getMedianIndex } from './calculations.js';
 import { saveModel, loadModel } from "./storage.js";
-import { model } from "./model.js";
+import { model,exampleModel } from "./model.js";
 import { debounce } from "./utils.js";
 // import {
 //   Chart,
@@ -101,44 +101,44 @@ function initFromStorage() {
   if (stored) {
     Object.assign(model, stored);
   }
-  ageInput.value = model.age || 45;
-  spouseCheckbox.checked = model.spouse || true;
-  spouseAgeInput.value = model.spouseAge || 45;
+  ageInput.value = model.age ?? 45;
+  spouseCheckbox.checked = model.spouse ?? true;
+  spouseAgeInput.value = model.spouseAge ?? 45;
 
-  projectToAgeInput.value = model.projectToAge || "95";
-  retirementAgeInput.value = model.retirementAge || "55";
-  investmentPercentageInput.value = model.investmentPercentage || "4";
-  savingsPercentageInput.value = model.savingsPercentage || "-1";
-  annualDrawdownUnder75Input.value = model.annualDrawdownUnder75 || "40000";
-  annualDrawdown75to89Input.value = model.annualDrawdown75to89 || "30000";
-  annualDrawdown90PlusInput.value = model.annualDrawdown90Plus || "60000";
-  statePensionInput.value = model.statePension || 11973;
-  statePensionAgeInput.value = model.statePensionAge || 67;
-  spouseStatePensionInput.value = model.spouseStatePension || 11973;
-  spouseStatePensionAgeInput.value = model.spouseStatePensionAge || 67;
-  definedBenefitPensionInput.value = model.definedBenefitPension || 0;
-  definedBenefitPensionAgeInput.value = model.definedBenefitPensionAge || 0;
-  spouseDefinedBenefitPensionInput.value = model.spouseDefinedBenefitPension || 0;
-  spouseDefinedBenefitPensionAgeInput.value = model.spouseDefinedBenefitPensionAge || 0;
-  modelDrawdownCheckbox.checked = model.modelDrawdown || true;
+  projectToAgeInput.value = model.projectToAge ?? "95";
+  retirementAgeInput.value = model.retirementAge ?? "55";
+  investmentPercentageInput.value = model.investmentPercentage ?? "4";
+  savingsPercentageInput.value = model.savingsPercentage ?? "-1";
+  annualDrawdownUnder75Input.value = model.annualDrawdownUnder75 ?? "40000";
+  annualDrawdown75to89Input.value = model.annualDrawdown75to89 ?? "30000";
+  annualDrawdown90PlusInput.value = model.annualDrawdown90Plus ?? "60000";
+  statePensionInput.value = model.statePension ?? 11973;
+  statePensionAgeInput.value = model.statePensionAge ?? 67;
+  spouseStatePensionInput.value = model.spouseStatePension ?? 11973;
+  spouseStatePensionAgeInput.value = model.spouseStatePensionAge ?? 67;
+  definedBenefitPensionInput.value = model.definedBenefitPension ?? 0;
+  definedBenefitPensionAgeInput.value = model.definedBenefitPensionAge ?? 0;
+  spouseDefinedBenefitPensionInput.value = model.spouseDefinedBenefitPension ?? 0;
+  spouseDefinedBenefitPensionAgeInput.value = model.spouseDefinedBenefitPensionAge ?? 0;
+  modelDrawdownCheckbox.checked = model.modelDrawdown ?? true;
 
-  deathAgeInput.value = model.deathAge || 96;
-  spouseDeathAgeInput.value = model.spouseDeathAge || 96;
+  deathAgeInput.value = model.deathAge ?? 96;
+  spouseDeathAgeInput.value = model.spouseDeathAge ?? 96;
 
-  // historicSimulationCheckbox.checked = model.historicSimulation || false;
+  // historicSimulationCheckbox.checked = model.historicSimulation ?? false;
   simulationRadios.forEach(radio => {
     radio.checked = (radio.value === model.simulationType);
   });
 
   for (const group of investmentGroups) {
     const fields = investmentInputs[group];
-    fields.total.value = model[`${group}Total`] || 10000;
-    fields.annualSavings.value = model[`${group}AnnualSavings`] || 4500;
-    fields.annualIncrease.value = model[`${group}AnnualIncrease`] || 2;
-    fields.years.value = model[`${group}Years`] || 10;
+    fields.total.value = model[`${group}Total`] ?? 10000;
+    fields.annualSavings.value = model[`${group}AnnualSavings`] ?? 4500;
+    fields.annualIncrease.value = model[`${group}AnnualIncrease`] ?? 2;
+    fields.years.value = model[`${group}Years`] ?? 10;
 
     if ( group === 'pension' || group === 'spousePension') {
-      fields.accessAge.value = model[`${group}AccessAge`] || 57;
+      fields.accessAge.value = model[`${group}AccessAge`] ?? 57;
     }
 
   }
@@ -746,6 +746,7 @@ withdrawalsChartInstance = new Chart(ctx1, {
     ],
   },
   options: {
+    animation: false, // disables all animations
     responsive: true,
     interaction: { mode: "index", intersect: false },
     plugins: {
@@ -793,6 +794,7 @@ taxChartInstance = new Chart(ctx3, {
     ],
   },
   options: {
+    animation: false, // disables all animations
     responsive: true,
     interaction: { mode: "index", intersect: false },
     plugins: {
@@ -851,6 +853,7 @@ taxChartInstance = new Chart(ctx3, {
       ],
     },
     options: {
+      animation: false, // disables all animations
       responsive: true,
       interaction: { mode: 'index', intersect: false },
       plugins: {
@@ -905,6 +908,8 @@ function populateDropdown() {
     } else {
       option.textContent = position.toString();
     }
+    
+    option.textContent = option.textContent + ' (' + ( value + 1928) + ')'
 
     select.appendChild(option);
   });
@@ -912,26 +917,61 @@ function populateDropdown() {
   select.value = indices[medianIndex];
 }
 
-// Handle button click
-document.getElementById('indexButton').addEventListener('click', () => {
+// Handle selection changed
+document.getElementById('indexSelect').addEventListener('change', () => {
   const select = document.getElementById('indexSelect');
   const selectedValue = select.value;
   console.log('Selected value from indices array:', selectedValue);
-      chart.options.animation = { duration: 0 };
+withdrawalsChartInstance.update({ animation: false });
+taxChartInstance.update({ animation: false });
+assetsChartInstance.update({ animation: false });
   updateChart();
     showWithdrawalsPage(mWithdrawals);
   renderWithdrawalsCharts(mWithdrawals);
       setTimeout(() => {
       chart.options.animation = undefined;
+   taxChartInstance.options.animation = undefined;
+  assetsChartInstance.options.animation = undefined;
     });
 
 });
 
 function getSelectedIndex() {
   return document.getElementById('indexSelect').value;
-
 }
 
 populateDropdown();
 
+document.getElementById('example').addEventListener('click', () => {
+    Object.assign(model, exampleModel); // <-- mutate properties
+    saveModel(model, currentScenario);
+    updateAllCharts();    
+});
 
+function updateAllCharts() {
+   withdrawalsChartInstance.options.animation = { duration: 0 };
+   taxChartInstance.options.animation = { duration: 0 };
+   assetsChartInstance.options.animation = { duration: 0 };
+    initFromStorage()
+    recalcAndUpdate()
+    setTimeout(() => {
+      chart.options.animation = undefined;
+   taxChartInstance.options.animation = undefined;
+  assetsChartInstance.options.animation = undefined;
+    });
+
+}
+
+
+const floatingSelect = document.getElementById('floatingSelect');
+const targetElement = document.getElementById('withdrawalsPage');
+
+window.addEventListener('scroll', () => {
+  const rect = targetElement.getBoundingClientRect();
+  // Check if top of target element is at or above the top of viewport
+  if (rect.top <= 0) {
+    floatingSelect.classList.remove('hidden');
+  } else {
+    floatingSelect.classList.add('hidden');
+  }
+});

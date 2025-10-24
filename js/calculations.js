@@ -677,7 +677,7 @@ export let indices = [];
 export function getChartDatasets(model) {
   const { datasets, labels } = getDatasets(model);
 
-  console.log(datasets);
+  // console.log(datasets);
 
   failureCases.length = 0
   successCases.length = 0
@@ -717,9 +717,9 @@ export function getChartDatasets(model) {
   c75v = finalValues[c75];
   c100v = finalValues[c100];
 
-for (let i = 0; i < 45; i++) {
-  console.log(i + ' - ' + finalValues[i]);
-}
+// for (let i = 0; i < 45; i++) {
+//   console.log(i + ' - ' + finalValues[i]);
+// }
 
 
   // Build chart datasets

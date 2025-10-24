@@ -137,7 +137,7 @@ export const model = {
   spouseDeathAge: 96
 };
 
-export const myModel = {
+export const exampleModel = {
   age: 51,
   spouse: true,
   spouseAge: 51,
@@ -146,33 +146,33 @@ export const myModel = {
   annualDrawdownUnder75: 50000,
   annualDrawdown75to89: 35000,
   annualDrawdown90Plus: 60000,
-  statePension: 0,
-  statePensionAge: 0,
-  spouseStatePension: 0,
-  spouseStatePensionAge: 0,
-  modelDrawdown: false,
+  statePension: 11973,
+  statePensionAge: 67,
+  spouseStatePension: 11973,
+  spouseStatePensionAge: 67,
+  modelDrawdown: true,
   // historicSimulation: false,
   simulationType: 'historicSimulation', // 'historic', 'historicUS', or 'flat'
   definedBenefitPension: 0,
   definedBenefitPensionAge: 0,
-  spouseDefinedBenefitPension: 0,
-  spouseDefinedBenefitPensionAge: 0,  
+  spouseDefinedBenefitPension: 500,
+  spouseDefinedBenefitPensionAge: 55,  
 
-  investmentPercentage: 0,
-  savingsPercentage: 0,
+  investmentPercentage: 4,
+  savingsPercentage: -1,
 
-  cashTotal: 0,
+  cashTotal: 37000,
   cashAnnualSavings: 0,
   cashAnnualIncrease: 0,
   cashYears: 0,
 
-  pensionTotal: 150000,
-  pensionAnnualSavings: 0,
+  pensionTotal: 586000,
+  pensionAnnualSavings: 48000,
   pensionAnnualIncrease: 0,
-  pensionYears: 0,
-  pensionAccessAge: 0,
+  pensionYears: 1,
+  pensionAccessAge: 57,
 
-  isaTotal: 0,
+  isaTotal: 69000,
   isaAnnualSavings: 0,
   isaAnnualIncrease: 0,
   isaYears: 0,
