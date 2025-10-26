@@ -263,7 +263,7 @@ export function getDatasets(model) {
     years = growthRates.length - 1
   } 
 
-  for (let iterationIndex = 0; iterationIndex < growthRates.length - years; iterationIndex++) {
+  for (let iterationIndex = 0; iterationIndex < (growthRates.length - years); iterationIndex++) {
 
     let totalIsa = model.isaTotal;
     let totalCash = model.cashTotal;
@@ -295,7 +295,7 @@ export function getDatasets(model) {
       spouseAge = age;
     }
 
-    let minAge = Math.min(age, spouseAge)
+    let minAge = age
 
     let failedAt = undefined; 
 
@@ -326,11 +326,15 @@ export function getDatasets(model) {
       let pGia = model.investmentPercentage;
       let pPension = model.investmentPercentage;
       let pCash = model.savingsPercentage;
-      if ( model.simulationType != 'constant' && age > model.retirementAge ) {
+      if ( model.simulationType != 'constant' && age >= model.retirementAge ) {
         pIsa = growthRates[historicYear+iterationIndex]
         pGia = growthRates[historicYear+iterationIndex]
         pPension = growthRates[historicYear+iterationIndex]
         historicYear ++;
+        if ( pIsa == undefined ) {
+          console.log( 'undefined ' + (historicYear-1) + ' ii ' + iterationIndex)
+        }
+      
       }
 
       // totalIsa = totalIsa * (1 + (pIsa / 100));
