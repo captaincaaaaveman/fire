@@ -252,7 +252,7 @@ export function getDatasets(model) {
   failureAges.length = 0;
   failureBeforeRetirementCases.length = 0;
 
-  let years = model.projectToAge -  Math.min(model.age, model.spouseAge);
+  let years = model.projectToAge - model.retirementAge; //Math.min(model.age, model.spouseAge);
 
   const growthRates =
     model.simulationType === 'historicUSSimulation'
@@ -261,9 +261,9 @@ export function getDatasets(model) {
 
   if ( model.simulationType === 'constant') {
     years = growthRates.length - 1
-  }
+  } 
 
-  for (let historicYear = 0; historicYear < growthRates.length - years; historicYear++) {
+  for (let iterationIndex = 0; iterationIndex < growthRates.length - years; iterationIndex++) {
 
     let totalIsa = model.isaTotal;
     let totalCash = model.cashTotal;
@@ -300,8 +300,9 @@ export function getDatasets(model) {
     let failedAt = undefined; 
 
     let year = 0;
-
-    let tax_for_this_series = 0
+    
+    let tax_for_this_series = 0;
+    let historicYear = 0;
 
     for (let i = minAge; i <= toAge; i++) {
 
@@ -320,17 +321,16 @@ export function getDatasets(model) {
         break
       }
 
-      // Apply interest / growth
-      let pIsa = growthRates[historicYear + year]
-      let pGia = growthRates[historicYear + year]
-      let pPension = growthRates[historicYear + year]
-      let pCash = -1
 
-      if ( model.simulationType === 'constant' || age < model.retirementAge ) {
-        pIsa = model.investmentPercentage;
-        pGia = model.investmentPercentage;
-        pPension = model.investmentPercentage;
-        pCash = model.savingsPercentage;
+      let pIsa = model.investmentPercentage;
+      let pGia = model.investmentPercentage;
+      let pPension = model.investmentPercentage;
+      let pCash = model.savingsPercentage;
+      if ( model.simulationType != 'constant' && age > model.retirementAge ) {
+        pIsa = growthRates[historicYear+iterationIndex]
+        pGia = growthRates[historicYear+iterationIndex]
+        pPension = growthRates[historicYear+iterationIndex]
+        historicYear ++;
       }
 
       // totalIsa = totalIsa * (1 + (pIsa / 100));
@@ -526,20 +526,21 @@ export function getDatasets(model) {
       
      // Store in series
       series[year] = totalIsa + totalCash + totalPension + totalGia;
-      
-      withdrawalSeries[year]["totalWithdrawalInfo"]["totalPension"] = totalPension;
-      withdrawalSeries[year]["totalWithdrawalInfo"]["totalIsa"] = totalIsa;
-      withdrawalSeries[year]["totalWithdrawalInfo"]["totalGia"] = totalGia;
-      withdrawalSeries[year]["totalWithdrawalInfo"]["totalCash"] = totalCash;
 
-      if ( model.spouse ) {
-        series[year] = series[year] + totalIsa_Spouse + totalCash_Spouse + totalPension_Spouse + totalGia_Spouse;
-
-        withdrawalSeries[year]["totalWithdrawalInfo"]["totalPension"] = withdrawalSeries[year]["totalWithdrawalInfo"]["totalPension"] + totalPension_Spouse;
-        withdrawalSeries[year]["totalWithdrawalInfo"]["totalIsa"] = withdrawalSeries[year]["totalWithdrawalInfo"]["totalIsa"] + totalIsa_Spouse;
-        withdrawalSeries[year]["totalWithdrawalInfo"]["totalGia"] = withdrawalSeries[year]["totalWithdrawalInfo"]["totalGia"] + totalGia_Spouse;
-        withdrawalSeries[year]["totalWithdrawalInfo"]["totalCash"] = withdrawalSeries[year]["totalWithdrawalInfo"]["totalCash"] + totalCash_Spouse;
-      
+      if ( model.modelDrawdown ){
+        withdrawalSeries[year]["totalWithdrawalInfo"]["totalPension"] = totalPension;
+        withdrawalSeries[year]["totalWithdrawalInfo"]["totalIsa"] = totalIsa;
+        withdrawalSeries[year]["totalWithdrawalInfo"]["totalGia"] = totalGia;
+        withdrawalSeries[year]["totalWithdrawalInfo"]["totalCash"] = totalCash;
+  
+        if ( model.spouse ) {
+          series[year] = series[year] + totalIsa_Spouse + totalCash_Spouse + totalPension_Spouse + totalGia_Spouse;
+  
+          withdrawalSeries[year]["totalWithdrawalInfo"]["totalPension"] = withdrawalSeries[year]["totalWithdrawalInfo"]["totalPension"] + totalPension_Spouse;
+          withdrawalSeries[year]["totalWithdrawalInfo"]["totalIsa"] = withdrawalSeries[year]["totalWithdrawalInfo"]["totalIsa"] + totalIsa_Spouse;
+          withdrawalSeries[year]["totalWithdrawalInfo"]["totalGia"] = withdrawalSeries[year]["totalWithdrawalInfo"]["totalGia"] + totalGia_Spouse;
+          withdrawalSeries[year]["totalWithdrawalInfo"]["totalCash"] = withdrawalSeries[year]["totalWithdrawalInfo"]["totalCash"] + totalCash_Spouse;
+        }
       }
 
 

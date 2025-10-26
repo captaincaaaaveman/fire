@@ -230,6 +230,12 @@ function recalcAndUpdate() {
   updateModel();
   updateChart();
   updatePercentageHeading();
+  populateDropdown();
+  showWithdrawalsPage(mWithdrawals);
+  renderWithdrawalsCharts(mWithdrawals);
+
+  // For some reason I need to do this again after populateDropdown.
+  updateChart();
   showWithdrawalsPage(mWithdrawals);
   renderWithdrawalsCharts(mWithdrawals);
 }
@@ -882,7 +888,7 @@ function populateDropdown() {
       option.textContent = '2nd worst';
     } else if (position === 3) {
       option.textContent = '3rd worst';
-    } else if (position === medianIndex + 1) {
+    } else if (position === Math.min(Math.ceil(n * 0.5), n - 1) + 1) {
       option.textContent = 'median';
     } else if (position === n - 2) {
       option.textContent = '3rd best';
@@ -899,7 +905,7 @@ function populateDropdown() {
     select.appendChild(option);
   });
 
-  select.value = indices[medianIndex];
+  select.value = medianIndex;
 
   document.querySelectorAll('.simYear').forEach(el => {
     el.textContent = select.options[select.selectedIndex].text;
@@ -915,6 +921,7 @@ document.getElementById('indexSelect').addEventListener('change', () => {
 document.querySelectorAll('.simYear').forEach(el => {
   el.textContent = select.options[select.selectedIndex].text;
 });
+
 
   updateChart();
     showWithdrawalsPage(mWithdrawals);
