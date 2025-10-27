@@ -202,6 +202,7 @@ export const historicUSGrowthRates = [45.49,
 
 export const successCases = []
 export const failureCases = []
+export let allFinalValues = []
 export const failureBeforeRetirementCases = []
 export const failureAges = []
 let c1v = 0;
@@ -699,8 +700,8 @@ export function getChartDatasets(model) {
   indices.sort((a, b) => finalValues[a] - finalValues[b]);
 
   // Compute median
-  const sorted = [...finalValues].sort((a, b) => a - b);
-  const n = sorted.length;
+  allFinalValues = [...finalValues].sort((a, b) => a - b);
+  const n = allFinalValues.length;
 
   // const c1 = 0;
   // const c25 = Math.floor(n * 0.25);

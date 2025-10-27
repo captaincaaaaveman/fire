@@ -1,5 +1,5 @@
 // --- Show screen function ---
-import { getChartDatasets, getSuccessPercentage, getFinalValues, failureAges, failureBeforeRetirementCases, successCases, failureCases, indices, getMedianIndex, historicGlobalGrowthRates, historicUSGrowthRates } from './calculations.js';
+import { getChartDatasets, getSuccessPercentage, getFinalValues, failureAges, failureBeforeRetirementCases, successCases, failureCases, indices, getMedianIndex, historicGlobalGrowthRates, historicUSGrowthRates, allFinalValues } from './calculations.js';
 import { saveModel, loadModel } from "./storage.js";
 import { model,exampleModel } from "./model.js";
 import { debounce } from "./utils.js";
@@ -261,8 +261,8 @@ function updatePercentageHeading() {
   const finalValue = getFinalValues();
 
 
-  
-if (Array.isArray(finalValue) && finalValue.length === 5) {
+
+  if (Array.isArray(finalValue) && finalValue.length === 5) {
   const [min, p25, median, p75, max] = finalValue;
 
   // Add thousand separators
@@ -875,6 +875,7 @@ function populateDropdown() {
 
   const n = indices.length;
   const medianIndex = getMedianIndex();
+  
 
   indices.forEach((value, i) => {
     const position = i + 1; // convert 0-based to 1-based
@@ -900,7 +901,9 @@ function populateDropdown() {
       option.textContent = position.toString();
     }
     
-    option.textContent = option.textContent + ' (' + ( value + 1928) + ')'
+    const fmt = v => Number(v).toLocaleString(undefined, { maximumFractionDigits: 0 });
+
+    option.textContent = option.textContent + ' - ' + ( value + 1928) + ' - final value £' + fmt(allFinalValues[i]);
 
     select.appendChild(option);
   });
