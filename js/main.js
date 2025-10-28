@@ -658,7 +658,12 @@ export function renderWithdrawalsCharts(withdrawals) {
   const totalIsa = withdrawals.map(w => w.totalWithdrawalInfo?.totalIsa || 0);
   const totalGia = withdrawals.map(w => w.totalWithdrawalInfo?.totalGia || 0);
   const totalCash = withdrawals.map(w => w.totalWithdrawalInfo?.totalCash || 0);
-
+  const totaltotal = withdrawals.map(w =>
+    (w.totalWithdrawalInfo?.totalPension || 0) +
+    (w.totalWithdrawalInfo?.totalIsa || 0) +
+    (w.totalWithdrawalInfo?.totalGia || 0) +
+    (w.totalWithdrawalInfo?.totalCash || 0)
+  );
 
   // Destroy previous charts if they exist
   if (withdrawalsChartInstance) withdrawalsChartInstance.destroy();
@@ -674,25 +679,25 @@ export function renderWithdrawalsCharts(withdrawals) {
   
 // --- Chart 1: Withdrawals Breakdown (Stacked Area Chart) ---
 withdrawalsChartInstance = new Chart(ctx1, {
-  type: "line",
+  type: "bar",
   data: {
     labels,
     datasets: [
       {
-        label: "DB Pension",
-        data: dbPension,
-        borderColor: "#4F46E5",
-        backgroundColor: "#4F46E5FF",
+        label: "State Pension",
+        data: statePension,
+        borderColor: "#777777",
+        backgroundColor: "#777777FF",
         fill: 'origin',
         tension: 0.3,
         pointRadius: 0,
         stack: 'withdrawals',
       },
       {
-        label: "State Pension",
-        data: statePension,
-        borderColor: "#777777",
-        backgroundColor: "#777777FF",
+        label: "DB Pension",
+        data: dbPension,
+        borderColor: "#4F46E5",
+        backgroundColor: "#4F46E5FF",
         fill: 'origin',
         tension: 0.3,
         pointRadius: 0,
@@ -845,6 +850,16 @@ taxChartInstance = new Chart(ctx3, {
           fill: false,
           tension: 0.3,
         },
+        {
+          label: 'Grand total',
+          data: totaltotal,
+          borderColor: '#5b5b5bff',
+          backgroundColor: '#06B6D433',
+          borderWidth: 0.5,            // thicker line (default is 2)
+          borderDash: [6, 3],        // makes it dotted/dashed → [dashLength, gapLength]
+          fill: false,
+          tension: 0.3,
+        },
       ],
     },
     options: {
@@ -930,7 +945,7 @@ document.querySelectorAll('.simYear').forEach(el => {
 });
 
 
-updateWithdrawalsCharts();
+  updateWithdrawalsCharts();
 });
 
 function getSelectedIndex() {
