@@ -16,7 +16,7 @@ const menuBtn = document.getElementById("menuBtn");
 const tabsList = document.getElementById("tabs");
 
 let currentScenario = "A"; 
-let mWithdrawals = [];
+// let mWithdrawals = [];
 
 // DOM Elements
 const ageInput = document.getElementById("ageInput");
@@ -203,19 +203,14 @@ let chart = new Chart(ctx, {
   }
 });
 
+let allDatasets = []
 
 // --- Update chart ---
 function updateChart() {
 
   const { datasets, labels, withdrawals } = getChartDatasets(model);
 
-  let a = datasets[getSelectedIndex()]
-
-  if ( a == undefined ) {
-    a = datasets[getMedianIndex()]
-  }
-
-  mWithdrawals = a["withdrawals"]
+  allDatasets = datasets;
   
   // withdrawals[getMedianIndex()]
   
@@ -229,13 +224,22 @@ function updateChart() {
 function recalcAndUpdate() {
   updateModel();
   updateChart();
-  updatePercentageHeading();
   populateDropdown();
-  showWithdrawalsPage(mWithdrawals);
-  renderWithdrawalsCharts(mWithdrawals);
+  updatePercentageHeading();
 
-  // For some reason I need to do this again after populateDropdown.
-  updateChart();
+  updateWithdrawalsCharts();
+}
+
+function updateWithdrawalsCharts() {
+
+  let a = allDatasets[getSelectedIndex()]
+
+  if ( a == undefined ) {
+    a = allDatasets[getMedianIndex()]
+  }
+
+  let mWithdrawals = a["withdrawals"]
+
   showWithdrawalsPage(mWithdrawals);
   renderWithdrawalsCharts(mWithdrawals);
 }
@@ -926,10 +930,7 @@ document.querySelectorAll('.simYear').forEach(el => {
 });
 
 
-  updateChart();
-    showWithdrawalsPage(mWithdrawals);
-  renderWithdrawalsCharts(mWithdrawals);
-
+updateWithdrawalsCharts();
 });
 
 function getSelectedIndex() {
@@ -980,18 +981,18 @@ function updateAllCharts() {
 
 
 const floatingSelect = document.getElementById('floatingSelect');
-const targetElement = document.getElementById('withdrawalsPage');
-floatingSelect.classList.add('hidden');
+const targetElement = document.getElementById('chartContainer');
+// floatingSelect.classList.add('hidden');
 
-window.addEventListener('scroll', () => {
-  const rect = targetElement.getBoundingClientRect();
-  // Check if top of target element is at or above the top of viewport
-  if (rect.top <= 0) {
-    floatingSelect.classList.remove('hidden');
-  } else {
-    floatingSelect.classList.add('hidden');
-  }
-});
+// window.addEventListener('scroll', () => {
+//   const rect = targetElement.getBoundingClientRect();
+//   // Check if top of target element is at or above the top of viewport
+//   if (rect.top <= 0) {
+//     floatingSelect.classList.remove('hidden');
+//   } else {
+//     floatingSelect.classList.add('hidden');
+//   }
+// });
 
 
 
