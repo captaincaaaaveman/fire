@@ -997,17 +997,17 @@ function updateAllCharts() {
 
 const floatingSelect = document.getElementById('floatingSelect');
 const targetElement = document.getElementById('chartContainer');
-// floatingSelect.classList.add('hidden');
+floatingSelect.classList.add('hidden');
 
-// window.addEventListener('scroll', () => {
-//   const rect = targetElement.getBoundingClientRect();
-//   // Check if top of target element is at or above the top of viewport
-//   if (rect.top <= 0) {
-//     floatingSelect.classList.remove('hidden');
-//   } else {
-//     floatingSelect.classList.add('hidden');
-//   }
-// });
+window.addEventListener('scroll', () => {
+  const rect = targetElement.getBoundingClientRect();
+  // Check if top of target element is at or above the top of viewport
+  if (rect.top <= 0) {
+    floatingSelect.classList.remove('hidden');
+  } else {
+    floatingSelect.classList.add('hidden');
+  }
+});
 
 
 

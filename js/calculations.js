@@ -547,15 +547,12 @@ export function getDatasets(model) {
           withdrawalSeries[year]["totalWithdrawalInfo"]["totalCash"] = withdrawalSeries[year]["totalWithdrawalInfo"]["totalCash"] + totalCash_Spouse;
         }
       }
-
-
       
       // Set the label to the right age
       labels[year] = i;
       year++;
       age++; 
       spouseAge++;
-
 
     }
 
