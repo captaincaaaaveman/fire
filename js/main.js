@@ -919,7 +919,17 @@ function populateDropdown() {
     } else {
       option.textContent = position.toString();
     }
-    
+
+    if ( value == 1929-1928 ) {
+      option.textContent = '(The Wall Street Crash) ' + option.textContent;
+    } else if ( value == 1973-1928) {
+      option.textContent = '(The Oil Crisis / Nifty 50 crash) ' + option.textContent;
+    } else if ( value == 2000-1928) {
+      option.textContent = '(Dot Com Crash) ' + option.textContent;
+    } else if ( value == 2000-2008) {
+      option.textContent = '(Global Financial Crisis) ' + option.textContent;
+    }
+
     const fmt = v => Number(v).toLocaleString(undefined, { maximumFractionDigits: 0 });
 
     option.textContent = option.textContent + ' - ' + ( value + 1928) + ' - final value £' + fmt(allFinalValues[i]);
