@@ -1,7 +1,7 @@
 // --- Show screen function ---
 import { getChartDatasets, getSuccessPercentage, getFinalValues, failureAges, failureBeforeRetirementCases, successCases, failureCases, indices, getMedianIndex, historicGlobalGrowthRates, historicUSGrowthRates, allFinalValues, retirementValue } from './calculations.js';
 import { saveModel, loadModel } from "./storage.js";
-import { model,exampleModel } from "./model.js";
+import { model,exampleModel, exampleModel2 } from "./model.js";
 import { debounce } from "./utils.js";
 
 
@@ -1003,6 +1003,11 @@ document.getElementById('showWithdrawlsTable').addEventListener('click', () => {
 
 document.getElementById('example').addEventListener('click', () => {
     Object.assign(model, exampleModel); // <-- mutate properties
+    saveModel(model, currentScenario);
+    updateAllCharts();    
+});
+document.getElementById('example2').addEventListener('click', () => {
+    Object.assign(model, exampleModel2); // <-- mutate properties
     saveModel(model, currentScenario);
     updateAllCharts();    
 });
