@@ -1,5 +1,5 @@
 // --- Show screen function ---
-import { getChartDatasets, getSuccessPercentage, getFinalValues, failureAges, failureBeforeRetirementCases, successCases, failureCases, indices, getMedianIndex, historicGlobalGrowthRates, historicUSGrowthRates, allFinalValues } from './calculations.js';
+import { getChartDatasets, getSuccessPercentage, getFinalValues, failureAges, failureBeforeRetirementCases, successCases, failureCases, indices, getMedianIndex, historicGlobalGrowthRates, historicUSGrowthRates, allFinalValues, retirementValue } from './calculations.js';
 import { saveModel, loadModel } from "./storage.js";
 import { model,exampleModel } from "./model.js";
 import { debounce } from "./utils.js";
@@ -277,6 +277,12 @@ function updatePercentageHeading() {
         fv.textContent = `Median Final Value = £${fmt(median)}`;
   }
 
+  const fp = document.getElementById("fourPercentNumber");
+  if (fp) {
+      fp.textContent = `Total value of investments at retirement = £${fmt(retirementValue)}, the "4% withdrawal rule" indicates that you will be able to spend £${fmt(retirementValue*0.04)} per annum (ignoring all other income sources).  `;
+  }
+  
+
   fvheading.innerHTML = `
 
 <div id="rangeOfOutcomes" class="bg-white rounded-xl shadow p-4 w-full space-y-4  mb-6">
@@ -316,6 +322,10 @@ function updatePercentageHeading() {
 } else {
   fvheading.textContent = "—";
 }
+
+
+
+
 
   const [min, p25, median, p75, max] = finalValue;
   const fvbar = document.getElementById("fvbar");
@@ -393,6 +403,9 @@ if (statsContainer) {
 
     
 }
+
+
+
 
 
 const debouncedRecalc = debounce(recalcAndUpdate, 250);
@@ -933,6 +946,10 @@ function populateDropdown() {
     const fmt = v => Number(v).toLocaleString(undefined, { maximumFractionDigits: 0 });
 
     option.textContent = option.textContent + ' - ' + ( value + 1928) + ' - final value £' + fmt(allFinalValues[i]);
+
+    if ( model.simulationType == 'constant') {
+      option.textContent = (model.retirementAge - model.age) + 2025
+    }
 
     select.appendChild(option);
   });

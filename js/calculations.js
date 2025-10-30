@@ -211,6 +211,7 @@ let c50v = 0;
 let c75v = 0;
 let c100v = 0;
 let medianIndex = 0;
+export let retirementValue = 0;
 
 
 function applyGrowth(balance, growth, hasSpouse = false, spouseBalance = 0) {
@@ -306,6 +307,10 @@ export function getDatasets(model) {
     let historicYear = 0;
 
     for (let i = minAge; i <= toAge; i++) {
+
+      if ( i == model.retirementAge ) {
+        retirementValue = totalIsa + totalCash + totalPension + totalGia + totalIsa_Spouse + totalPension_Spouse + totalGia_Spouse + totalCash_Spouse;
+      }
 
       if ( age > model.deathAge && spouseAge > model.spouseDeathAge ) {
         console.log('Both have died')
